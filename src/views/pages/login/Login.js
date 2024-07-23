@@ -20,12 +20,12 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [alertMessage, setAlertMessage] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const navigate = useNavigate()
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -37,24 +37,31 @@ const Login = () => {
       return
     }
 
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      "username": username,
+      "password": password
+    });
+
     const requestOptions = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+    };
 
     try {
-      const response = await fetch(`https://api.majorsoft.mn/api/auth?username=${username}&password=${password}`, requestOptions)
-      const result = await response.json()
+      const response = await fetch("https://api.majorsoft.mn/api/login", requestOptions);
+      const result = await response.json();
 
       if (response.ok) {
-        console.log(result)
-        navigate('/dashboard')
+        navigate('/dashboard');
       } else {
-        setAlertMessage(result.message || 'Login failed')
+        setAlertMessage(result.message);
       }
     } catch (error) {
-      console.error('Error:', error)
-      setAlertMessage('Server алдаатай')
+      setAlertMessage('Сүлжээнд холбогдох алдаа гарлаа');
     }
   }
 
