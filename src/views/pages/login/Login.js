@@ -1,42 +1,59 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { cilLockLocked, cilUser } from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
 import {
+  CAlert,
   CButton,
   CCard,
   CCardBody,
+  CCardGroup,
   CCol,
   CContainer,
   CForm,
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CRow,
-  CCardGroup
+  CRow
 } from '@coreui/react';
-import CIcon from '@coreui/icons-react';
-import { cilLockLocked, cilUser } from '@coreui/icons';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-    
-
-const requestOptions = {
-  method: "GET",
-  redirect: "follow"
-};
-
-fetch(`https://api.majorsoft.mnapi/auth?username=${username}&password=${password}`, requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.error(error));
+    setAlertMessage('');
+  
+    if (!username || !password) {
+      setAlertMessage('Бүх талбарыг бөглөн үү');
+      return;
+    }
+  
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      };
+  
+    try {
+      const response = await fetch(`https://api.majorsoft.mn/api/auth?username=${username}&password=${password}`, requestOptions);
+      const result = await response.json();
+  
+      if (response.ok) {
+        console.log(result);
+        navigate('/dashboard');
+      } else {
+        setAlertMessage(result.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setAlertMessage('Server алдаатай');
+    }
   };
+  
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
@@ -49,7 +66,6 @@ fetch(`https://api.majorsoft.mnapi/auth?username=${username}&password=${password
                   <CForm onSubmit={handleLogin}>
                     <h1>Нэвтрэх</h1>
                     <p className="text-body-secondary">Та өөрийн бүртгэлтэй хаягаар нэвтрэнэ үү</p>
-                    {error && <div className="alert alert-danger">{error}</div>}
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -73,6 +89,8 @@ fetch(`https://api.majorsoft.mnapi/auth?username=${username}&password=${password
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </CInputGroup>
+                    {alertMessage && <CAlert color='danger' dismissible onClose={() => setAlertMessage('')}>{alertMessage}</CAlert>}     
+
                     <CRow>
                       <CCol xs={6}>
                         <CButton type="submit" color="primary" className="px-4">

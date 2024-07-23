@@ -1,5 +1,7 @@
-import React from 'react'
+import { cilLockLocked, cilPhone, cilUser } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 import {
+  CAlert,
   CButton,
   CCard,
   CCardBody,
@@ -11,61 +13,164 @@ import {
   CInputGroupText,
   CRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import { useState } from 'react'
 
 const Register = () => {
-  return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
-        <CRow className="justify-content-center">
-          <CCol md={9} lg={7} xl={6}>
-            <CCard className="mx-4">
-              <CCardBody className="p-4">
-                <CForm>
-                  <h1>Register</h1>
-                  <p className="text-body-secondary">Create your account</p>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
-                    <CFormInput placeholder="Username" autoComplete="username" />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>@</CInputGroupText>
-                    <CFormInput placeholder="Email" autoComplete="email" />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="password"
-                      placeholder="Password"
-                      autoComplete="new-password"
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="password"
-                      placeholder="Repeat password"
-                      autoComplete="new-password"
-                    />
-                  </CInputGroup>
-                  <div className="d-grid">
-                    <CButton color="success">Create Account</CButton>
-                  </div>
-                </CForm>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        </CRow>
-      </CContainer>
-    </div>
-  )
+	const [name, setName] = useState('')
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const [confirmPassword, setConfirmPassword] = useState('')
+	const [phone, setPhone] = useState('')
+	const [error, setError] = useState('')
+	const [success, setSuccess] = useState('')
+
+	const handleSignUp = async (e) => {
+		e.preventDefault()
+
+		if (!name || !email || !password || !confirmPassword) {
+			setError('Бүх талбаруудыг бөглөнө үү')
+			return
+		}
+
+		if (password !== confirmPassword) {
+			setError('Нууц үг тохирохгүй байна')
+			return
+		}
+
+		setError('')
+		const data = {
+			email: email,
+			userName: name,
+			phone: phone,
+			password: password,
+			userAgent: navigator.userAgent
+		}
+		const myHeaders = new Headers()
+		myHeaders.append('Content-Type', 'application/json')
+
+		const raw = JSON.stringify(data)
+
+		const requestOptions = {
+			method: 'POST',
+			headers: myHeaders,
+			body: raw,
+			redirect: 'follow'
+		}
+
+		try {
+			const response = await fetch('https://api.majorsoft.mn/api/userAccount', requestOptions)
+			const result = await response.json()
+			console.log(result.isOK)
+			if (result.isOK) {
+				setSuccess(result.message)
+				resetForm()
+			}
+			else {
+				setError(result.message)
+			}
+		} catch (error) {
+			console.error('Error:', error)
+			setError('Алдаа гарлаа')
+		}
+	}
+
+	const resetForm = () => {
+		setName('')
+		setEmail('')
+		setPhone('')
+		setPassword('')
+		setConfirmPassword('')
+	}
+
+	return (
+		<div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+			<CContainer>
+				<CRow className="justify-content-center">
+					<CCol md={9} lg={7} xl={6}>
+						<CCard className="mx-4">
+							<CCardBody className="p-4">
+								<CForm onSubmit={handleSignUp}>
+									<h1>Бүртгүүлэх</h1>
+									<p className="text-body-secondary">Шинэ хаяг нээх</p>
+									<CInputGroup className="mb-3">
+										<CInputGroupText>
+											<CIcon icon={cilUser} />
+										</CInputGroupText>
+										<CFormInput
+											placeholder="Нэр"
+											autoComplete="username"
+											value={name}
+											onChange={(e) => setName(e.target.value)}
+										/>
+									</CInputGroup>
+									<CInputGroup className="mb-3">
+										<CInputGroupText>@</CInputGroupText>
+										<CFormInput
+											placeholder="Email"
+											autoComplete="email"
+											value={email}
+											onChange={(e) => setEmail(e.target.value)}
+										/>
+									</CInputGroup>
+									<CInputGroup className="mb-3">
+										<CInputGroupText>
+											<CIcon icon={cilPhone} />
+										</CInputGroupText>
+										<CFormInput
+											placeholder="Утас"
+											autoComplete="Phone_number"
+											value={phone}
+											onChange={(e) => setPhone(e.target.value)}
+										/>
+									</CInputGroup>
+									<CInputGroup className="mb-3">
+										<CInputGroupText>
+											<CIcon icon={cilLockLocked} />
+										</CInputGroupText>
+										<CFormInput
+											type="password"
+											placeholder="Нууц үг"
+											autoComplete="new-password"
+											value={password}
+											onChange={(e) => setPassword(e.target.value)}
+										/>
+									</CInputGroup>
+									<CInputGroup className="mb-4">
+										<CInputGroupText>
+											<CIcon icon={cilLockLocked} />
+										</CInputGroupText>
+										<CFormInput
+											type="password"
+											placeholder="Нууц үг давтана уу"
+											autoComplete="new-password"
+											value={confirmPassword}
+											onChange={(e) => setConfirmPassword(e.target.value)}
+										/>
+									</CInputGroup>
+									{
+										success && (
+											<CAlert color='success' dismissible onClose={() => setSuccess('')}>
+												{success}
+											</CAlert>
+										)
+									}
+									{error && (
+										<CAlert color="danger" dismissible onClose={() => setError('')}>
+											{error}
+										</CAlert>
+									)}
+									<div className="d-grid">
+										<CButton color="success" type="submit">Бүртгүүлэх</CButton>
+									</div>
+								</CForm>
+							</CCardBody>
+						</CCard>
+					</CCol>
+				</CRow>
+			</CContainer>
+		</div>
+	)
+
 }
 
 export default Register
