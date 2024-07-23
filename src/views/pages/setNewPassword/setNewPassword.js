@@ -26,7 +26,7 @@ const SetNewPassword = () => {
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get('email');
 
- 
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,8 +46,8 @@ const SetNewPassword = () => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email,newPassword, lastSentCode}) // Include lastSentCodein the request body
-    
+      body: JSON.stringify({ email, newPassword, lastSentCode }) // Include lastSentCodein the request body
+
     };
 
     try {
@@ -55,9 +55,14 @@ const SetNewPassword = () => {
       const result = await response.json();
 
       if (response.ok) {
-        setSuccessMessage(result.message || 'Нууц үг амжилттай шинэчлэгдлээ');
-       
-        setTimeout(() => navigate('/login'), 1000); // Redirect to login after a delay
+        if (result.isOK) {
+          setSuccessMessage(result.message || 'Нууц үг амжилттай шинэчлэгдлээ');
+
+          setTimeout(() => navigate('/login'), 1000); // Redirect to login after a delay
+        }
+        else {
+          setAlertMessage(result.message);
+        }
       } else {
         setAlertMessage(result.message || 'Нууц үг шинэчлэхэд алдаа гарлаа');
       }
@@ -77,7 +82,7 @@ const SetNewPassword = () => {
                 <CCardBody>
                   <CForm onSubmit={handleSubmit}>
                     <h1>Шинэ нууц үг тохируулах</h1>
-                     <CFormInput
+                    <CFormInput
                       type="email"
                       value={email}
                       className="mb-3"
@@ -85,17 +90,17 @@ const SetNewPassword = () => {
                     />
                     <CFormInput
                       type="number"
-                      
-                       placeholder="Баталгаажуулах код"
-                       autoComplete="auth-code"
+
+                      placeholder="Баталгаажуулах код"
+                      autoComplete="auth-code"
                       value={lastSentCode}
                       onChange={(e) => setAuthCode(e.target.value)}
-                      
+
                       className="mb-3"
                     />
                     <CFormInput
                       type="text"
-                     placeholder="Шинэ нууц үг"
+                      placeholder="Шинэ нууц үг"
                       autoComplete="new-password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
