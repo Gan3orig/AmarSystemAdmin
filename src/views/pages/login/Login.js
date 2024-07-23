@@ -1,5 +1,5 @@
-import { cilLockLocked, cilUser } from '@coreui/icons';
-import CIcon from '@coreui/icons-react';
+import { cilLockLocked, cilUser } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 import {
   CAlert,
   CButton,
@@ -13,35 +13,39 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow
-} from '@coreui/react';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+} from '@coreui/react'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
   const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setAlertMessage('');
-  
+
     if (!username || !password) {
       setAlertMessage('Бүх талбарыг бөглөн үү');
       return;
     }
-  
+
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-      };
-  
+    };
+
     try {
       const response = await fetch(`https://api.majorsoft.mn/api/auth?username=${username}&password=${password}`, requestOptions);
       const result = await response.json();
-  
+
       if (response.ok) {
         console.log(result);
         navigate('/dashboard');
@@ -53,7 +57,10 @@ const Login = () => {
       setAlertMessage('Server алдаатай');
     }
   };
-  
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
@@ -82,15 +89,17 @@ const Login = () => {
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
                       <CFormInput
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="Нууц үг"
                         autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />
+                      <CInputGroupText type="button" onClick={togglePasswordVisibility}>
+                        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                      </CInputGroupText>
                     </CInputGroup>
-                    {alertMessage && <CAlert color='danger' dismissible onClose={() => setAlertMessage('')}>{alertMessage}</CAlert>}     
-
+                    {alertMessage && <CAlert color='danger' dismissible onClose={() => setAlertMessage('')}>{alertMessage}</CAlert>}
                     <CRow>
                       <CCol xs={6}>
                         <CButton type="submit" color="primary" className="px-4">
@@ -125,6 +134,6 @@ const Login = () => {
       </CContainer>
     </div>
   );
-};
+}
 
 export default Login;
