@@ -20,47 +20,47 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [alertMessage, setAlertMessage] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
-  const navigate = useNavigate();
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [alertMessage, setAlertMessage] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const navigate = useNavigate()
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
-    setAlertMessage('');
+    e.preventDefault()
+    setError('')
+    setAlertMessage('')
 
     if (!username || !password) {
-      setAlertMessage('Бүх талбарыг бөглөн үү');
-      return;
+      setAlertMessage('Бүх талбарыг бөглөн үү')
+      return
     }
 
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-    };
+    }
 
     try {
-      const response = await fetch(`https://api.majorsoft.mn/api/auth?username=${username}&password=${password}`, requestOptions);
-      const result = await response.json();
+      const response = await fetch(`https://api.majorsoft.mn/api/auth?username=${username}&password=${password}`, requestOptions)
+      const result = await response.json()
 
       if (response.ok) {
-        console.log(result);
-        navigate('/dashboard');
+        console.log(result)
+        navigate('/dashboard')
       } else {
-        setAlertMessage(result.message || 'Login failed');
+        setAlertMessage(result.message || 'Login failed')
       }
     } catch (error) {
-      console.error('Error:', error);
-      setAlertMessage('Server алдаатай');
+      console.error('Error:', error)
+      setAlertMessage('Server алдаатай')
     }
-  };
+  }
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+    setShowPassword(!showPassword)
+  }
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
@@ -107,9 +107,11 @@ const Login = () => {
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
-                          Нууц үг мартсан
-                        </CButton>
+                        <Link to="/reset-password">
+                          <CButton color="link" className="px-0">
+                            Нууц үг мартсан
+                          </CButton>
+                        </Link>
                       </CCol>
                     </CRow>
                   </CForm>
@@ -133,7 +135,7 @@ const Login = () => {
         </CRow>
       </CContainer>
     </div>
-  );
+  )
 }
 
-export default Login;
+export default Login
