@@ -1,6 +1,4 @@
 import { cilLockLocked, cilPhone, cilUser } from '@coreui/icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import CIcon from '@coreui/icons-react';
 import {
   CAlert,
@@ -15,7 +13,10 @@ import {
   CInputGroupText,
   CRow,
 } from '@coreui/react';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -25,6 +26,7 @@ const Register = () => {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate()
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -68,6 +70,7 @@ const Register = () => {
       if (result.isOK) {
         setSuccess(result.message);
         resetForm();
+        setTimeout(()=>{navigate('/login');},2000)
       } else {
         setError(result.message);
       }
@@ -168,7 +171,7 @@ const Register = () => {
                     </CAlert>
                   )}
                   <div className="d-grid">
-                    <CButton color="success" type="submit">
+                    <CButton color="primary" type="submit">
                       Бүртгүүлэх
                     </CButton>
                   </div>
