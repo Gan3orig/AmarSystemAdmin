@@ -1,5 +1,3 @@
-import React from 'react'
-import CIcon from '@coreui/icons-react'
 import {
   cilBell,
   cilCalculator,
@@ -13,6 +11,7 @@ import {
   cilSpeedometer,
   cilStar,
 } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
@@ -25,6 +24,16 @@ const _nav = [
       color: 'info',
       text: 'NEW',
     },
+  },
+  {
+    component:CNavTitle,
+    name:'Тохиргоо',
+  },
+  {
+    component: CNavItem,
+    name:'Тохиргоо',
+    to:'/settings',
+    // icon:<CIcon icon={cil-animal} customClassName="nav-icon"/>
   },
   {
     component: CNavTitle,
@@ -52,6 +61,7 @@ const _nav = [
     to: '/base',
     icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
     items: [
+
       {
         component: CNavItem,
         name: 'Accordion',
