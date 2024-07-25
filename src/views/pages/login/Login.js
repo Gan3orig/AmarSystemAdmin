@@ -1,5 +1,5 @@
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
+import { cilLockLocked, cilUser } from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
 import {
   CAlert,
   CButton,
@@ -13,61 +13,70 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow
-} from '@coreui/react'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+} from '@coreui/react';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
   const handleLogin = async (e) => {
-    e.preventDefault()
-    setError('')
-    setAlertMessage('')
-
+    e.preventDefault();
+    setAlertMessage('');
+  
     if (!username || !password) {
-      setAlertMessage('Бүх талбарыг бөглөн үү')
-      return
+      setAlertMessage('Бүх талбарыг бөглөн үү');
+      return;
     }
-
+  
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
+  
     const raw = JSON.stringify({
       "username": username,
       "password": password
     });
-
+  
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
     };
-
+  
     try {
       const response = await fetch("https://api.majorsoft.mn/api/login", requestOptions);
       const result = await response.json();
-
+      
       if (response.ok) {
-        navigate('/dashboard');
+        if (result.isOK) {
+          const data = JSON.parse(result.json)
+          const currentTime = new Date().getTime();
+          const expiryTime = currentTime + data.expiresIn * 1000;
+          localStorage.setItem("token", data.accessToken);
+          localStorage.setItem("user-info", data.userId);
+          localStorage.setItem("expiresIn", expiryTime);
+          localStorage.setItem("isAuthenticated", "true");
+          // navigate('/dashboard');
+        } else {
+          setAlertMessage(result.message);
+        }
       } else {
         setAlertMessage(result.message);
       }
+  
     } catch (error) {
       setAlertMessage('Сүлжээнд холбогдох алдаа гарлаа');
     }
-  }
+  };
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
@@ -142,7 +151,7 @@ const Login = () => {
         </CRow>
       </CContainer>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
