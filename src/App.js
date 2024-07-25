@@ -44,12 +44,12 @@ const App = () => {
         }
       >
         <Routes>
-          <Route exact path="/login" name="Login Page" element={<Login />} />
-          <Route exact path="/register" name="Register Page" element={<Register />} />
-          <Route exact path="/404" name="Page 404" element={<Page404 />} />
-          <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          <Route exact path="/reset-password" name="Reset Password Page" element={<ResetPassword />} /> 
-          <Route exact path="/set-password" name="set new Password Page" element={<SetNewPassword />}/>
+          <Route exact path="/login" name="Нэвтрэх" element={<Login />} />
+          <Route exact path="/register" name="Бүртгүүлэх" element={<Register />} />
+          <Route exact path="/404" name="Хуудас 404" element={<Page404 />} />
+          <Route exact path="/500" name="Хуудас 500" element={<Page500 />} />
+          <Route exact path="/reset-password" name="Нууц үг сэргээх" element={<ResetPassword />} /> 
+          <Route exact path="/set-password" name="Шинэ нууц үг оруулах" element={<SetNewPassword />}/>
   <Route path="*" name="Home" element={<DefaultLayout />} />
         </Routes>
       </Suspense>
