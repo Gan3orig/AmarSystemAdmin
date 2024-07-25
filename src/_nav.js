@@ -26,6 +26,16 @@ const _nav = [
     },
   },
   {
+     component:CNavTitle,
+     name:'Админ',
+  },
+  {
+    component:CNavItem,
+    name:'Админ',
+    to:'/admin',
+  },
+
+  {
     component:CNavTitle,
     name:'Тохиргоо',
   },

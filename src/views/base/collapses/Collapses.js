@@ -1,15 +1,39 @@
-import React, { useState } from 'react'
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CCollapse, CRow } from '@coreui/react'
-import { DocsExample } from 'src/components'
+import React, { useState, useEffect } from 'react';
+import { CButton, CCard, CCardBody, CCardHeader, CCol, CCollapse, CRow } from '@coreui/react';
+import { DocsExample } from 'src/components';
 
 const Collapses = () => {
-  const [visible, setVisible] = useState(false)
-  const [visibleHorizontal, setVisibleHorizontal] = useState(false)
-  const [visibleA, setVisibleA] = useState(false)
-  const [visibleB, setVisibleB] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [visibleHorizontal, setVisibleHorizontal] = useState(false);
+  const [visibleA, setVisibleA] = useState(false);
+  const [visibleB, setVisibleB] = useState(false);
+
+  // State to hold API results
+  const [resultA, setResultA] = useState(null);
+  const [resultB, setResultB] = useState(null);
+
+  // Function to simulate API calls
+  const fetchResults = async () => {
+    // Simulate fetching data
+    const fetchDataA = new Promise((resolve) =>
+      setTimeout(() => resolve("Result A content from API"), 1000)
+    );
+    const fetchDataB = new Promise((resolve) =>
+      setTimeout(() => resolve("Result B content from API"), 1000)
+    );
+
+    // Set results to state
+    setResultA(await fetchDataA);
+    setResultB(await fetchDataB);
+  };
+
+  useEffect(() => {
+    fetchResults();
+  }, []);
 
   return (
     <CRow>
+      {/* Basic Collapse */}
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
@@ -22,8 +46,8 @@ const Collapses = () => {
                 color="primary"
                 href="#"
                 onClick={(e) => {
-                  e.preventDefault()
-                  setVisible(!visible)
+                  e.preventDefault();
+                  setVisible(!visible);
                 }}
               >
                 Link
@@ -44,6 +68,8 @@ const Collapses = () => {
           </CCardBody>
         </CCard>
       </CCol>
+
+      {/* Horizontal Collapse */}
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
@@ -75,10 +101,12 @@ const Collapses = () => {
           </CCardBody>
         </CCard>
       </CCol>
+
+      {/* Multi-target Collapse */}
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>React Collapse</strong> <small> multi target</small>
+            <strong>React Collapse</strong> <small> Multi target</small>
           </CCardHeader>
           <CCardBody>
             <p className="text-body-secondary small">
@@ -94,8 +122,8 @@ const Collapses = () => {
               <CButton
                 color="primary"
                 onClick={() => {
-                  setVisibleA(!visibleA)
-                  setVisibleB(!visibleB)
+                  setVisibleA(!visibleA);
+                  setVisibleB(!visibleB);
                 }}
               >
                 Toggle both elements
@@ -105,9 +133,7 @@ const Collapses = () => {
                   <CCollapse visible={visibleA}>
                     <CCard className="mt-3">
                       <CCardBody>
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                        richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes
-                        anderson cred nesciunt sapiente ea proident.
+                        {resultA ? resultA : "Loading..."}
                       </CCardBody>
                     </CCard>
                   </CCollapse>
@@ -116,9 +142,7 @@ const Collapses = () => {
                   <CCollapse visible={visibleB}>
                     <CCard className="mt-3">
                       <CCardBody>
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                        richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes
-                        anderson cred nesciunt sapiente ea proident.
+                        {resultB ? resultB : "Loading..."}
                       </CCardBody>
                     </CCard>
                   </CCollapse>
@@ -129,7 +153,7 @@ const Collapses = () => {
         </CCard>
       </CCol>
     </CRow>
-  )
-}
+  );
+};
 
-export default Collapses
+export default Collapses;
