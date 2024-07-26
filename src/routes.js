@@ -58,7 +58,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   {path: '/settings',name:'Settings' ,element:Settings},
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
- {path:'/admin' ,name:'Admin', element:Admin},
+ {path:'/admin' ,name:'Хэрэглүүр', element:Admin},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },
