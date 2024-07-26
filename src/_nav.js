@@ -51,6 +51,16 @@ const _nav = [
   },
   {
     component: CNavTitle,
+    name: 'Тохиргоо',
+  },
+  {
+    component: CNavItem,
+    name: 'Тохиргоо',
+    to: '/setting',
+    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
     name: 'Theme',
   },
   {

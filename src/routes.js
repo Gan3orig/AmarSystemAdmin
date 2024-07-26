@@ -5,7 +5,8 @@ const Settings=React.lazy(()=> import('./views/settings/setting'))
  const Admin = React.lazy(()=>import('./views/admin/admin'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
-
+//Settings
+const Setting = React.lazy(() => import('./views/settings/setting'))
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
