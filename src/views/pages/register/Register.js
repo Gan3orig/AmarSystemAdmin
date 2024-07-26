@@ -66,6 +66,7 @@ const Register = () => {
     try {
       const response = await fetch('https://api.majorsoft.mn/api/userAccount', requestOptions);
       const result = await response.json();
+      console.log(response);
       console.log(result.isOK);
       if (result.isOK) {
         setSuccess(result.message);

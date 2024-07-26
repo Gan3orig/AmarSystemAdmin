@@ -17,6 +17,7 @@ import {
 } from '@coreui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import CIcon from '@coreui/icons-react';
 
 const Settings = () => {
   const [visible, setVisible] = useState(false);
@@ -165,7 +166,7 @@ const Settings = () => {
                 <CInputGroup className="has-validation">
                   <CInputGroup.Prepend>
                     <CInputGroup.Text>
-                      
+                      <CIcon></CIcon>
                     </CInputGroup.Text>
                   </CInputGroup.Prepend>
                   <CFormInput
