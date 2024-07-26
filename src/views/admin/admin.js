@@ -60,12 +60,12 @@ const Admin = () => {
     <CRow>
       
       <CCol xs="auto">
-        <CFormLabel className="visually" htmlFor="autoSizingInput">Цахим баримт 3.0 TIN code ба ТТД Нэр авах</CFormLabel>
+        <CFormLabel className="visually" htmlFor="autoSizingInput">PosApi 3.0 TIN code & MerchantName</CFormLabel>
         {/* <CFormInput type="text" value={regNo} onChange={handleInputChange} placeholder="Регистерийн дугаар" />         */}
       </CCol>
       <CCol xs={12}>
       <CInputGroup className="mb-3">
-        <CFormInput type="text" placeholder="Регистерийн дугаар" aria-describedby="button-addon2" value={regNo} onChange={handleInputChange} />
+        <CFormInput type="text" placeholder="RegisterNo" aria-describedby="button-addon2" value={regNo} onChange={handleInputChange} />
         <CButton type="button" color="primary" id="button-addon2" onClick={() => {handleCheckUser(); setVisible(!visible);}} >Шалгах</CButton>
       </CInputGroup>
         {/* <CButton color="primary" onClick={handleCheckUser} > Шалгах </CButton> */}
