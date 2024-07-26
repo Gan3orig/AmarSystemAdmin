@@ -291,7 +291,7 @@ const Settings = () => {
               <CRow md={4}>
                 <CFormSelect
                   id="branchName"
-                  label="Сум дүүрэг"
+                  label="Аймаг/Xот"
                   value={selectedBranch}
                   onChange={handleBranchChange}
                 >
@@ -306,7 +306,7 @@ const Settings = () => {
               <CRow md={4}>
                 <CFormSelect
                   id="subbranchName"
-                  label="Хороо"
+                  label="Cум/Дүүрэг"
                   value=""
                   onChange={() => {}}
                 >
@@ -319,15 +319,14 @@ const Settings = () => {
                 </CFormSelect>
               </CRow>
               <CRow md={4}>
-                <CFormLabel htmlFor="branchAddress">Салбарын Хаяг</CFormLabel>
-                <CInputGroup className="has-validation">
+          
                   <CFormInput
                     type="text"
                     id="branchAddress"
-                    value={newBranchLocation}
-                    onChange={(e) => setNewBranchLocation(e.target.value)}
+                    label="Салбарын хаяг"
+                  
                   />
-                </CInputGroup>
+               
               </CRow>
                 <CRow md={3}>
                 <CFormInput
@@ -406,18 +405,16 @@ const Settings = () => {
                   <option value="type3">Төрөл 3</option>
                 </CFormSelect>
               </CRow>
-              <CCol xs={12}>
+              {/* <CCol xs={12}>
                 <CButton color="primary" type="submit">
                   Submit form
                 </CButton>
-              </CCol>
+              </CCol> */}
             </CForm>
           </CModalBody>
           <CModalFooter>
-            <CButton color="secondary" onClick={() => setPosFormVisible(false)}>
-              Close
-            </CButton>
-            <CButton color="primary">Save changes</CButton>
+           
+            
           </CModalFooter>
         </CModal>
       </main>
