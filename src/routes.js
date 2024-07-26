@@ -16,7 +16,7 @@ const Collapses = React.lazy(() => import('./views/base/collapses/Collapses'))
 const ListGroups = React.lazy(() => import('./views/base/list-groups/ListGroups'))
 const Navs = React.lazy(() => import('./views/base/navs/Navs'))
 const Paginations = React.lazy(() => import('./views/base/paginations/Paginations'))
-const Placeholders = React.lazy(() => import('./views/base/placeholders/Placeholders'))
+// const Placeholders = React.lazy(() => import('./views/base/placeholders/Placeholders'))
 const Popovers = React.lazy(() => import('./views/base/popovers/Popovers'))
 const Progress = React.lazy(() => import('./views/base/progress/Progress'))
 const Spinners = React.lazy(() => import('./views/base/spinners/Spinners'))
@@ -58,7 +58,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   {path: '/settings',name:'Settings' ,element:Settings},
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
- {path:'/admin' ,name:'Admin', element:Admin},
+ {path:'/admin' ,name:'Хэрэглүүр', element:Admin},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },
@@ -70,7 +70,7 @@ const routes = [
   { path: '/base/list-groups', name: 'List Groups', element: ListGroups },
   { path: '/base/navs', name: 'Navs', element: Navs },
   { path: '/base/paginations', name: 'Paginations', element: Paginations },
-  { path: '/base/placeholders', name: 'Placeholders', element: Placeholders },
+  // { path: '/base/placeholders', name: 'Placeholders', element: Placeholders },
   { path: '/base/popovers', name: 'Popovers', element: Popovers },
   { path: '/base/progress', name: 'Progress', element: Progress },
   { path: '/base/spinners', name: 'Spinners', element: Spinners },
