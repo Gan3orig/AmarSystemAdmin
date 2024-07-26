@@ -42,15 +42,6 @@ const App = () => {
         }
       >
         <Routes>
-<<<<<<< HEAD
-          <Route exact path="/login" name="Нэвтрэх" element={<Login />} />
-          <Route exact path="/register" name="Бүртгүүлэх" element={<Register />} />
-          <Route exact path="/404" name="Хуудас 404" element={<Page404 />} />
-          <Route exact path="/500" name="Хуудас 500" element={<Page500 />} />
-          <Route exact path="/reset-password" name="Нууц үг сэргээх" element={<ResetPassword />} /> 
-          <Route exact path="/set-password" name="Шинэ нууц үг оруулах" element={<SetNewPassword />}/>
-  <Route path="*" name="Home" element={<DefaultLayout />} />
-=======
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/404" element={<Page404 />} />
@@ -58,7 +49,6 @@ const App = () => {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/set-password" element={<SetNewPassword />} />
           <Route path="*" element={<DefaultLayout />} />
->>>>>>> b933d780673bf5e8be88298673793365037a2179
         </Routes>
       </Suspense>
     </HashRouter>

@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-import { BrowserRouter as Router, Routes } from 'react-router-dom';
-import React from 'react'
-
-// import Advertisement from './advirtisement';
-// import Equipment from './equipment';
-// import Location from './location';
-// import Order from './order';
-// import POS from './pos';
-
-const Setting = () => {
-    return (
-        <>
-        <main><h1>Hello world</h1></main>
-        </>
-    )
-}
-
-export default Setting
-=======
 import React, { useState, useEffect } from 'react';
 import '../settings/setting.css';
 import {
@@ -434,4 +414,3 @@ const Settings = () => {
 };
 
 export default Settings;
->>>>>>> b933d780673bf5e8be88298673793365037a2179
