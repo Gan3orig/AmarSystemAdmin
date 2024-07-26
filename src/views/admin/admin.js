@@ -83,14 +83,12 @@ const Admin = () => {
       </CCol>
       <CCol xs={12}>
         <CRow>
-          <CCol xs={auto}>
+          <CCol xs={12}>
             <CCollapse visible={visibleA}>
               <CCard className="mt-3">
                 <CCardBody>
                   <div className='result'>Анхны API-ийн хариу:</div>
                   <pre>{response ? JSON.stringify(response, null, 2) : 'No data'}</pre>
-                </CCardBody>
-                <CCardBody>
                   <div className='result'>Хоёр дахь API-ийн хариу:</div>
                   <pre>{secondResponse ? JSON.stringify(secondResponse, null, 2) : 'No data'}</pre>
                 </CCardBody>
