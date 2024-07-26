@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect } from 'react';
 import '../settings/setting.css';
 import {
@@ -16,12 +18,15 @@ import {
   CFormSelect,
   CRow,
   CTable,
+
   CTableHead,
   CTableBody,
   CTableRow,
   CTableHeaderCell,
   CTableDataCell
 } from '@coreui/react';
+import { cilX,cilPhone, cilPen, cilAirplay } from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
 
 const Settings = () => {
   const [visible, setVisible] = useState(false);
@@ -189,10 +194,10 @@ const Settings = () => {
                       <CTableDataCell>{branch.subBranches.length}</CTableDataCell>
                       <CTableDataCell>
                         <CButton color="warning" onClick={() => handleEditBranch(branch)}>
-                          Edit
+                          <CIcon icon={cilPen}></CIcon>
                         </CButton>
                         <CButton color="danger" onClick={() => handleDeleteBranch(branch.branchCode)}>
-                          Delete
+                        <CIcon icon={cilX} />
                         </CButton>
                       </CTableDataCell>
                     </CTableRow>
@@ -324,11 +329,18 @@ const Settings = () => {
                   />
                 </CInputGroup>
               </CRow>
+                <CRow md={3}>
+                <CFormInput
+                  id="location"
+                  label="Байршил"
+                 />
+                 <CIcon icon={cilAirplay}></CIcon>
+              </CRow>
 
               <CRow md={3}>
                 <CFormInput
                   type="text"
-                  id="zip"
+                  id="phone number"
                   label="Утас"
                   value={newBranchContact}
                   onChange={(e) => setNewBranchContact(e.target.value)}
