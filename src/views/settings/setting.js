@@ -129,7 +129,7 @@ const Settings = () => {
       }
 
     } catch (error) {
-     console.error(error)
+      console.error(error)
     }
   };
   const handleBranchChange = (event) => {
@@ -435,6 +435,45 @@ const Settings = () => {
 
                       )}
                     </div>
+                    <CTable>
+
+                      <CTableRow>
+
+                        <CTableHeaderCell><CFormCheck /></CTableHeaderCell>
+                        <CTableHeaderCell>Салбар</CTableHeaderCell>
+                        <CTableHeaderCell>Дүүрэг/Аймаг</CTableHeaderCell>
+                        <CTableHeaderCell>Хороо/Сум </CTableHeaderCell>
+                        <CTableHeaderCell>Терминал</CTableHeaderCell>
+                        <CTableHeaderCell>Системийн төрөл </CTableHeaderCell>
+
+
+                      </CTableRow>
+                      <CTableDataCell><CFormCheck /></CTableDataCell>
+                      <CTableDataCell>hii</CTableDataCell>
+                      <CTableDataCell><CFormSelect
+                        value={selectedBranch}
+                        onChange={handleBranchChange}
+                      >
+                        <option value="" disabled>Сонгоно уу...</option>
+                        {branches.map((branch) => (
+                          <option key={branch.branchCode} value={branch.branchCode}>
+                            {branch.branchName}
+                          </option>))}
+                      </CFormSelect></CTableDataCell>
+                      <CTableDataCell> <CFormSelect
+                    value=""
+                    onChange={(handleBranchChange) => { }}
+                  >
+                    <option value="" disabled>Сонгоно уу...</option>
+                    {subBranches.map((subBranch) => (
+                      <option key={subBranch.subBranchCode} value={subBranch.subBranchCode}>
+                        {subBranch.subBranchName}
+                      </option>
+                    ))}
+                    </CFormSelect>
+                      </CTableDataCell>
+
+                    </CTable>
                   </CCardBody>
                 </CCard>
               )}
@@ -578,7 +617,7 @@ const Settings = () => {
                     id="subbranchName"
                     label="Cум/Дүүрэг"
                     value=""
-                    onChange={() => { }}
+                    onChange={(handleBranchChange) => { }}
                   >
                     <option value="" disabled>Сонгоно уу...</option>
                     {subBranches.map((subBranch) => (
@@ -680,7 +719,7 @@ const Settings = () => {
 
         </CCardBody>
       </main>
-    </div>
+    </div >
   );
 };
 
