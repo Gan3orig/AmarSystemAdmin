@@ -1,12 +1,14 @@
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-const Settings=React.lazy(()=> import('./views/settings/setting'))
+
  const Admin = React.lazy(()=>import('./views/admin/admin'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 //Settings
-const Setting = React.lazy(() => import('./views/settings/setting'))
+const Settings=React.lazy(()=> import('./views/settings/setting'))
+//Product
+const Product=React.lazy(()=>import('./views/product/product'))
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -57,6 +59,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   {path: '/settings',name:'Settings' ,element:Settings},
+  {path: '/product',name:'Бараа бүтээгдэхүүн',element:Product},
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
  {path:'/admin' ,name:'Хэрэглүүр', element:Admin},
   { path: '/theme/colors', name: 'Colors', element: Colors },

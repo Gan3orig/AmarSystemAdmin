@@ -54,12 +54,12 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Тохиргоо',
+    name: 'Бараа бүтээгдэхүүн',
   },
   {
     component: CNavItem,
-    name: 'Тохиргоо',
-    to: '/setting',
+    name: 'Бараа бүтээгдэхүүн',
+    to: '/product',
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
   },
   {

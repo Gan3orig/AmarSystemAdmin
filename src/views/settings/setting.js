@@ -448,52 +448,52 @@ const Settings = () => {
                             readOnly
                           />
 
-<CTable mt-1>
+                          <CTable mt-1>
 
-<CTableRow>
+                            <CTableRow>
 
-  <CTableHeaderCell><CFormCheck /></CTableHeaderCell>
-  <CTableHeaderCell>Салбар</CTableHeaderCell>
-  <CTableHeaderCell>Дүүрэг/Аймаг</CTableHeaderCell>
-  <CTableHeaderCell>Хороо/Сум </CTableHeaderCell>
-  <CTableHeaderCell>Терминал</CTableHeaderCell>
-  <CTableHeaderCell>Системийн төрөл </CTableHeaderCell>
+                              <CTableHeaderCell><CFormCheck /></CTableHeaderCell>
+                              <CTableHeaderCell>Салбар</CTableHeaderCell>
+                              <CTableHeaderCell>Дүүрэг/Аймаг</CTableHeaderCell>
+                              <CTableHeaderCell>Хороо/Сум </CTableHeaderCell>
+                              <CTableHeaderCell>Терминал</CTableHeaderCell>
+                              <CTableHeaderCell>Системийн төрөл </CTableHeaderCell>
 
 
-</CTableRow>
-<CTableDataCell><CFormCheck /></CTableDataCell>
-<CTableDataCell>hii</CTableDataCell>
-<CTableDataCell><CFormSelect
-  value={selectedBranch}
-  onChange={handleBranchChange}
->
-  <option value="" disabled>Сонгоно уу...</option>
-  {branches.map((branch) => (
-    <option key={branch.branchCode} value={branch.branchCode}>
-      {branch.branchName}
-    </option>))}
-</CFormSelect></CTableDataCell>
-<CTableDataCell> <CFormSelect
-  id="subbranchName"
-  value={selectedSubBranch}
-  onChange={(e) => setSelectedSubBranch(e.target.value)}
->
-  <option value="" >Сонгоно уу...</option>
-  {subBranches.map((subBranch) => (
-    <option key={subBranch.subBranchCode} value={subBranch.subBranchCode}>
-      {subBranch.subBranchName}
-    </option>
-  ))}
-</CFormSelect>
-</CTableDataCell>
-<CTableDataCell>{CONSTANT_VALUE}</CTableDataCell>
+                            </CTableRow>
+                            <CTableDataCell><CFormCheck /></CTableDataCell>
+                            <CTableDataCell>hii</CTableDataCell>
+                            <CTableDataCell><CFormSelect
+                              value={selectedBranch}
+                              onChange={handleBranchChange}
+                            >
+                              <option value="" disabled>Сонгоно уу...</option>
+                              {branches.map((branch) => (
+                                <option key={branch.branchCode} value={branch.branchCode}>
+                                  {branch.branchName}
+                                </option>))}
+                            </CFormSelect></CTableDataCell>
+                            <CTableDataCell> <CFormSelect
+                              id="subbranchName"
+                              value={selectedSubBranch}
+                              onChange={(e) => setSelectedSubBranch(e.target.value)}
+                            >
+                              <option value="" >Сонгоно уу...</option>
+                              {subBranches.map((subBranch) => (
+                                <option key={subBranch.subBranchCode} value={subBranch.subBranchCode}>
+                                  {subBranch.subBranchName}
+                                </option>
+                              ))} 
+                            </CFormSelect>
+                            </CTableDataCell>
+                            <CTableDataCell>{CONSTANT_VALUE}</CTableDataCell>
 
-</CTable>
+                          </CTable>
                         </div>
 
                       )}
                     </div>
-                   
+
                     <CCardBody className='max-2 mt-5' >
 
 
@@ -521,7 +521,7 @@ const Settings = () => {
                       <CFormLabel className="mt-3">Толгой хэсэг</CFormLabel>
                       <CFormInput type="text" id="headerInput" name="headerInput" />
 
-                      <CFormLabel  className="mt-3">Хөл хэсэг</CFormLabel>
+                      <CFormLabel className="mt-3">Хөл хэсэг</CFormLabel>
                       <CFormInput type="text" id="footerInput" name="footerInput" />
 
                       <CFormCheck
@@ -537,41 +537,45 @@ const Settings = () => {
 
 
               <div >
+              
                 {showAddBranchButton && (
-                  <div >
-                    <div>
-                      <CButton color="primary" onClick={() => setVisible(true)} >
-                        Салбар нэмэх
-                      </CButton>
-                      <CTable>
-                        <CTableHead>
-                          <CTableRow>
-                            <CTableHeaderCell>#</CTableHeaderCell>
-                            <CTableHeaderCell>Нэр</CTableHeaderCell>
-                            <CTableHeaderCell>Хаяг</CTableHeaderCell>
-                            <CTableHeaderCell>Пос тоо</CTableHeaderCell>
-                            <CTableHeaderCell>Actions</CTableHeaderCell>
-                          </CTableRow>
-                        </CTableHead>
-                        <CTableBody>
-                          {branches.map((branch, index) => (
-                            <CTableRow key={branch.branchCode}>
-                              <CTableDataCell>{index + 1}</CTableDataCell> {/* Order number */}
-                              <CTableDataCell>{branch.branchName}</CTableDataCell>
-                              <CTableDataCell>{branch.location || 'N/A'}</CTableDataCell>
-                              <CTableDataCell>{branch.subBranches.length}</CTableDataCell>
-                              <CTableDataCell>
-                                <CButton color="warning" onClick={() => handleEditBranch(branch)}>
-                                  <CIcon icon={cilPen}></CIcon>
-                                </CButton>
-                                <CButton color="danger" onClick={() => handleDeleteBranch(branch.branchCode)}>
-                                  <CIcon icon={cilX} />
-                                </CButton>
-                              </CTableDataCell>
+                  
+                    <div >
+                      <div>
+                        <CCardHeader>Салбарууд</CCardHeader>
+                        <CButton color="primary" onClick={() => setVisible(true)} >
+                          Салбар нэмэх
+                        </CButton>
+                        <CTable>
+                          <CTableHead>
+                            <CTableRow>
+                              <CTableHeaderCell>#</CTableHeaderCell>
+                              <CTableHeaderCell>Нэр</CTableHeaderCell>
+                              <CTableHeaderCell>Хаяг</CTableHeaderCell>
+                              <CTableHeaderCell>Пос тоо</CTableHeaderCell>
+                              <CTableHeaderCell>Actions</CTableHeaderCell>
                             </CTableRow>
-                          ))}
-                        </CTableBody>
-                      </CTable>
+                          </CTableHead>
+                          <CTableBody>
+                            {branches.map((branch, index) => (
+                              <CTableRow key={branch.branchCode}>
+                                <CTableDataCell>{index + 1}</CTableDataCell> {/* Order number */}
+                                <CTableDataCell>{branch.branchName}</CTableDataCell>
+                                <CTableDataCell>{branch.location || 'N/A'}</CTableDataCell>
+                                <CTableDataCell>{branch.subBranches.length}</CTableDataCell>
+                                <CTableDataCell>
+                                  <CButton color="primary" onClick={() => handleEditBranch(branch)}>
+                                    <CIcon icon={cilPen}></CIcon>
+                                  </CButton>
+                                  <CButton color="brand-light-color" onClick={() => handleDeleteBranch(branch.branchCode)}>
+                                    <CIcon icon={cilX} />
+                                  </CButton>
+                                </CTableDataCell>
+                              </CTableRow>
+                            ))}
+                          </CTableBody>
+                        </CTable>
+                   
                     </div>
                     <div>
                       <CButton color="primary" onClick={() => setPosFormVisible(true)}>
@@ -599,11 +603,13 @@ const Settings = () => {
                             <CTableDataCell>Type 1</CTableDataCell>
                             <CTableDataCell>VAT Included</CTableDataCell>
                             <CTableDataCell>
-                              <CButton color="warning" onClick={() => handleEditPOS(1)}>
-                                Edit
+
+
+                              <CButton color="primary" onClick={() => handleEditPOS(1)}>
+                                <CIcon icon={cilPen} />
                               </CButton>
-                              <CButton color="danger" onClick={() => handleDeletePOS(1)}>
-                                Delete
+                              <CButton className='ps-2' onClick={() => handleDeletePOS(1)}>
+                                <CIcon icon={cilX} />
                               </CButton>
                             </CTableDataCell>
                           </CTableRow>
