@@ -59,6 +59,8 @@ const Settings = () => {
   const [newBranchLocation, setNewBranchLocation] = useState('');
   const [newBranchContact, setNewBranchContact] = useState('');
 
+  //edit modal
+  const [editModal,setEditModal] = useState(false)
 
   // State for editing branch
   const [editingBranch, setEditingBranch] = useState(null);
@@ -155,12 +157,8 @@ const Settings = () => {
     setSubBranches(selectedBranchData ? selectedBranchData.subBranches : []);
   };
 
-  const handleEditBranch = (branch) => {
-    setEditingBranch(branch);
-    setNewBranchName(branch.branchName);
-    setNewBranchLocation(branch.location);
-    setNewBranchContact(branch.contact);
-    setVisible(true); // Open the modal to edit
+  const handleEditBranch = () => {
+    setEditModal(!editModal)
   };
 
   const handleDeleteBranch = async (branchId) => {
@@ -564,7 +562,7 @@ const Settings = () => {
                                 <CTableDataCell>{branch.location || 'N/A'}</CTableDataCell>
                                 <CTableDataCell>{branch.subBranches.length}</CTableDataCell>
                                 <CTableDataCell>
-                                  <CButton color="primary" onClick={() => handleEditBranch(branch)}>
+                                  <CButton color="primary" onClick={() => handleEditBranch()}>
                                     <CIcon icon={cilPen}></CIcon>
                                   </CButton>
                                   <CButton color="brand-light-color" onClick={() => handleDeleteBranch(branch.branchCode)}>
