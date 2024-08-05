@@ -9,11 +9,11 @@ import {
     CNavbarBrand,
     CNavbarToggler,
 } from '@coreui/react';
-import { CFormSwitch } from '@coreui/react';
 import { cilSettings } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import ProductList from './productlist';
-
+import Category from './categories';
+import ExtraCharge from './extraCharge'; // Import the ExtraCharge component
 
 const Product = () => {
     const [showProductSection, setShowProductSection] = useState(false);
@@ -37,7 +37,7 @@ const Product = () => {
                     />
                     <CCollapse className="navbar-collapse" visible={visible}>
                         <CNavbarNav>
-                        <CNavItem className={`${showProductSection ? 'border-bottom fw-bold' : ''}`}>
+                            <CNavItem className={`${showProductSection ? 'border-bottom fw-bold' : ''}`}>
                                 <CNavLink
                                     active
                                     onClick={() => {
@@ -49,36 +49,37 @@ const Product = () => {
                                     Барааны жагсаалт
                                 </CNavLink>
                             </CNavItem>
-                           <CNavItem className={`${showCategorySection ? 'border-bottom fw-bold': ''}`}>
-                            <CNavLink
-                            active
-                            onClick={()=>{
-                                        
+                            <CNavItem className={`${showCategorySection ? 'border-bottom fw-bold' : ''}`}>
+                                <CNavLink
+                                    active
+                                    onClick={() => {
                                         setShowExtraSection(false);
                                         setShowProductSection(false);
                                         setShowCategorySection(true);
-                            }}>
-                                Нэмэлт төлбөр
-                            </CNavLink>
+                                    }}
+                                >
+                                    Категор
+                                </CNavLink>
                             </CNavItem>
-                            <CNavItem className={`${showExtraSection ? 'border-bottom fw-bold': ''}`}>
-                            <CNavLink
-                            active
-                            onClick={()=>{
-                                        
+                            <CNavItem className={`${showExtraSection ? 'border-bottom fw-bold' : ''}`}>
+                                <CNavLink
+                                    active
+                                    onClick={() => {
                                         setShowExtraSection(true);
                                         setShowProductSection(false);
                                         setShowCategorySection(false);
-                            }}>
-                                Категор
-                            </CNavLink>
-
-                           </CNavItem>
+                                    }}
+                                >
+                                    Нэмэлт төлбөр
+                                </CNavLink>
+                            </CNavItem>
                         </CNavbarNav>
                     </CCollapse>
                 </CContainer>
             </CNavbar>
             {showProductSection && <ProductList />}
+            {showCategorySection && <Category />}
+            {showExtraSection && <ExtraCharge />} {/* Display ExtraCharge component for Нэмэлт төлбөр */}
         </div>
     );
 };

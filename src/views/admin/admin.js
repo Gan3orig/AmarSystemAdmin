@@ -22,6 +22,7 @@ import {
 	CTableHead
 } from '@coreui/react';
 
+
 import SeeOrganization from './seeorganization';
 const Admin = () => {
 	// Register useState
@@ -109,6 +110,7 @@ const Admin = () => {
 
 				const secondApiResponse = await fetch(secondApiUrl, secondApiOptions);
 				const secondApiData = await secondApiResponse.json();
+
 				setSecondResponse(secondApiData);
 			} else {
 				setSecondResponse(null);
