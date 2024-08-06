@@ -17,13 +17,13 @@ const ImportExcel = ({ visible, onClose }) => {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const binaryStr = e.target.result;
-                const workbook = XLSX.read(binaryStr, { type: 'array' }); // Updated to 'array'
+                const workbook = XLSX.read(binaryStr, { type: 'array' });
                 const firstSheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[firstSheetName];
                 const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
                 setData(json);
             };
-            reader.readAsArrayBuffer(file); // Updated to 'ArrayBuffer'
+            reader.readAsArrayBuffer(file);
         }
     };
 
@@ -39,7 +39,16 @@ const ImportExcel = ({ visible, onClose }) => {
                         accept=".xlsx, .xls"
                         onChange={handleFileChange}
                     />
-                    <CButton>Жишээ файл</CButton>
+                    {/* Adding an anchor tag for the download functionality */}
+                    <a 
+                        href="example/Жишээ файл.xlsx" 
+                        download="Жишээ файл.xlsx"
+                        style={{ textDecoration: 'none' }}
+                    >
+                        <CButton color="link">
+                            Жишээ файл
+                        </CButton>
+                    </a>
                     <CButton color="primary" className="mt-3" onClick={handleFileUpload}>
                         Файлыг Импортлох
                     </CButton>
