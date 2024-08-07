@@ -1,3 +1,4 @@
+import { element } from 'prop-types'
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -5,6 +6,7 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
  const Admin = React.lazy(()=>import('./views/admin/admin'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
+const Employee =React.lazy(()=>import('./views/employee/employee'))
 //Settings
 const Settings=React.lazy(()=> import('./views/settings/setting'))
 //Product
@@ -74,6 +76,7 @@ const routes = [
   { path: '/base/navs', name: 'Navs', element: Navs },
   { path: '/base/paginations', name: 'Paginations', element: Paginations },
   // { path: '/base/placeholders', name: 'Placeholders', element: Placeholders },
+  {path: '/employee', name:'Ажилчин' ,element:Employee},
   { path: '/base/popovers', name: 'Popovers', element: Popovers },
   { path: '/base/progress', name: 'Progress', element: Progress },
   { path: '/base/spinners', name: 'Spinners', element: Spinners },

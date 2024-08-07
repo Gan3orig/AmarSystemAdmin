@@ -16,6 +16,8 @@ import {
 } from '@coreui/react';
 import EditModal from './editModal';
 import PropTypes from 'prop-types';
+import CIcon from '@coreui/icons-react';
+import { cilX, cilPen } from '@coreui/icons';
 
 const SeeOrganization = ({ data }) => {
   const [showTable, setShowTable] = useState(null); // null, 'organization', or 'individual'
@@ -94,10 +96,10 @@ const SeeOrganization = ({ data }) => {
                   <CTableDataCell>{item.email}</CTableDataCell>
                   <CTableDataCell>
                     <CButton onClick={() => handleModal(item, 'organization')}>
-                      Засах
+                      <CIcon icon={cilPen}></CIcon>
                     </CButton>
                     <CButton onClick={() => handleDelete(item.id)}>
-                      Утсгах
+                      <CIcon icon={cilX}></CIcon>
                     </CButton>
                   </CTableDataCell>
                 </CTableRow>
@@ -136,10 +138,10 @@ const SeeOrganization = ({ data }) => {
                   <CTableDataCell>{item.email}</CTableDataCell>
                   <CTableDataCell>
                     <CButton onClick={() => handleModal(item, 'individual')}>
-                      Засах
+                      <CIcon icon={cilPen}></CIcon>
                     </CButton>
                     <CButton onClick={() => handleDelete(item.id)}>
-                      Утсгах
+                      <CIcon icon={cilX}></CIcon>
                     </CButton>
                   </CTableDataCell>
                 </CTableRow>

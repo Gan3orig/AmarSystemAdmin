@@ -13,13 +13,15 @@ import { cilSettings } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import ProductList from './productlist';
 import Category from './categories';
-import ExtraCharge from './extraCharge'; // Import the ExtraCharge component
+import ExtraCharge from './extraCharge'; 
+import {useTranslation} from 'react-i18next';
 
 const Product = () => {
     const [showProductSection, setShowProductSection] = useState(false);
     const [showCategorySection, setShowCategorySection] = useState(false);
     const [showExtraSection, setShowExtraSection] = useState(false);
     const [visible, setVisible] = useState(false);
+    const { t } = useTranslation();
 
     return (
         <div className="app-container d-flex flex-column">
@@ -27,7 +29,7 @@ const Product = () => {
                 <CContainer fluid>
                     <CNavbarBrand>
                         <h3>
-                            <CIcon icon={cilSettings} /> Бараа
+                            <CIcon icon={cilSettings} /> {t('Бараа')}
                         </h3>
                     </CNavbarBrand>
                     <CNavbarToggler
@@ -46,7 +48,7 @@ const Product = () => {
                                         setShowProductSection(true);
                                     }}
                                 >
-                                    Барааны жагсаалт
+                                    {t('Барааны жагсаалт')}
                                 </CNavLink>
                             </CNavItem>
                             <CNavItem className={`${showCategorySection ? 'border-bottom fw-bold' : ''}`}>
@@ -58,7 +60,7 @@ const Product = () => {
                                         setShowCategorySection(true);
                                     }}
                                 >
-                                    Категор
+                                    {t('Категор')}
                                 </CNavLink>
                             </CNavItem>
                             <CNavItem className={`${showExtraSection ? 'border-bottom fw-bold' : ''}`}>
@@ -70,7 +72,7 @@ const Product = () => {
                                         setShowCategorySection(false);
                                     }}
                                 >
-                                    Нэмэлт төлбөр
+                                    {t('Нэмэлт төлбөр')}
                                 </CNavLink>
                             </CNavItem>
                         </CNavbarNav>
@@ -79,7 +81,7 @@ const Product = () => {
             </CNavbar>
             {showProductSection && <ProductList />}
             {showCategorySection && <Category />}
-            {showExtraSection && <ExtraCharge />} {/* Display ExtraCharge component for Нэмэлт төлбөр */}
+            {showExtraSection && <ExtraCharge />}
         </div>
     );
 };
