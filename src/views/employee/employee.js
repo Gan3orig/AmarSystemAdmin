@@ -76,7 +76,7 @@ const Employee = () => {
                                         setShowSettings(false);
                                     }}
                                 >
-                                    Цагын тохиргоо
+                                    Цагийн тохиргоо
                                 </CNavLink>
                             </CNavItem>
                             <CNavItem className={`${showTimeList ? 'border-bottom fw-bold' : ''}`}>
