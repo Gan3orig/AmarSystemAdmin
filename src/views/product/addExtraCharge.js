@@ -31,7 +31,7 @@ const AddExtraCharge = ({ visible, onClose }) => {
             </CModalHeader>
             <CModalBody>
                 <CCard>
-                    <CCardHeader>Нэмэлт төлбөрийн мэдээлэл</CCardHeader>
+                   
                     <CCardBody>
                         <div className='mb-3'>
                             <CFormLabel>Төлбөрийн нэр</CFormLabel>

@@ -64,6 +64,16 @@ const _nav = [
   },
   {
     component: CNavTitle,
+    name: 'Харилцагч',
+  },
+  {
+    component: CNavItem,
+    name: 'Харилцагч',
+    to: '/interlocutor',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
     name: 'Ажилчин',
   },
   {

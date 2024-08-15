@@ -11,6 +11,7 @@ const Employee =React.lazy(()=>import('./views/employee/employee'))
 const Settings=React.lazy(()=> import('./views/settings/setting'))
 //Product
 const Product=React.lazy(()=>import('./views/product/product'))
+const Interlocutor=React.lazy(()=>import('./views/interlocutor/interlocutor'))
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -64,6 +65,7 @@ const routes = [
   {path: '/product',name:'Бараа бүтээгдэхүүн',element:Product},
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
  {path:'/admin' ,name:'Хэрэглүүр', element:Admin},
+ {path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },
