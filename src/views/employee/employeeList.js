@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { CCard, CCardHeader, CCardBody, CImage, CButton, CFormLabel, CCardTitle } from '@coreui/react';
-import employee from './photos/team.png';
+import { CButton, CCard, CCardBody, CCardHeader, CCardTitle, CFormLabel, CImage } from '@coreui/react';
+import { useState } from 'react';
 import AddEmployeeList from './addEmployer'; // Import the AddEmployeeList component
+import employee from './photos/team.png';
 
 const EmployeeList = () => {
     const [showAddEmployee, setShowAddEmployee] = useState(false);
@@ -11,7 +11,7 @@ const EmployeeList = () => {
     };
 
     return (
-        <main className='mx-2 mt-5'>
+        <main className='mx-2 mt-2'>
             {!showAddEmployee ? (
                 <CCard>
                     <CCardHeader>

@@ -1,42 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import {
-  CButton,
-  CModal,
-  CCardBody,
-  CModalHeader,
-  CModalTitle,
-  CModalBody,
-  CModalFooter,
-  CForm,
-  CCol,
-
-  CFormInput,
-  CFormLabel,
-  CInputGroup,
-  CFormCheck,
-  CNavbar,
-  CContainer,
-  CNavbarBrand,
-  CNavItem,
-  CNavLink,
-  CNavbarNav,
-  CNavbarToggler,
-  CCollapse,
-  CFormSelect,
-  CRow,
-  CTable,
-  CTableHead,
-  CTableBody,
-  CCard,
-  CTableRow,
-  CTableHeaderCell,
-  CTableDataCell,
-  CCardHeader
-} from '@coreui/react';
-import { CFormSwitch } from '@coreui/react'
-import { cilX, cilPhone, cilPen, cilAirplay, cilSettings } from '@coreui/icons';
+import { cilAirplay, cilPen, cilSettings, cilX } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
+import {
+    CButton,
+    CCard,
+    CCardBody,
+    CCardHeader,
+    CCol,
+    CCollapse,
+    CContainer,
+    CForm,
+    CFormCheck,
+    CFormInput,
+    CFormLabel,
+    CFormSelect,
+    CInputGroup,
+    CModal,
+    CModalBody,
+    CModalFooter,
+    CModalHeader,
+    CModalTitle,
+    CNavbar,
+    CNavbarBrand,
+    CNavbarNav,
+    CNavbarToggler,
+    CNavItem,
+    CNavLink,
+    CRow,
+    CTable,
+    CTableBody,
+    CTableDataCell,
+    CTableHead,
+    CTableHeaderCell,
+    CTableRow
+} from '@coreui/react';
 
 const Settings = () => {
   const [visible, setVisible] = useState(false);
@@ -45,7 +43,6 @@ const Settings = () => {
   const [branches, setBranches] = useState([]);
   const [subBranches, setSubBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState('');
-  const [selectedSubBranch, setSelectedSubBranch] = useState('');
   const [showAddBranchButton, setShowAddBranchButton] = useState(false);
   const [showOrderSection, setShowOrderSection] = useState(false); // State for order section
   const [registrationNumber, setRegistrationNumber] = useState('');
@@ -59,166 +56,155 @@ const Settings = () => {
   const [newBranchLocation, setNewBranchLocation] = useState('');
   const [newBranchContact, setNewBranchContact] = useState('');
 
-  //edit modal
-  const [editModal,setEditModal] = useState(false)
-
   // State for editing branch
   const [editingBranch, setEditingBranch] = useState(null);
-  const [logoPreview, setLogoPreview] = useState(null);
-  const CONSTANT_VALUE = 'КАСС';
 
-  const handleLogoUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setLogoPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+    useEffect(() => {
+        const fetchBranches = async () => {
+            const url = 'https://api.ebarimt.mn/api/info/check/getBranchInfo';
+            const options = {
+                method: 'GET',
+                headers: { Accept: 'application/json' },
+            };
 
-  useEffect(() => {
-    const fetchBranches = async () => {
-      const url = 'https://api.ebarimt.mn/api/info/check/getBranchInfo';
-      const options = {
-        method: 'GET',
-        headers: { Accept: 'application/json' },
-      };
+            try {
+                const response = await fetch(url, options);
+                const data = await response.json();
+                console.log('API Data:', data);
+                const dataArray = Array.isArray(data) ? data : data.data || [];
 
-      try {
-        const response = await fetch(url, options);
-        const data = await response.json();
-        console.log('API Data:', data);
-        const dataArray = Array.isArray(data) ? data : data.data || [];
+                if (Array.isArray(dataArray)) {
+                    const groupedBranches = dataArray.reduce((acc, curr) => {
+                        const { branchCode, branchName, subBranchCode, subBranchName } = curr;
+                        if (!acc[branchCode]) {
+                            acc[branchCode] = { branchCode, branchName, subBranches: [], location: '', contact: '' };
+                        }
+                        acc[branchCode].subBranches.push({ subBranchCode, subBranchName });
+                        return acc;
+                    }, {});
 
-        if (Array.isArray(dataArray)) {
-          const groupedBranches = dataArray.reduce((acc, curr) => {
-            const { branchCode, branchName, subBranchCode, subBranchName } = curr;
-            if (!acc[branchCode]) {
-              acc[branchCode] = { branchCode, branchName, subBranches: [], location: '', contact: '' };
+                    setBranches(Object.values(groupedBranches));
+                } else {
+                    console.error('Unexpected data format:', dataArray);
+                }
+            } catch (error) {
+                console.error('Error fetching branch data:', error);
             }
-            acc[branchCode].subBranches.push({ subBranchCode, subBranchName });
-            return acc;
-          }, {});
-
-          setBranches(Object.values(groupedBranches));
-        } else {
-          console.error('Unexpected data format:', dataArray);
-        }
-      } catch (error) {
-        console.error('Error fetching branch data:', error);
-      }
-    };
-
-    fetchBranches();
-  }, []);
-  const handleToggleBarimtSection = () => {
-    setshowBarimt(true);  // Always show the section when the button is clicked
-  };
-
-  const handleCheckRegistration = async () => {
-    const firstApiUrl = `https://api.ebarimt.mn/api/info/check/getTinInfo?regNo=${registrationNumber}`;
-    const firstApiOptions = {
-      method: 'GET',
-      headers: { Accept: 'application/json' },
-    };
-
-    try {
-      const firstApiResponse = await fetch(firstApiUrl, firstApiOptions);
-      const firstApiData = await firstApiResponse.json();
-
-
-      const tin = firstApiData?.data; // Adjust this based on the actual response structure
-
-      if (tin) {
-        const secondApiUrl = `https://api.ebarimt.mn/api/info/check/getInfo?tin=${tin}`;
-        const secondApiOptions = {
-          method: 'GET',
-          headers: { Accept: 'application/json' },
         };
 
-        const secondApiResponse = await fetch(secondApiUrl, secondApiOptions);
-        const secondApiData = await secondApiResponse.json();
-        console.log(secondApiData)
-        setTaxPayerName(secondApiData.data.name);
-        setTaxpayerNo(tin);
-        setIsVATPayer(secondApiData.data.vatPayer);
-      }
-
-    } catch (error) {
-      console.error(error)
-    }
-  };
-  const handleBranchChange = (event) => {
-    const branchId = event.target.value;
-    setSelectedBranch(branchId);
-    const selectedBranchData = branches.find(branch => branch.branchCode === branchId);
-    setSubBranches(selectedBranchData ? selectedBranchData.subBranches : []);
-  };
-
-  const handleEditBranch = () => {
-    setEditModal(!editModal)
-  };
-
-  const handleDeleteBranch = async (branchId) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this branch?');
-    if (confirmDelete) {
-
-      const url = `https://api.ebarimt.mn/api/info/check/deleteBranch/${branchId}`;
-      const options = {
-        method: 'DELETE',
-        headers: { Accept: 'application/json' },
-      };
-
-      try {
-        const response = await fetch(url, options);
-        if (response.ok) {
-
-          setBranches(branches.filter(branch => branch.branchCode !== branchId));
-        } else {
-          console.error('Failed to delete branch:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error deleting branch:', error);
-      }
-    }
-  };
-
-  const handleEditPOS = (posId) => {
-
-    console.log(`Edit POS with ID: ${posId}`);
-  };
-
-  const handleDeletePOS = (posId) => {
-
-    console.log(`Delete POS with ID: ${posId}`);
-  };
-
-  const handleAddBranch = () => {
-    const newBranch = {
-      branchCode: Date.now(),
-      branchName: newBranchName,
-      location: newBranchLocation,
-      contact: newBranchContact,
-      subBranches: []
+        fetchBranches();
+    }, []);
+    const handleToggleBarimtSection = () => {
+        setshowBarimt(true);  // Always show the section when the button is clicked
     };
-    if (editingBranch) {
 
-      setBranches(branches.map(branch =>
-        branch.branchCode === editingBranch.branchCode ? newBranch : branch
-      ));
-      setEditingBranch(null);
-    } else {
+    const handleCheckRegistration = async () => {
+        const firstApiUrl = `https://api.ebarimt.mn/api/info/check/getTinInfo?regNo=${registrationNumber}`;
+        const firstApiOptions = {
+            method: 'GET',
+            headers: { Accept: 'application/json' },
+        };
 
-      setBranches([...branches, newBranch]);
-    }
-    setNewBranchName('');
-    setNewBranchType('');
-    setNewBranchLocation('');
-    setNewBranchContact('');
-    setVisible(false);
+        try {
+            const firstApiResponse = await fetch(firstApiUrl, firstApiOptions);
+            const firstApiData = await firstApiResponse.json();
+
+
+            const tin = firstApiData?.data; // Adjust this based on the actual response structure
+
+            if (tin) {
+                const secondApiUrl = `https://api.ebarimt.mn/api/info/check/getInfo?tin=${tin}`;
+                const secondApiOptions = {
+                    method: 'GET',
+                    headers: { Accept: 'application/json' },
+                };
+
+                const secondApiResponse = await fetch(secondApiUrl, secondApiOptions);
+                const secondApiData = await secondApiResponse.json();
+                console.log(secondApiData)
+                setTaxPayerName(secondApiData.data.name);
+                setTaxpayerNo(tin);
+                setIsVATPayer(secondApiData.data.vatPayer);
+            }
+
+        } catch (error) {
+            console.error(error)
+        }
+    };
+    const handleBranchChange = (event) => {
+        const branchId = event.target.value;
+        setSelectedBranch(branchId);
+        const selectedBranchData = branches.find(branch => branch.branchCode === branchId);
+        setSubBranches(selectedBranchData ? selectedBranchData.subBranches : []);
+    };
+
+
+  const handleEditBranch = (branch) => {
+    setEditingBranch(branch);
+    setNewBranchName(branch.branchName);
+    setNewBranchLocation(branch.location);
+    setNewBranchContact(branch.contact);
+    setVisible(true); // Open the modal to edit
   };
+
+    const handleDeleteBranch = async (branchId) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this branch?');
+        if (confirmDelete) {
+
+            const url = `https://api.ebarimt.mn/api/info/check/deleteBranch/${branchId}`;
+            const options = {
+                method: 'DELETE',
+                headers: { Accept: 'application/json' },
+            };
+
+            try {
+                const response = await fetch(url, options);
+                if (response.ok) {
+
+                    setBranches(branches.filter(branch => branch.branchCode !== branchId));
+                } else {
+                    console.error('Failed to delete branch:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error deleting branch:', error);
+            }
+        }
+    };
+
+    const handleEditPOS = (posId) => {
+
+        console.log(`Edit POS with ID: ${posId}`);
+    };
+
+    const handleDeletePOS = (posId) => {
+
+        console.log(`Delete POS with ID: ${posId}`);
+    };
+
+    const handleAddBranch = () => {
+        const newBranch = {
+            branchCode: Date.now(),
+            branchName: newBranchName,
+            location: newBranchLocation,
+            contact: newBranchContact,
+            subBranches: []
+        };
+        if (editingBranch) {
+
+            setBranches(branches.map(branch =>
+                branch.branchCode === editingBranch.branchCode ? newBranch : branch
+            ));
+            setEditingBranch(null);
+        } else {
+
+            setBranches([...branches, newBranch]);
+        }
+        setNewBranchName('');
+        setNewBranchType('');
+        setNewBranchLocation('');
+        setNewBranchContact('');
+        setVisible(false);
+    };
 
   return (
     //gue huuhde ene arai bishe 
@@ -270,7 +256,7 @@ const Settings = () => {
         </CContainer>
       </CNavbar>
       <main className="content">
-        <CCardBody className='mx-2 mt-5'>
+        <CCardBody className='mx-2'>
           {showOrderSection && (
             <CCard >
               <CCardHeader>Нэмэлт тохиргоо</CCardHeader>
@@ -279,7 +265,7 @@ const Settings = () => {
                   <div className='d-flex justify-content-between'>
                     <div className='d-flex flex-column gap-0'>
                       <CFormLabel><b>Захиалга авах</b></CFormLabel>
-                      <CFormLabel className='mt-0'><i>Захиалга хадгалах, засварлах, зөвшөөрөх  Дэлгэрэнгүй</i></CFormLabel></div>
+                      <CFormLabel className='md-2'><i>Захиалга хадгалах, засварлах, зөвшөөрөх  Дэлгэрэнгүй</i></CFormLabel></div>
                     <CFormSwitch className='d-flex align-items-center' defaultChecked />
                   </div>
                 </CRow>
@@ -350,7 +336,7 @@ const Settings = () => {
               </CCardBody>
             </CCard>)}
 
-          <CCardBody className='max-2 mt-5' >
+          <CCardBody className='max-2'>
             {showOrderSection && (
               <CCard>
                 <CCardHeader>Кассын төлбөрийн төрөл</CCardHeader>
@@ -400,7 +386,7 @@ const Settings = () => {
               </CCard>
             )}
 
-            <CCardBody className='max-2 mt-5'>
+            <CCardBody className='max-2'>
               {showOrderSection && (
                 <CCard>
                   <CCardHeader>НӨАТ-ын баримт хэвлэх</CCardHeader>
@@ -413,7 +399,7 @@ const Settings = () => {
                       )}
                       {showBarimt && (
 
-                        <div>
+                                        <div className='mt-2'>
 
                           <CFormLabel>Регистерийн дугаар</CFormLabel>
                           <CInputGroup className='mb-2'>
@@ -445,343 +431,295 @@ const Settings = () => {
                             checked={isVATPayer}
                             readOnly
                           />
-
-                          <CTable mt-1>
-
-                            <CTableRow>
-
-                              <CTableHeaderCell><CFormCheck /></CTableHeaderCell>
-                              <CTableHeaderCell>Салбар</CTableHeaderCell>
-                              <CTableHeaderCell>Дүүрэг/Аймаг</CTableHeaderCell>
-                              <CTableHeaderCell>Хороо/Сум </CTableHeaderCell>
-                              <CTableHeaderCell>Терминал</CTableHeaderCell>
-                              <CTableHeaderCell>Системийн төрөл </CTableHeaderCell>
-
-
-                            </CTableRow>
-                            <CTableDataCell><CFormCheck /></CTableDataCell>
-                            <CTableDataCell>hii</CTableDataCell>
-                            <CTableDataCell><CFormSelect
-                              value={selectedBranch}
-                              onChange={handleBranchChange}
-                            >
-                              <option value="" disabled>Сонгоно уу...</option>
-                              {branches.map((branch) => (
-                                <option key={branch.branchCode} value={branch.branchCode}>
-                                  {branch.branchName}
-                                </option>))}
-                            </CFormSelect></CTableDataCell>
-                            <CTableDataCell> <CFormSelect
-                              id="subbranchName"
-                              value={selectedSubBranch}
-                              onChange={(e) => setSelectedSubBranch(e.target.value)}
-                            >
-                              <option value="" >Сонгоно уу...</option>
-                              {subBranches.map((subBranch) => (
-                                <option key={subBranch.subBranchCode} value={subBranch.subBranchCode}>
-                                  {subBranch.subBranchName}
-                                </option>
-                              ))} 
-                            </CFormSelect>
-                            </CTableDataCell>
-                            <CTableDataCell>{CONSTANT_VALUE}</CTableDataCell>
-
-                          </CTable>
                         </div>
 
                       )}
                     </div>
+                    <CTable>
 
-                    <CCardBody className='max-2 mt-5' >
+                      <CTableRow>
+
+                        <CTableHeaderCell><CFormCheck /></CTableHeaderCell>
+                        <CTableHeaderCell>Салбар</CTableHeaderCell>
+                        <CTableHeaderCell>Дүүрэг/Аймаг</CTableHeaderCell>
+                        <CTableHeaderCell>Хороо/Сум </CTableHeaderCell>
+                        <CTableHeaderCell>Терминал</CTableHeaderCell>
+                        <CTableHeaderCell>Системийн төрөл </CTableHeaderCell>
 
 
+                      </CTableRow>
+                      <CTableDataCell><CFormCheck /></CTableDataCell>
+                      <CTableDataCell>hii</CTableDataCell>
+                      <CTableDataCell><CFormSelect
+                        value={selectedBranch}
+                        onChange={handleBranchChange}
+                      >
+                        <option value="" disabled>Сонгоно уу...</option>
+                        {branches.map((branch) => (
+                          <option key={branch.branchCode} value={branch.branchCode}>
+                            {branch.branchName}
+                          </option>))}
+                      </CFormSelect></CTableDataCell>
+                      <CTableDataCell> <CFormSelect
+                    value=""
+                    onChange={(handleBranchChange) => { }}
+                  >
+                    <option value="" disabled>Сонгоно уу...</option>
+                    {subBranches.map((subBranch) => (
+                      <option key={subBranch.subBranchCode} value={subBranch.subBranchCode}>
+                        {subBranch.subBranchName}
+                      </option>
+                    ))}
+                    </CFormSelect>
+                      </CTableDataCell>
 
-                    </CCardBody>
-
-
+                    </CTable>
                   </CCardBody>
-                  <CCard className=''>
-                    <CCardHeader>ПОС талоны загвар</CCardHeader>
-                    <CCardBody>
-                      <CFormLabel >Лого</CFormLabel>
-                      <CFormInput
-                        type="file"
-                        id="logoUpload"
-                        name="logoUpload"
-                        onChange={handleLogoUpload}
-                      />
-                      {logoPreview && (
-                        <div className="mt-3">
-                          <img src={logoPreview} alt="Logo Preview" style={{ maxWidth: '100%', height: 'auto' }} />
-                        </div>
-                      )}
-
-                      <CFormLabel className="mt-3">Толгой хэсэг</CFormLabel>
-                      <CFormInput type="text" id="headerInput" name="headerInput" />
-
-                      <CFormLabel className="mt-3">Хөл хэсэг</CFormLabel>
-                      <CFormInput type="text" id="footerInput" name="footerInput" />
-
-                      <CFormCheck
-                        id="flexCheckDefault"
-                        label="Баримт хэвлэх эсэх"
-
-                      />
-                    </CCardBody>
-                  </CCard>
                 </CCard>
               )}
+            </CCardBody>
 
 
-
-              <div >
-              
-                {showAddBranchButton && (
-                  
-                    <div >
-                      <div>
-                        <CCardHeader>Салбарууд</CCardHeader>
-                        <CButton color="primary" onClick={() => setVisible(true)} >
-                          Салбар нэмэх
-                        </CButton>
-                        <CTable>
-                          <CTableHead>
-                            <CTableRow>
-                              <CTableHeaderCell>#</CTableHeaderCell>
-                              <CTableHeaderCell>Нэр</CTableHeaderCell>
-                              <CTableHeaderCell>Хаяг</CTableHeaderCell>
-                              <CTableHeaderCell>Пос тоо</CTableHeaderCell>
-                              <CTableHeaderCell>Actions</CTableHeaderCell>
-                            </CTableRow>
-                          </CTableHead>
-                          <CTableBody>
-                            {branches.map((branch, index) => (
-                              <CTableRow key={branch.branchCode}>
-                                <CTableDataCell>{index + 1}</CTableDataCell> {/* Order number */}
-                                <CTableDataCell>{branch.branchName}</CTableDataCell>
-                                <CTableDataCell>{branch.location || 'N/A'}</CTableDataCell>
-                                <CTableDataCell>{branch.subBranches.length}</CTableDataCell>
-                                <CTableDataCell>
-                                  <CButton color="primary" onClick={() => handleEditBranch()}>
-                                    <CIcon icon={cilPen}></CIcon>
-                                  </CButton>
-                                  <CButton color="brand-light-color" onClick={() => handleDeleteBranch(branch.branchCode)}>
-                                    <CIcon icon={cilX} />
-                                  </CButton>
-                                </CTableDataCell>
-                              </CTableRow>
-                            ))}
-                          </CTableBody>
-                        </CTable>
-                   
-                    </div>
-                    <div>
-                      <CButton color="primary" onClick={() => setPosFormVisible(true)}>
-                        Пос төхөөрөмж
-                      </CButton>
-                      <CTable>
-                        <CTableHead>
-                          <CTableRow>
-                            <CTableHeaderCell>#</CTableHeaderCell>
-                            <CTableHeaderCell>Нэр</CTableHeaderCell>
-                            <CTableHeaderCell>Салбар</CTableHeaderCell>
-                            <CTableHeaderCell>Төлөв</CTableHeaderCell>
-                            <CTableHeaderCell>Систем</CTableHeaderCell>
-                            <CTableHeaderCell>НӨАТ</CTableHeaderCell>
-                            <CTableHeaderCell>Actions</CTableHeaderCell>
-                          </CTableRow>
-                        </CTableHead>
-                        <CTableBody>
-                          {/* Add data rows here */}
-                          <CTableRow>
-                            <CTableDataCell>1</CTableDataCell>
-                            <CTableDataCell>POS Device 1</CTableDataCell>
-                            <CTableDataCell>Branch A</CTableDataCell>
-                            <CTableDataCell>Active</CTableDataCell>
-                            <CTableDataCell>Type 1</CTableDataCell>
-                            <CTableDataCell>VAT Included</CTableDataCell>
+            <div >
+              {showAddBranchButton && (
+                <div >
+                  <div>
+                    <CButton color="primary" onClick={() => setVisible(true)} >
+                      Салбар нэмэх
+                    </CButton>
+                    <CTable>
+                      <CTableHead>
+                        <CTableRow>
+                          <CTableHeaderCell>#</CTableHeaderCell>
+                          <CTableHeaderCell>Нэр</CTableHeaderCell>
+                          <CTableHeaderCell>Хаяг</CTableHeaderCell>
+                          <CTableHeaderCell>Пос тоо</CTableHeaderCell>
+                          <CTableHeaderCell>Actions</CTableHeaderCell>
+                        </CTableRow>
+                      </CTableHead>
+                      <CTableBody>
+                        {branches.map((branch, index) => (
+                          <CTableRow key={branch.branchCode}>
+                            <CTableDataCell>{index + 1}</CTableDataCell> {/* Order number */}
+                            <CTableDataCell>{branch.branchName}</CTableDataCell>
+                            <CTableDataCell>{branch.location || 'N/A'}</CTableDataCell>
+                            <CTableDataCell>{branch.subBranches.length}</CTableDataCell>
                             <CTableDataCell>
-
-
-                              <CButton color="primary" onClick={() => handleEditPOS(1)}>
-                                <CIcon icon={cilPen} />
+                              <CButton color="warning" onClick={() => handleEditBranch(branch)}>
+                                <CIcon icon={cilPen}></CIcon>
                               </CButton>
-                              <CButton className='ps-2' onClick={() => handleDeletePOS(1)}>
+                              <CButton color="danger" onClick={() => handleDeleteBranch(branch.branchCode)}>
                                 <CIcon icon={cilX} />
                               </CButton>
                             </CTableDataCell>
                           </CTableRow>
-                          {/* Add more data rows as needed */}
-                        </CTableBody>
-                      </CTable>
-                    </div>
+                        ))}
+                      </CTableBody>
+                    </CTable>
                   </div>
-                )}
-              </div>
-            </CCardBody>
-
-            <CModal
-              visible={visible}
-              onClose={() => setVisible(false)}
-              aria-labelledby="LiveDemoExampleLabel"
-            >
-              <CModalHeader>
-                <CModalTitle id="LiveDemoExampleLabel">
-                  {editingBranch ? 'Салбар засах' : 'Салбар бүртгүүлэх'}
-                </CModalTitle>
-              </CModalHeader>
-              <CModalBody>
-                <CForm className="row g-3">
-                  <CRow md={4}>
-                    <CFormInput
-                      type="text"
-                      id="OrganizationName"
-                      label="Салбарын нэр"
-                      value={newBranchName}
-                      onChange={(e) => setNewBranchName(e.target.value)}
-                    />
-                  </CRow>
-                  <CRow md={4}>
-                    <CFormSelect
-                      id="OrganizationType"
-                      label="Салбарын төрөл"
-                      value={newBranchType}
-                      onChange={(e) => setNewBranchType(e.target.value)}
-                    >
-                      <option value="" disabled>Сонгоно уу...</option>
-                      <option value="store">Дэлгүүр</option>
-                      <option value="restaurant">Ресторан</option>
-                      <option value="fastfood">Түргэн хоол</option>
-                      <option value="salon">Салон</option>
-                      <option value="pharmacy">Эмийн сан</option>
-                      <option value="hotel">Зочид Буудал</option>
-                    </CFormSelect>
-                  </CRow>
-                  <CRow md={4}>
-                    <CFormSelect
-                      id="branchName"
-                      label="Аймаг/Xот"
-                      value={selectedBranch}
-                      onChange={handleBranchChange}
-                    >
-                      <option value="" disabled>Сонгоно уу...</option>
-                      {branches.map((branch) => (
-                        <option key={branch.branchCode} value={branch.branchCode}>
-                          {branch.branchName}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                  </CRow>
-                  <CRow md={4}>
-                    <CFormSelect
-                      id="subbranchName"
-                      label="Сум дүүрэг"
-                      value={selectedSubBranch}
-                      onChange={(e) => setSelectedSubBranch(e.target.value)}
-                    >
-                      <option value="" >Сонгоно уу...</option>
-                      {subBranches.map((subBranch) => (
-                        <option key={subBranch.subBranchCode} value={subBranch.subBranchCode}>
-                          {subBranch.subBranchName}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                  </CRow>
-                  <CRow md={4}>
-                    <CFormInput
-                      type="text"
-                      id="branchAddress"
-                      label="Салбарын хаяг"
-                      value={newBranchLocation}
-                      onChange={(e) => setNewBranchLocation(e.target.value)}
-                    />
-                  </CRow>
-                  <CRow md={3}>
-
-
-                    <CIcon icon={cilAirplay}></CIcon>
-                  </CRow>
-
-                  <CRow md={3}>
-                    <CFormInput
-                      type="text"
-                      id="branchPhoneNumber"
-                      label="Утас"
-                      value={newBranchContact}
-                      onChange={(e) => setNewBranchContact(e.target.value)}
-                    />
-                  </CRow>
-
-                  <CCol xs={12}>
-                    <CButton color="primary" type="button" onClick={handleAddBranch}>
-                      Save changes
+                  <div>
+                    <CButton color="primary" onClick={() => setPosFormVisible(true)}>
+                      Пос төхөөрөмж
                     </CButton>
-                  </CCol>
-                </CForm>
-              </CModalBody>
-              <CModalFooter>
-                <CButton color="secondary" onClick={() => setVisible(false)}>
-                </CButton>
-              </CModalFooter>
-            </CModal>
-
-            <CModal
-              visible={posFormVisible}
-              onClose={() => setPosFormVisible(false)}
-              aria-labelledby="PosModalLabel"
-            >
-              <CModalHeader>
-                <CModalTitle id="PosModalLabel">ПОС төхөөрөмж бүртгүүлэх</CModalTitle>
-              </CModalHeader>
-              <CModalBody>
-                <CForm className="row g-3">
-                  <CRow md={4}>
-                    <CFormInput
-                      type="text"
-                      id="posName"
-                      label="ПОС нэр"
-                    />
-                  </CRow>
-                  <CRow md={4}>
-                    <CFormSelect
-                      id="posBranch"
-                      label="Салбар"
-                      value=""
-                      onChange={() => { }}
-                    >
-                      <option value="" disabled>Сонгоно уу...</option>
-                      {branches.map((branch) => (
-                        <option key={branch.branchCode} value={branch.branchCode}>
-                          {branch.branchName}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                  </CRow>
-                  <CRow md={4}>
-                    <CFormSelect
-                      id="posSystemType"
-                      label="Системийн төрөл"
-                      value=""
-                      onChange={() => { }}
-                    >
-                      <option value="" disabled>Сонгоно уу...</option>
-                      <option value="type1">Төрөл 1</option>
-                      <option value="type2">Төрөл 2</option>
-                      <option value="type3">Төрөл 3</option>
-                    </CFormSelect>
-                  </CRow>
-
-                </CForm>
-              </CModalBody>
-              <CModalFooter>
-              </CModalFooter>
-            </CModal>
-
+                    <CTable>
+                      <CTableHead>
+                        <CTableRow>
+                          <CTableHeaderCell>#</CTableHeaderCell>
+                          <CTableHeaderCell>Нэр</CTableHeaderCell>
+                          <CTableHeaderCell>Салбар</CTableHeaderCell>
+                          <CTableHeaderCell>Төлөв</CTableHeaderCell>
+                          <CTableHeaderCell>Систем</CTableHeaderCell>
+                          <CTableHeaderCell>НӨАТ</CTableHeaderCell>
+                          <CTableHeaderCell>Actions</CTableHeaderCell>
+                        </CTableRow>
+                      </CTableHead>
+                      <CTableBody>
+                        {/* Add data rows here */}
+                        <CTableRow>
+                          <CTableDataCell>1</CTableDataCell>
+                          <CTableDataCell>POS Device 1</CTableDataCell>
+                          <CTableDataCell>Branch A</CTableDataCell>
+                          <CTableDataCell>Active</CTableDataCell>
+                          <CTableDataCell>Type 1</CTableDataCell>
+                          <CTableDataCell>VAT Included</CTableDataCell>
+                          <CTableDataCell>
+                            <CButton color="warning" onClick={() => handleEditPOS(1)}>
+                              Edit
+                            </CButton>
+                            <CButton color="danger" onClick={() => handleDeletePOS(1)}>
+                              Delete
+                            </CButton>
+                          </CTableDataCell>
+                        </CTableRow>
+                        {/* Add more data rows as needed */}
+                      </CTableBody>
+                    </CTable>
+                  </div>
+                </div>
+              )}
+            </div>
           </CCardBody>
+
+          <CModal
+            visible={visible}
+            onClose={() => setVisible(false)}
+            aria-labelledby="LiveDemoExampleLabel"
+          >
+            <CModalHeader>
+              <CModalTitle id="LiveDemoExampleLabel">
+                {editingBranch ? 'Салбар засах' : 'Салбар бүртгүүлэх'}
+              </CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+              <CForm className="row g-3">
+                <CRow md={4}>
+                  <CFormInput
+                    type="text"
+                    id="OrganizationName"
+                    label="Салбарын нэр"
+                    value={newBranchName}
+                    onChange={(e) => setNewBranchName(e.target.value)}
+                  />
+                </CRow>
+                <CRow md={4}>
+                  <CFormSelect
+                    id="OrganizationType"
+                    label="Салбарын төрөл"
+                    value={newBranchType}
+                    onChange={(e) => setNewBranchType(e.target.value)}
+                  >
+                    <option value="" disabled>Сонгоно уу...</option>
+                    <option value="store">Дэлгүүр</option>
+                    <option value="restaurant">Ресторан</option>
+                    <option value="fastfood">Түргэн хоол</option>
+                    <option value="salon">Салон</option>
+                    <option value="pharmacy">Эмийн сан</option>
+                    <option value="hotel">Зочид Буудал</option>
+                  </CFormSelect>
+                </CRow>
+                <CRow md={4}>
+                  <CFormSelect
+                    id="branchName"
+                    label="Аймаг/Xот"
+                    value={selectedBranch}
+                    onChange={handleBranchChange}
+                  >
+                    <option value="" disabled>Сонгоно уу...</option>
+                    {branches.map((branch) => (
+                      <option key={branch.branchCode} value={branch.branchCode}>
+                        {branch.branchName}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </CRow>
+                <CRow md={4}>
+                  <CFormSelect
+                    id="subbranchName"
+                    label="Cум/Дүүрэг"
+                    value=""
+                    onChange={(handleBranchChange) => { }}
+                  >
+                    <option value="" disabled>Сонгоно уу...</option>
+                    {subBranches.map((subBranch) => (
+                      <option key={subBranch.subBranchCode} value={subBranch.subBranchCode}>
+                        {subBranch.subBranchName}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </CRow>
+                <CRow md={4}>
+                  <CFormInput
+                    type="text"
+                    id="branchAddress"
+                    label="Салбарын хаяг"
+                    value={newBranchLocation}
+                    onChange={(e) => setNewBranchLocation(e.target.value)}
+                  />
+                </CRow>
+                <CRow md={3}>
+
+
+                  <CIcon icon={cilAirplay}></CIcon>
+                </CRow>
+
+                <CRow md={3}>
+                  <CFormInput
+                    type="text"
+                    id="branchPhoneNumber"
+                    label="Утас"
+                    value={newBranchContact}
+                    onChange={(e) => setNewBranchContact(e.target.value)}
+                  />
+                </CRow>
+
+                <CCol xs={12}>
+                  <CButton color="primary" type="button" onClick={handleAddBranch}>
+                    Save changes
+                  </CButton>
+                </CCol>
+              </CForm>
+            </CModalBody>
+            <CModalFooter>
+              <CButton color="secondary" onClick={() => setVisible(false)}>
+              </CButton>
+            </CModalFooter>
+          </CModal>
+
+          <CModal
+            visible={posFormVisible}
+            onClose={() => setPosFormVisible(false)}
+            aria-labelledby="PosModalLabel"
+          >
+            <CModalHeader>
+              <CModalTitle id="PosModalLabel">ПОС төхөөрөмж бүртгүүлэх</CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+              <CForm className="row g-3">
+                <CRow md={4}>
+                  <CFormInput
+                    type="text"
+                    id="posName"
+                    label="ПОС нэр"
+                  />
+                </CRow>
+                <CRow md={4}>
+                  <CFormSelect
+                    id="posBranch"
+                    label="Салбар"
+                    value=""
+                    onChange={() => { }}
+                  >
+                    <option value="" disabled>Сонгоно уу...</option>
+                    {branches.map((branch) => (
+                      <option key={branch.branchCode} value={branch.branchCode}>
+                        {branch.branchName}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </CRow>
+                <CRow md={4}>
+                  <CFormSelect
+                    id="posSystemType"
+                    label="Системийн төрөл"
+                    value=""
+                    onChange={() => { }}
+                  >
+                    <option value="" disabled>Сонгоно уу...</option>
+                    <option value="type1">Төрөл 1</option>
+                    <option value="type2">Төрөл 2</option>
+                    <option value="type3">Төрөл 3</option>
+                  </CFormSelect>
+                </CRow>
+
+              </CForm>
+            </CModalBody>
+            <CModalFooter>
+            </CModalFooter>
+          </CModal>
+
         </CCardBody>
       </main>
     </div >
-
   );
 };
 

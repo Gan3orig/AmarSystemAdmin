@@ -1,9 +1,8 @@
-import React from 'react';
-import { CCard, CCardHeader, CCardBody, CButton, CFormLabel, CCardTitle, CFormInput, CCol, CRow } from '@coreui/react';
+import { CButton, CCard, CCardBody, CCardHeader, CCardTitle, CCol, CFormInput, CFormLabel, CRow } from '@coreui/react';
 
 const AddEmployeeList = () => {
     return (
-        <main className='d-flex justify-content-center mt-5'>
+        <main className='d-flex justify-content-center'>
             <CCard style={{ maxWidth: '800px', width: '100%' }}>
                 <CCardHeader>
                     <CCardTitle>Ажилчин нэмэх</CCardTitle>

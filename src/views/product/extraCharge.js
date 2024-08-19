@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
     CButton,
     CCard,
@@ -7,8 +6,9 @@ import {
     CFormLabel,
     CImage,
 } from '@coreui/react';
-import charge from './photos/charge.png';
+import { useState } from 'react';
 import AddExtraCharge from './addExtraCharge'; // Import the AddExtraCharge component
+import charge from './photos/charge.png';
 
 const ExtraCharge = () => {
     const [importVisible, setImportVisible] = useState(false);
@@ -22,7 +22,7 @@ const ExtraCharge = () => {
     };
 
     return (
-        <main className='mx-2 mt-5'>
+        <main className='mx-2 mt-2'>
             <CCard>
                 <CCardHeader>Нэмэлт төлбөр</CCardHeader>
                 <CCardBody className='text-center'>

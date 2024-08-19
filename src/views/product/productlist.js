@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
     CButton,
     CCard,
@@ -7,22 +6,25 @@ import {
     CFormLabel,
     CImage
 } from '@coreui/react';
-import ImportExcel from './importExcel'; // Ensure this path is correct
-import AddProduct from './addProduct';   // Import the AddProduct component
-import product from '../product/photos/box.png'
+import { useState } from 'react';
+import product from '../product/photos/box.png';
+import AddProduct from './addProduct'; // Ensure the correct path
+import ImportExcel from './importExcel'; // Ensure the correct path
 
-const ProductList = () => {   const [importVisible, setImportVisible] = useState(false);
+const ProductList = () => {
+    const [importVisible, setImportVisible] = useState(false);
     const [visible, setVisible] = useState(false);
 
     const toggleImportModal = () => {
         setImportVisible(!importVisible);
     };
+
     const handleModal = () => {
         setVisible(!visible);
     };
 
     return (
-        <main className='mx-2 mt-5'>
+        <main className='mx-2 mt-1'>
             <CCard>
                 <CCardHeader>Бараа</CCardHeader>
                 <CCardBody className='text-center'>

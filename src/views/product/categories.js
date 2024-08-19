@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
 import {
     CButton,
     CCard,
     CCardBody,
     CCardHeader,
-    CImage,
     CFormLabel,
+    CImage,
 } from '@coreui/react';
-import category from './photos/categories.png';
+import { useState } from 'react';
 import AddCategory from './addCategory'; // Import the AddCategory component
+import category from './photos/categories.png';
 
 const Category = () => {
-    const [visibleCat, setVisibleCat] = useState(false);
+    const [addModal, setModal] = useState(false);
 
     const handleModalCat = () => {
-        setVisibleCat(prevVisibleCat => !prevVisibleCat); // Toggle modal visibility
+        setModal(!addModal);
     };
 
     return (
-        <main className='mx-2 mt-5'>
+        <main className='mx-2 mt-2'>
             <CCard>
                 <CCardHeader>Категори</CCardHeader>
                 <CCardBody className='text-center'>
@@ -44,7 +44,7 @@ const Category = () => {
             </CCard>
 
             {/* AddCategory modal component */}
-            <AddCategory visibleCat={visibleCat} handleModalCat={handleModalCat} />
+            {addModal && <AddCategory visibleCat={addModal} handleModalCat={handleModalCat} />} 
         </main>
     );
 };

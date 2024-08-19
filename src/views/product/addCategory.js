@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
 import {
     CButton,
     CCard,
     CCardBody,
     CCardHeader,
-    CFormLabel,
-    CFormInput,
-    CFormSelect,
-    CModal,
     CCloseButton,
-    CImage,
-    CRow,
     CCol,
-    CForm
+    CForm,
+    CFormInput,
+    CFormLabel,
+    CFormSelect,
+    CImage,
+    CModal,
+    CRow
 } from '@coreui/react';
-import drink from './photos/soft-drink.png';
+import { useState } from 'react';
+import dress from './photos/dress.png';
+import jeans from './photos/jeans.png';
 import meat from './photos/meat.png';
 import milk from './photos/milk.png';
-import jeans from './photos/jeans.png';
-import dress from './photos/dress.png';
-import tshirt from './photos/tshirt.png';
 import socks from './photos/socks.png';
+import drink from './photos/soft-drink.png';
+import tshirt from './photos/tshirt.png';
 
 const productOptions = [
     { value: 'other', label: 'Бусад', images: [] },
@@ -64,7 +64,7 @@ const AddCategory = ({ visibleCat, handleModalCat }) => {
     };
 
     return (
-        <CModal fullscreen="sm" visible={visibleCat} onClose={handleModalCat}>
+        <CModal fullscreen="sm " visible={visibleCat} onClose={handleModalCat } alignment='center'>
             <CCard>
                 <CCardHeader>
                     Категори нэмэх

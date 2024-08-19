@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
 import {
     CButton,
     CCard,
     CCardBody,
     CCardHeader,
-    CFormLabel,
-    CFormInput,
-    CForm,
+    CCloseButton,
     CCol,
-    CRow,
-    CFormCheck,
     CContainer,
+    CForm,
+    CFormCheck,
+    CFormInput,
+    CFormLabel,
     CFormSelect,
     CModal,
-    CCloseButton
+    CRow
 } from '@coreui/react';
+import { useState } from 'react';
 
 const timeOptions = () => {
     const options = [];
@@ -71,7 +71,7 @@ const AddProduct = ({ visibleSm, handleModal }) => {
             ageLimit: ageLimit,
             importValue: importValue,
         });
-     
+
         setProductName('');
         setProductPrice('');
         setProductDescription('');
@@ -88,22 +88,21 @@ const AddProduct = ({ visibleSm, handleModal }) => {
         <CModal fullscreen="sm" visible={visibleSm} onClose={handleModal}>
             <CCard>
                 <CCardHeader>
-                    Бараа нэмэх 
-                    <CCloseButton className='position-absolute end-0' onClick={handleModal}/>
+                    Бараа нэмэх
+                    <CCloseButton className='position-absolute end-0' onClick={handleModal} />
                 </CCardHeader>
                 <CCardBody>
                     <CForm onSubmit={handleSubmit}>
                         <CRow className='mb-3'>
                             <CCol md={6}>
-                                <CFormLabel>Барааны нэр</CFormLabel>
+                                <CFormLabel>Баркод</CFormLabel>
                                 <CFormInput
-                                    type='text'
-                                    value={productName}
-                                    onChange={(e) => setProductName(e.target.value)}
-                                    placeholder='Барааны нэрийг оруулна уу'
+                                    type='number'
+                                    placeholder='Баркод'
                                     required
                                 />
                             </CCol>
+
                             <CCol md={6}>
                                 <CFormLabel>Категори</CFormLabel>
                                 <CFormInput
@@ -111,6 +110,21 @@ const AddProduct = ({ visibleSm, handleModal }) => {
                                     value={productCategory}
                                     onChange={(e) => setProductCategory(e.target.value)}
                                     placeholder='Барааны категори оруулна уу'
+                                />
+                            </CCol>
+                        </CRow>
+                        <CRow className='mb-3'>
+
+
+
+                            <CCol>
+                                <CFormLabel>Барааны нэр</CFormLabel>
+                                <CFormInput
+                                    type='text'
+                                    value={productName}
+                                    onChange={(e) => setProductName(e.target.value)}
+                                    placeholder='Барааны нэрийг оруулна уу'
+                                    required
                                 />
                             </CCol>
                         </CRow>
@@ -203,24 +217,7 @@ const AddProduct = ({ visibleSm, handleModal }) => {
                                 />
                             </CCol>
                         </CRow>
-                        <CRow className='mb-3'>
-                            <CCol md={6}>
-                                <CFormLabel>SKU</CFormLabel>
-                                <CFormInput
-                                    type='text'
-                                    placeholder='SKU'
-                                    required
-                                />
-                            </CCol>
-                            <CCol md={6}>
-                                <CFormLabel>Баркод</CFormLabel>
-                                <CFormInput
-                                    type='number'
-                                    placeholder='Баркод'
-                                    required
-                                />
-                            </CCol>
-                        </CRow>
+
                         <CRow className='mb-3'>
                             <CCol md={6}>
                                 <CFormLabel>Насны хязгаар</CFormLabel>
