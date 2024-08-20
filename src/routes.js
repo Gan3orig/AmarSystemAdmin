@@ -110,8 +110,12 @@ const routes = [
   { path: '/notifications/badges', name: 'Badges', element: Badges },
   { path: '/notifications/modals', name: 'Modals', element: Modals },
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
-  { path: '/widgets', name: 'Widgets', element: Widgets },
-
+  { path: '/widgets', name: 'Widgets', element: Widgets },   
+  //product 
+  { path: '/product/productlist', name: 'Бараа', element: ProductList },
+  { path: '/product/categories', name: 'Категори', element: Categories },
+  { path: '/product/extraCharge', name: 'Нэмэлт төлбөр', element: ExtraCharge },
 ]
+
 
 export default routes
