@@ -18,7 +18,7 @@ const Addsetting = () => {
     };
 
     return (
-        <main className='d-flex justify-content-center mt-5'>
+        <main className='d-flex justify-content-center mt-2'>
             <CCard style={{ maxWidth: '800px', width: '100%' }}>
                 <CCardHeader>
                     <CCardTitle>Эрхийн тохиргоо нэмэх</CCardTitle>

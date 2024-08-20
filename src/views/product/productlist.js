@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     CButton,
     CCard,
@@ -6,25 +7,25 @@ import {
     CFormLabel,
     CImage
 } from '@coreui/react';
-import { useState } from 'react';
 import product from '../product/photos/box.png';
-import AddProduct from './addProduct'; // Ensure the correct path
-import ImportExcel from './importExcel'; // Ensure the correct path
+import AddProduct from './addProduct';
+import ImportExcel from './importExcel';
 
 const ProductList = () => {
-    const [importVisible, setImportVisible] = useState(false);
-    const [visible, setVisible] = useState(false);
+    const [showAddProduct, setShowAddProduct] = useState(false);
+    const [showImportExcel, setShowImportExcel] = useState(false);
 
-    const toggleImportModal = () => {
-        setImportVisible(!importVisible);
+    const handleAddProduct = () => {
+        setShowAddProduct(!showAddProduct);
     };
 
-    const handleModal = () => {
-        setVisible(!visible);
+    const toggleImportExcel = () => {
+        setShowImportExcel(!showImportExcel);
     };
 
     return (
         <main className='mx-2 mt-1'>
+            {!showAddProduct?(
             <CCard>
                 <CCardHeader>Бараа</CCardHeader>
                 <CCardBody className='text-center'>
@@ -42,17 +43,21 @@ const ProductList = () => {
                         <CFormLabel>Эндээс та бараагаа удирдах боломжтой</CFormLabel>
                     </div>
                     <div className='d-flex flex-column align-items-center'>
-                        <CButton color='primary' className='my-2' onClick={handleModal}>
+                        <CButton color='primary' className='my-2' onClick={handleAddProduct}>
                             Бараа нэмэх
                         </CButton>
-                        <CButton className='my-2' onClick={toggleImportModal}>
+                        <CButton className='my-2' onClick={toggleImportExcel}>
                             Импорт excel
                         </CButton>
                     </div>
-                    {importVisible && <ImportExcel visible={importVisible} onClose={toggleImportModal} />} 
-                    {visible && <AddProduct visibleSm={visible} handleModal={handleModal} />}
+                    
                 </CCardBody>
             </CCard>
+            ) :(
+                <AddProduct  />
+            
+            )}
+
         </main>
     );
 };
