@@ -43,13 +43,13 @@ const App = () => {
         }
       >
         <Routes>
-          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/404" element={<Page404 />} />
           <Route path="/500" element={<Page500 />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/set-password" element={<SetNewPassword />} />
           <Route path="*" element={<DefaultLayout />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Suspense>
     </HashRouter>

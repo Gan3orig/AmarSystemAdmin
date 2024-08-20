@@ -31,12 +31,13 @@ import {
 	CTableBody
 } from '@coreui/react';
 
-
+//import checkAuth from 'src/checkAuth';
 import SeeOrganization from './seeorganization';
+import { useNavigate } from 'react-router-dom/dist';
+
 const Admin = () => {
 	// Register useState
 	const [regNo, setRegNo] = useState('');
-
 	//huvi hun register
 	const [individualReg, setIndividualReg] = useState('');
 	const [selectedBranch, setSelectedBranch] = useState('');
@@ -52,7 +53,7 @@ const Admin = () => {
 	const [mmc, setMmc] = useState([]);
 	const [selectedMmc, setSelectedMmc] = useState('');
 	const [seeOrganization, setSeeOrganization] = useState('');
-
+	
 	//Table data useState 
 	// const [tableOrganizationData, setTableOrganizationData] = useState({})
 	const tableOrganizationData = [

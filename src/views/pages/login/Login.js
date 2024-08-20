@@ -27,14 +27,16 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   //const history = useHistory();
   const navigate = useNavigate();
   const HandleLogin = async (e) => {
     e.preventDefault();
     setAlertMessage('');
     try {
+      setLoading(true);
       if (!username || !password) {
-        setAlertMessage('Бүх талбарыг бөглөнө үү');
+        setAlertMessage('Хэрэглэгчийн нэр болон нууц үгээ оруулна уу');
         return;
       }
       const myHeaders = new Headers();
@@ -57,11 +59,11 @@ const Login = () => {
         if (result.isOK) {
           const data = JSON.parse(result.json)
           const currentTime = new Date().getTime();
-          const expiryTime = currentTime + data.expiresIn * 1000;
+          const expiryDate = currentTime + data.expiresIn * 1000;
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("user-info", data.userId);
-          localStorage.setItem("expiresIn", expiryTime);
-          localStorage.setItem("isAuthenticated", "true");
+          localStorage.setItem("expiryDate", expiryDate);
+          localStorage.setItem("isAuthenticated", true);
           //setAlertMessage(result.message);
           navigate('/dashboard');
         } else {
@@ -73,6 +75,7 @@ const Login = () => {
     } catch (error) {
       setAlertMessage(error.message);
     }
+    finally{setLoading(false);}
   };
 
   const togglePasswordVisibility = () => {

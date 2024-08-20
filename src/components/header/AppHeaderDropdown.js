@@ -27,6 +27,7 @@ import {
   cilSettings,
   cilTask,
   cilUser,
+  cilAccountLogout,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
@@ -36,9 +37,9 @@ const AppHeaderDropdown = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const [avatar, setAvatar] = useState(initialAvatar)
   const [user, setUser] = useState({
-    name: 'John Doe',
-    phoneNumber: '+1234567890',
-    email: 'john.doe@example.com',
+    name: 'Ganbol Ganzorig',
+    phoneNumber: '+976 70003214',
+    email: 'info@majorsoft.mn',
   })
 
   // Ref for the file input
@@ -111,9 +112,9 @@ const AppHeaderDropdown = () => {
             <CBadge color="primary" className="ms-2">42</CBadge>
           </CDropdownItem>
           <CDropdownDivider />
-          <CDropdownItem href="#">
+          <CDropdownItem href="#/login">
             <CIcon icon={cilLockLocked} className="me-2" />
-            Lock Account
+            Гарах
           </CDropdownItem>
         </CDropdownMenu>
       </CDropdown>
@@ -145,7 +146,7 @@ const AppHeaderDropdown = () => {
             <CFormInput type="text" value={user.name} onChange={(e) => setUser({ ...user, name: e.target.value })} />
             <CFormLabel>Утасны дугаар</CFormLabel>
             <CFormInput type="text" value={user.phoneNumber} onChange={(e) => setUser({ ...user, phoneNumber: e.target.value })} />
-            <CFormLabel>Майл</CFormLabel>
+            <CFormLabel>Э-Шуудан</CFormLabel>
             <CFormInput type="email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} />
           </CForm>
         </CModalBody>

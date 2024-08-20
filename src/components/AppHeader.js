@@ -54,14 +54,14 @@ const AppHeader = () => {
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
             <CNavLink to="/dashboard" as={NavLink}>
-              Dashboard
+              Хянах самбар
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">Users</CNavLink>
+            <CNavLink href="#/admin">Admin Tools</CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">Settings</CNavLink>
+            <CNavLink href="#/settings">Тохиргоо</CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">

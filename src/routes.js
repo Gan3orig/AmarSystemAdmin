@@ -59,11 +59,11 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
   { path: '/', exact: true, name: 'Нүүр' },
-  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  {path: '/settings',name:'Settings' ,element:Settings},
+  { path: '/dashboard', name: 'Хянах самбар', element: Dashboard },
+  {path: '/settings',name:'Тохиргоо' ,element:Settings},
   {path: '/product',name:'Бараа бүтээгдэхүүн',element:Product},
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
-  {path:'/admin' ,name:'Хэрэглүүр', element:Admin},
+  {path:'/admin' ,name:'Админ', element:Admin},
   {path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
