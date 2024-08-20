@@ -15,7 +15,7 @@ const Settings = () => {
     }
 
     return (
-        <main className='mx-2 mt-5'>
+        <main className='mx-2 mt-2'>
             <CCard>
                 <CCardHeader>Эрхийн тохиргоо</CCardHeader>
                 <CCardBody className='text-center'>

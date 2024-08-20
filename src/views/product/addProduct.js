@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
     CButton,
     CCard,
@@ -11,10 +12,16 @@ import {
     CFormInput,
     CFormLabel,
     CFormSelect,
-    CModal,
-    CRow
+    CFormSwitch,
+    CRow,
+    CTable,
+    CTableBody,
+    CCardTitle,
+    CTableHead,
+    CTableHeaderCell,
+    CTableDataCell,
 } from '@coreui/react';
-import { useState } from 'react';
+import AddCategory from './addCategory'; // Import your AddCategory component here
 
 const timeOptions = () => {
     const options = [];
@@ -44,8 +51,7 @@ const importOptions = [
     { value: 'TACHI', label: 'ТАЛХ ЧИХЭР ХХК' },
 ];
 
-// eslint-disable-next-line react/prop-types
-const AddProduct = ({ visibleSm, handleModal }) => {
+const AddProduct = () => {
     const [productName, setProductName] = useState('');
     const [productPrice, setProductPrice] = useState('');
     const [productDescription, setProductDescription] = useState('');
@@ -56,6 +62,39 @@ const AddProduct = ({ visibleSm, handleModal }) => {
     const [serviceTime, setServiceTime] = useState('');
     const [ageLimit, setAgeLimit] = useState('');
     const [importValue, setImport] = useState('');
+    const [isTableVisible, setIsTableVisible] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [showAddCategory, setShowAddCategory] = useState(false);
+    const [addModal, setModal] = useState(false);
+
+    const handleModalCat = () => {
+        setModal(!addModal);
+    };
+
+ 
+
+    async function fetchCategories() {
+        try {
+            const response = await fetch('/data/categories.json');
+            const data = await response.json();
+            setCategories(data.categories);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const handleCategoryChange = (e) => {
+        setSelectedCategory(e.target.value);
+    };
+
+    const handleSwitchChange = (e) => {
+        setIsTableVisible(e.target.checked);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -85,12 +124,9 @@ const AddProduct = ({ visibleSm, handleModal }) => {
     };
 
     return (
-        <CModal fullscreen="sm" visible={visibleSm} onClose={handleModal}>
-            <CCard>
-                <CCardHeader>
-                    Бараа нэмэх
-                    <CCloseButton className='position-absolute end-0' onClick={handleModal} />
-                </CCardHeader>
+        <main className='d-flex flex-column align-items-center mt-2'>
+            <CCard style={{ maxWidth: '800px', width: '100%' }}>
+                <CCardHeader>Бараа нэмэх</CCardHeader>
                 <CCardBody>
                     <CForm onSubmit={handleSubmit}>
                         <CRow className='mb-3'>
@@ -102,21 +138,31 @@ const AddProduct = ({ visibleSm, handleModal }) => {
                                     required
                                 />
                             </CCol>
-
                             <CCol md={6}>
                                 <CFormLabel>Категори</CFormLabel>
-                                <CFormInput
-                                    type='text'
-                                    value={productCategory}
-                                    onChange={(e) => setProductCategory(e.target.value)}
-                                    placeholder='Барааны категори оруулна уу'
-                                />
+                                <CCol>
+                                    <CRow>
+                                        <CCol xs={9}>
+                                            <CFormSelect
+                                                value={selectedCategory}
+                                                onChange={handleCategoryChange}
+                                            >
+                                                <option value="">Сонгох</option>
+                                                {categories.map((category) => (
+                                                    <option key={category.id} value={category.id}>
+                                                        {category.name}
+                                                    </option>
+                                                ))}
+                                            </CFormSelect>
+                                        </CCol>
+                                        <CCol xs={2} className="d-flex align-items-center">
+                                            <CButton color='primary' className="w-100" onClick={handleModalCat}>+</CButton>
+                                        </CCol>
+                                    </CRow>
+                                </CCol>
                             </CCol>
                         </CRow>
                         <CRow className='mb-3'>
-
-
-
                             <CCol>
                                 <CFormLabel>Барааны нэр</CFormLabel>
                                 <CFormInput
@@ -217,7 +263,6 @@ const AddProduct = ({ visibleSm, handleModal }) => {
                                 />
                             </CCol>
                         </CRow>
-
                         <CRow className='mb-3'>
                             <CCol md={6}>
                                 <CFormLabel>Насны хязгаар</CFormLabel>
@@ -254,7 +299,40 @@ const AddProduct = ({ visibleSm, handleModal }) => {
                     </CForm>
                 </CCardBody>
             </CCard>
-        </CModal>
+            <CCard style={{ maxWidth: '800px', width: '100%', marginBottom: '1rem' }} className='mt-2'>
+                <CCardHeader>Бараа</CCardHeader>
+                <CCardBody>
+                    <CRow>
+                        <CCol>Бараа багцлах</CCol>
+                        <CCol className='end-0'>
+                            <CFormSwitch onChange={handleSwitchChange} size="xl" className='d-flex justify-content-end' />
+                        </CCol>
+                    </CRow>
+                    {isTableVisible && (
+                        <CTable>
+                            <CTableHead>
+                                <CTableHeaderCell>Баркод</CTableHeaderCell>
+                                <CTableHeaderCell>Нэр</CTableHeaderCell>
+                                <CTableHeaderCell>Тоо ширхэг</CTableHeaderCell>
+                                <CTableHeaderCell>Үнэ</CTableHeaderCell>
+                                <CTableHeaderCell></CTableHeaderCell>
+                            </CTableHead>
+                            <CTableBody>
+                                <CTableDataCell>123456789</CTableDataCell>
+                                <CTableDataCell>Сүү</CTableDataCell>
+                                <CTableDataCell>10</CTableDataCell>
+                                <CTableDataCell>1500₮</CTableDataCell>
+                                <CTableDataCell>
+                                    <CCloseButton />
+                                </CTableDataCell>
+                            </CTableBody>
+                        </CTable>
+                    )}
+                </CCardBody>
+            </CCard>
+            {addModal && <AddCategory visibleCat={addModal} handleModalCat={handleModalCat} />} 
+       
+        </main>
     );
 };
 

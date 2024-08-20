@@ -73,7 +73,7 @@ const AddCategory = ({ visibleCat, handleModalCat }) => {
                 <CCardBody>
                     <CForm onSubmit={handleSubmit}>
                         <CRow className='mb-3'>
-                            <CCol md={6}>
+                            <CCol>
                                 <CFormLabel>Категори Нэр</CFormLabel>
                                 <CFormInput
                                     type='text'

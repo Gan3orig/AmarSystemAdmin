@@ -33,7 +33,8 @@ import {
     CTableDataCell,
     CTableHead,
     CTableHeaderCell,
-    CTableRow
+    CTableRow,
+    CFormSwitch
 } from '@coreui/react';
 
 const Settings = () => {

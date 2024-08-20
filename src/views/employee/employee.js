@@ -25,7 +25,7 @@ const Employee = () => {
     const [visible, setVisible] = useState(false);
 
     return (
-        <div className="app-container d-flex flex-column">
+        <div className="app-container d-flex flex-column mt-2">
             <CNavbar expand="lg" className="border rounded-3">
                 <CContainer fluid>
                     <CNavbarBrand>

@@ -2,7 +2,7 @@ import { CButton, CCard, CCardBody, CCardHeader, CCardTitle, CCol, CFormInput, C
 
 const AddEmployeeList = () => {
     return (
-        <main className='d-flex justify-content-center'>
+        <main className='d-flex justify-content-center mt-2'>
             <CCard style={{ maxWidth: '800px', width: '100%' }}>
                 <CCardHeader>
                     <CCardTitle>Ажилчин нэмэх</CCardTitle>

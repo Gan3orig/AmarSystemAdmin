@@ -11,7 +11,7 @@ const TimeSettings = () => {
     };
 
     return (
-        <main className='mx-2 mt-5'>
+        <main className='mx-2 mt-2'>
             <CCard>
                 <CCardHeader>Цагийн тохиргоо</CCardHeader>
                 <CCardBody className='text-center'>

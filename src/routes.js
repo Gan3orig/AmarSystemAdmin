@@ -10,7 +10,11 @@ const Employee =React.lazy(()=>import('./views/employee/employee'))
 //Settings
 const Settings=React.lazy(()=> import('./views/settings/setting'))
 //Product
-const Product=React.lazy(()=>import('./views/product/product'))
+
+const Categories = React.lazy(() => import('./views/product/categories'));
+const ProductList = React.lazy(() => import('./views/product/productlist'));
+const ExtraCharge = React.lazy(() => import('./views/product/extraCharge'));
+//Customer
 const Interlocutor=React.lazy(()=>import('./views/interlocutor/interlocutor'))
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -62,10 +66,18 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   {path: '/settings',name:'Settings' ,element:Settings},
-  {path: '/product',name:'Бараа бүтээгдэхүүн',element:Product},
+
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
  {path:'/admin' ,name:'Хэрэглүүр', element:Admin},
  {path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},
+   //product 
+  
+    
+    { path: '/product/productlist', name: 'Бараа', element: ProductList },
+    { path: '/product/categories', name: 'Категори', element: Categories },
+    { path: '/product/extraCharge', name: 'Нэмэлт төлбөр', element: ExtraCharge },
+  
+
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },
@@ -108,6 +120,7 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', element: Modals },
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
+
 ]
 
 export default routes
