@@ -3,6 +3,7 @@ import React, { Suspense, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './scss/style.scss';
+//import { AuthProvider } from './AuthContext';
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
@@ -14,7 +15,7 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'));
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 const ResetPassword = React.lazy(() => import('./views/pages/resetPwd/resetPassword'));
 const SetNewPassword = React.lazy(() => import('./views/pages/setNewPassword/setNewPassword'));
-const Settings = React.lazy(() => import('./views/settings/setting'));
+//const Settings = React.lazy(() => import('./views/settings/setting'));
 
 const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme');

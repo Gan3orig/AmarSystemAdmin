@@ -18,40 +18,41 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+//import axios from 'axios';
+// import { useAuth } from 'src/AuthContext';
+//import { useHistory } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  //const history = useHistory();
   const navigate = useNavigate();
-  const handleLogin = async (e) => {
+  const HandleLogin = async (e) => {
     e.preventDefault();
     setAlertMessage('');
-  
-    if (!username || !password) {
-      setAlertMessage('Бүх талбарыг бөглөн үү');
-      return;
-    }
-  
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-  
-    const raw = JSON.stringify({
-      "username": username,
-      "password": password
-    });
-  
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-    };
-  
     try {
+      if (!username || !password) {
+        setAlertMessage('Бүх талбарыг бөглөнө үү');
+        return;
+      }
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+    
+      const raw = JSON.stringify({
+        "username": username,
+        "password": password
+      });
+  
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw
+      };
       const response = await fetch("https://api.majorsoft.mn/api/login", requestOptions);
       const result = await response.json();
-      
+      //history.push('/');
       if (response.ok) {
         if (result.isOK) {
           const data = JSON.parse(result.json)
@@ -61,16 +62,16 @@ const Login = () => {
           localStorage.setItem("user-info", data.userId);
           localStorage.setItem("expiresIn", expiryTime);
           localStorage.setItem("isAuthenticated", "true");
-          // navigate('/dashboard');
+          //setAlertMessage(result.message);
+          navigate('/dashboard');
         } else {
           setAlertMessage(result.message);
         }
       } else {
         setAlertMessage(result.message);
       }
-  
     } catch (error) {
-      setAlertMessage('Сүлжээнд холбогдох алдаа гарлаа');
+      setAlertMessage(error.message);
     }
   };
 
@@ -86,7 +87,7 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm onSubmit={handleLogin}>
+                  <CForm onSubmit={HandleLogin}>
                     <h1>Нэвтрэх</h1>
                     <p className="text-body-secondary">Та өөрийн бүртгэлтэй хаягаар нэвтрэнэ үү</p>
                     <CInputGroup className="mb-3">

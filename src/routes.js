@@ -2,8 +2,7 @@ import { element } from 'prop-types'
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-
- const Admin = React.lazy(()=>import('./views/admin/admin'))
+const Admin = React.lazy(()=>import('./views/admin/admin'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 const Employee =React.lazy(()=>import('./views/employee/employee'))
@@ -64,8 +63,8 @@ const routes = [
   {path: '/settings',name:'Settings' ,element:Settings},
   {path: '/product',name:'Бараа бүтээгдэхүүн',element:Product},
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
- {path:'/admin' ,name:'Хэрэглүүр', element:Admin},
- {path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},
+  {path:'/admin' ,name:'Хэрэглүүр', element:Admin},
+  {path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },

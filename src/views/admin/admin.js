@@ -22,7 +22,13 @@ import {
 	CAccordion,
 	CAccordionItem,
 	CAccordionHeader,
-	CAccordionBody
+	CAccordionBody,
+	CTable,
+	CTableRow,
+	CTableHead,
+	CTableDataCell,
+	CTableHeaderCell,
+	CTableBody
 } from '@coreui/react';
 
 
@@ -240,9 +246,9 @@ const Admin = () => {
 
 	return (		
 		<CRow>
-			<CAccordion flush>
+			<CAccordion alwaysOpen >
 			<CAccordionItem itemKey={1}>
-				<CAccordionHeader>TinCode</CAccordionHeader>
+				<CAccordionHeader>TinCode & Merchant names</CAccordionHeader>
 				<CAccordionBody>
 						<CCol xs="auto">
 						<CFormLabel className="visually-hidden" htmlFor="autoSizingInput">
@@ -575,6 +581,41 @@ const Admin = () => {
 			{tableOrganizationData && (
 					<SeeOrganization data={tableOrganizationData} />
 				)}
+				</CAccordionBody>
+			</CAccordionItem>
+			<br></br>
+			<CAccordionItem itemKey={3}>
+				<CAccordionHeader>Terminals Info</CAccordionHeader>
+				<CAccordionBody>
+					<CTable responsive>
+					<CTableHead>
+						<CTableRow>
+						<CTableHeaderCell scope="col">#</CTableHeaderCell>
+						<CTableHeaderCell scope="col">Class</CTableHeaderCell>
+						<CTableHeaderCell scope="col">Heading</CTableHeaderCell>
+						<CTableHeaderCell scope="col">Heading</CTableHeaderCell>
+						</CTableRow>
+					</CTableHead>
+					<CTableBody>
+						<CTableRow>
+						<CTableHeaderCell scope="row">1</CTableHeaderCell>
+						<CTableDataCell>Mark</CTableDataCell>
+						<CTableDataCell>Otto</CTableDataCell>
+						<CTableDataCell>@mdo</CTableDataCell>
+						</CTableRow>
+						<CTableRow>
+						<CTableHeaderCell scope="row">2</CTableHeaderCell>
+						<CTableDataCell>Jacob</CTableDataCell>
+						<CTableDataCell>Thornton</CTableDataCell>
+						<CTableDataCell>@fat</CTableDataCell>
+						</CTableRow>
+						<CTableRow>
+						<CTableHeaderCell scope="row">3</CTableHeaderCell>
+						<CTableDataCell colSpan={2}>Larry the Bird</CTableDataCell>
+						<CTableDataCell>@twitter</CTableDataCell>
+						</CTableRow>
+					</CTableBody>
+					</CTable>
 				</CAccordionBody>
 			</CAccordionItem>
 			</CAccordion>

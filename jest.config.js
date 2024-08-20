@@ -14,4 +14,10 @@ module.exports = {
     '!src/serviceWorker.js',
     '!src/polyfill.js',
   ],
+  resolve: {
+    fallback: {
+      "buffer": false,
+      "crypto": false // Ignore the crypto module
+    }  
+  }
 }
