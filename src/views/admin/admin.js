@@ -19,7 +19,16 @@ import {
 	CNavLink,
 	CCardHeader,
 	CFormSelect,
-	CTableHead
+	CAccordion,
+	CAccordionItem,
+	CAccordionHeader,
+	CAccordionBody,
+	CTable,
+	CTableRow,
+	CTableHead,
+	CTableDataCell,
+	CTableHeaderCell,
+	CTableBody
 } from '@coreui/react';
 
 
@@ -80,7 +89,7 @@ const Admin = () => {
 		// Add more entries as needed
 	  ];
 	  
-	const [tableIndividualData, setTableIndvidualData] = useState({})
+	//const [tableIndividualData, setTableIndvidualData] = useState({})
 
 	const handleInputChange = (event) => {
 		setRegNo(event.target.value);
@@ -235,113 +244,122 @@ const Admin = () => {
 		fetchBranches();
 	}, []);
 
-	return (
+	return (		
 		<CRow>
-			<CCol xs="auto">
-				<CFormLabel className="visually-hidden" htmlFor="autoSizingInput">
-					Цахим баримт 3.0 TIN code ба ТТД Нэр авах
-				</CFormLabel>
-			</CCol>
-			<CCol xs={12}>
-				<CInputGroup className="mb-3">
-					<CFormInput
-						className='reg'
-						type="text"
-						placeholder="Регистерийн дугаар"
-						aria-describedby="button-addon2"
-						value={regNo}
-						onChange={handleInputChange}
-					/>
-					<CButtonGroup role="group" aria-label="Basic example">
-						<CButton
-							type="button"
-							color="primary"
-							id="button-addon2"
-							onClick={handleCheckUser}
-						>
-							Шалгах
-						</CButton>
-						<CButton color="primary" onClick={handleHideResults}>
-							Хураах
-						</CButton>
-					</CButtonGroup>
-				</CInputGroup>
-			</CCol>
-			<CCol xs={12}>
-				<CCollapse visible={visibleA}>
-					<CInputGroup className="mb-3">
-						<CFormInput
-							type="text"
-							placeholder="Tin Code"
-							aria-label="readonly input example"
-							value={response?.data || ''}
-							readOnly
-						/>
-						<CFormInput
-							type="text"
-							placeholder="Merchant Name"
-							aria-label="readonly input example"
-							value={secondResponse?.data?.name || ''}
-							readOnly
-						/>
-					</CInputGroup>
-				</CCollapse>
-			</CCol>
-			<CCol xs={12}>
-				<CRow>
-					<CCol>
-						<CCollapse visible={visibleA}>
-							<CCard className="mt-3">
-								<CCardBody>
-									<div className="result">Анхны API-ийн хариу:</div>
-									<pre>{response ? JSON.stringify(response, null, 2) : 'No data'}</pre>
-								</CCardBody>
-								<CCardBody>
-									<div className="result">Хоёр дахь API-ийн хариу:</div>
-									<pre>{secondResponse ? JSON.stringify(secondResponse, null, 2) : 'No data'}</pre>
-								</CCardBody>
-							</CCard>
-						</CCollapse>
-					</CCol>
-				</CRow>
-			</CCol>
-
-			<CNavbar expand="lg" className="border rounded-3">
-				<CContainer fluid>
-					<CNavbarBrand>
-						<h4>Qpay холболт</h4>
-					</CNavbarBrand>
-					<CNavbarToggler
-						aria-label="Toggle navigation"
-						aria-expanded={visibleA}
-						onClick={() => setVisibleA(!visibleA)}
-					/>
-					<CNavbarNav>
-						<CNavItem className={`${individual ? 'border-bottom fw-bold' : ''}`}>
-							<CNavLink
-								active
-								onClick={() => {
-									setOrganization(false);
-									setIndividual(true);
-								}}
-							>
-								Хувь хүн
-							</CNavLink>
-						</CNavItem>
-						<CNavItem className={`${organization ? 'border-bottom fw-bold' : ''}`}>
-							<CNavLink
-								onClick={() => {
-									setIndividual(false);
-									setOrganization(true);
-								}}
-							>
-								Байгууллага
-							</CNavLink>
-						</CNavItem>
-					</CNavbarNav>
-				</CContainer>
-			</CNavbar>
-			{/* Хувь хүн */}
+			<CAccordion alwaysOpen >
+			<CAccordionItem itemKey={1}>
+				<CAccordionHeader>TinCode & Merchant names</CAccordionHeader>
+				<CAccordionBody>
+						<CCol xs="auto">
+						<CFormLabel className="visually-hidden" htmlFor="autoSizingInput">
+							Цахим баримт 3.0 TIN code ба ТТД Нэр авах
+						</CFormLabel>
+							</CCol>
+							<CCol xs={12}>
+								<CInputGroup className="mb-3">
+									<CFormInput
+										className='reg'
+										type="text"
+										placeholder="Регистерийн дугаар"
+										aria-describedby="button-addon2"
+										value={regNo}
+										onChange={handleInputChange}
+									/>
+									<CButtonGroup role="group" aria-label="Basic example">
+										<CButton
+											type="button"
+											color="primary"
+											id="button-addon2"
+											onClick={handleCheckUser}
+										>
+											Шалгах
+										</CButton>
+										<CButton color="primary" onClick={handleHideResults}>
+											Хураах
+										</CButton>
+									</CButtonGroup>
+								</CInputGroup>
+							</CCol>
+							<CCol xs={12}>
+								<CCollapse visible={visibleA}>
+									<CInputGroup className="mb-3">
+										<CFormInput
+											type="text"
+											placeholder="Tin Code"
+											aria-label="readonly input example"
+											value={response?.data || ''}
+											readOnly
+										/>
+										<CFormInput
+											type="text"
+											placeholder="Merchant Name"
+											aria-label="readonly input example"
+											value={secondResponse?.data?.name || ''}
+											readOnly
+										/>
+									</CInputGroup>
+								</CCollapse>
+							</CCol>
+							<CCol xs={12}>
+								<CRow>
+									<CCol>
+										<CCollapse visible={visibleA}>
+											<CCard className="mt-3">
+												<CCardBody>
+													<div className="result">Анхны API-ийн хариу:</div>
+													<pre>{response ? JSON.stringify(response, null, 2) : 'No data'}</pre>
+												</CCardBody>
+												<CCardBody>
+													<div className="result">Хоёр дахь API-ийн хариу:</div>
+													<pre>{secondResponse ? JSON.stringify(secondResponse, null, 2) : 'No data'}</pre>
+												</CCardBody>
+											</CCard>
+										</CCollapse>
+									</CCol>
+								</CRow>
+							</CCol>
+				</CAccordionBody>
+			</CAccordionItem>
+			<br></br>
+			<CAccordionItem itemKey={2}>
+				<CAccordionHeader>QPay Merchant register</CAccordionHeader>
+				<CAccordionBody>
+					<CNavbar expand="lg" className="border rounded-3">
+						<CContainer fluid>
+							<CNavbarBrand>
+								<h4>Qpay холболт</h4>
+							</CNavbarBrand>
+							<CNavbarToggler
+								aria-label="Toggle navigation"
+								aria-expanded={visibleA}
+								onClick={() => setVisibleA(!visibleA)}
+							/>
+							<CNavbarNav>
+								<CNavItem className={`${individual ? 'border-bottom fw-bold' : ''}`}>
+									<CNavLink
+										active
+										onClick={() => {
+											setOrganization(false);
+											setIndividual(true);
+										}}
+									>
+										Хувь хүн
+									</CNavLink>
+								</CNavItem>
+								<CNavItem className={`${organization ? 'border-bottom fw-bold' : ''}`}>
+									<CNavLink
+										onClick={() => {
+											setIndividual(false);
+											setOrganization(true);
+										}}
+									>
+										Байгууллага
+									</CNavLink>
+								</CNavItem>
+							</CNavbarNav>
+						</CContainer>
+					</CNavbar>
+					{/* Хувь хүн */}
 			{individual && (
 				<CCol >
 					<CCard className="mt-3">
@@ -362,7 +380,6 @@ const Admin = () => {
 									</CInputGroup>
 								</CCol>
 								<CCol xs={6}>
-
 									<CFormLabel>Эзэмшигчийн Нэр</CFormLabel>
 									<CFormInput className='LastName' value={secondResponse?.data.name || ''} disabled />
 								</CCol>
@@ -425,13 +442,12 @@ const Admin = () => {
 
 							<CRow className='align-items-center'>
 								<CCol xs={12}>
-									<CFormLabel>Майл</CFormLabel>
+									<CFormLabel>EMail</CFormLabel>
 									<CFormInput />
 								</CCol>
 							</CRow>
 
 							<CButton color='primary' className='mt-4'>Хадгалах</CButton>
-
 						</CCardBody>
 					</CCard>
 				</CCol>
@@ -504,7 +520,6 @@ const Admin = () => {
 									</CFormSelect>
 								</CCol>
 							</CRow>
-
 							<CRow >
 								<CCol md={6}>
 									<CFormSelect
@@ -538,8 +553,6 @@ const Admin = () => {
 
 								</CCol>
 							</CRow>
-
-
 							<CRow>
 								<CCol md={6}>
 									<CFormLabel>Хаяг</CFormLabel>
@@ -562,14 +575,50 @@ const Admin = () => {
 
 						</CCardBody>
 					</CCard>
-				</CCol>
-				
-				
+				</CCol>				
 			</>
 			)}
 			{tableOrganizationData && (
 					<SeeOrganization data={tableOrganizationData} />
 				)}
+				</CAccordionBody>
+			</CAccordionItem>
+			<br></br>
+			<CAccordionItem itemKey={3}>
+				<CAccordionHeader>Terminals Info</CAccordionHeader>
+				<CAccordionBody>
+					<CTable responsive>
+					<CTableHead>
+						<CTableRow>
+						<CTableHeaderCell scope="col">#</CTableHeaderCell>
+						<CTableHeaderCell scope="col">Class</CTableHeaderCell>
+						<CTableHeaderCell scope="col">Heading</CTableHeaderCell>
+						<CTableHeaderCell scope="col">Heading</CTableHeaderCell>
+						</CTableRow>
+					</CTableHead>
+					<CTableBody>
+						<CTableRow>
+						<CTableHeaderCell scope="row">1</CTableHeaderCell>
+						<CTableDataCell>Mark</CTableDataCell>
+						<CTableDataCell>Otto</CTableDataCell>
+						<CTableDataCell>@mdo</CTableDataCell>
+						</CTableRow>
+						<CTableRow>
+						<CTableHeaderCell scope="row">2</CTableHeaderCell>
+						<CTableDataCell>Jacob</CTableDataCell>
+						<CTableDataCell>Thornton</CTableDataCell>
+						<CTableDataCell>@fat</CTableDataCell>
+						</CTableRow>
+						<CTableRow>
+						<CTableHeaderCell scope="row">3</CTableHeaderCell>
+						<CTableDataCell colSpan={2}>Larry the Bird</CTableDataCell>
+						<CTableDataCell>@twitter</CTableDataCell>
+						</CTableRow>
+					</CTableBody>
+					</CTable>
+				</CAccordionBody>
+			</CAccordionItem>
+			</CAccordion>
 		</CRow>
 	);
 };

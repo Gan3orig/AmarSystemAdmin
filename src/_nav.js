@@ -43,18 +43,14 @@ const _nav = [
     },
   },
   {
-    component: CNavTitle,
-    name: 'Тохиргоо',
+    component:CNavTitle,
+    name:'Тохиргоо',
   },
   {
     component: CNavItem,
     name: 'Тохиргоо',
     to: '/settings',
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />
-  },
-  {
-    component: CNavTitle,
-    name: 'Бараа бүтээгдэхүүн',
   },
   {
     component: CNavGroup,
@@ -79,23 +75,22 @@ const _nav = [
       },
     ],
   },
-
-{
-  component: CNavTitle,
+  {
+    component: CNavTitle,
     name: 'Харилцагч',
   },
-{
-  component: CNavItem,
+  {
+    component: CNavItem,
     name: 'Харилцагч',
       to: '/interlocutor',
         icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },
-{
-  component: CNavTitle,
+  {
+    component: CNavTitle,
     name: 'Ажилчин',
   },
-{
-  component: CNavItem,
+  {
+    component: CNavItem,
     name: 'Aжилчин',
       to: '/employee',
         icon: <CIcon icon={cilUser} customClassName="nav-icon" />,

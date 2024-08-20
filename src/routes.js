@@ -2,8 +2,7 @@ import { element } from 'prop-types'
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-
- const Admin = React.lazy(()=>import('./views/admin/admin'))
+const Admin = React.lazy(()=>import('./views/admin/admin'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 const Employee =React.lazy(()=>import('./views/employee/employee'))
@@ -63,21 +62,13 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/', exact: true, name: 'Нүүр' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   {path: '/settings',name:'Settings' ,element:Settings},
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
  {path:'/admin' ,name:'Хэрэглүүр', element:Admin},
  {path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},
-   //product 
-  
-    
-    { path: '/product/productlist', name: 'Бараа', element: ProductList },
-    { path: '/product/categories', name: 'Категори', element: Categories },
-    { path: '/product/extraCharge', name: 'Нэмэлт төлбөр', element: ExtraCharge },
-  
-
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },
