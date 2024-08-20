@@ -59,7 +59,7 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/', exact: true, name: 'Нүүр' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   {path: '/settings',name:'Settings' ,element:Settings},
   {path: '/product',name:'Бараа бүтээгдэхүүн',element:Product},
