@@ -76,5 +76,4 @@ const PopUp = () => {
         </main>
     );
 };
-
 export default PopUp;

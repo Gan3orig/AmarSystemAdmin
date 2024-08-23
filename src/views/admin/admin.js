@@ -33,7 +33,7 @@ import {
 
 //import checkAuth from 'src/checkAuth';
 import SeeOrganization from './seeorganization';
-import { useNavigate } from 'react-router-dom/dist';
+import { useNavigate } from 'react-router-dom';
 
 const Admin = () => {
 	// Register useState
@@ -244,6 +244,27 @@ const Admin = () => {
 
 		fetchBranches();
 	}, []);
+	const [loading, setLoading] = useState(true);
+
+
+	//permission check
+  useEffect(() => {
+    const checkPermissions = () => {
+      const userStatus = localStorage.getItem('userStatus'); // Assuming userStatus is stored in localStorage
+
+      if (userStatus === 'admin') {
+       
+        setLoading(false);
+      } 
+    };
+
+    checkPermissions();
+  }, []);
+
+  if (loading) {
+  
+  
+
 
 	return (		
 		<CRow>
@@ -623,5 +644,6 @@ const Admin = () => {
 		</CRow>
 	);
 };
+}
 
 export default Admin;

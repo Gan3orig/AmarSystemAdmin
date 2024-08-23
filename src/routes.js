@@ -65,7 +65,7 @@ const routes = [
   { path: '/', exact: true, name: 'Нүүр' },
   { path: '/dashboard', name: 'Хянах самбар', element: Dashboard },
   {path: '/settings',name:'Тохиргоо' ,element:Settings},
-  {path: '/product',name:'Бараа бүтээгдэхүүн',element:Product},
+
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   {path:'/admin' ,name:'Админ', element:Admin},
   {path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},

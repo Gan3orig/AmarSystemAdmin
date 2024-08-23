@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import {
-    CCollapse,
     CContainer,
     CNavbar,
-    CNavbarNav,
-    CNavItem,
-    CNavLink,
     CNavbarBrand,
-    CNavbarToggler,
 } from '@coreui/react';
-import PopUp from './PopUp'; // Ensure that PopUp is correctly imported
+import PopUp from './PopUp'; // Ensure PopUp is correctly imported
 
 const Interlocutor = () => {
     const [showPopUp, setShowPopUp] = useState(false);
@@ -23,9 +18,7 @@ const Interlocutor = () => {
             <CNavbar expand="lg" className="border rounded-3" onClick={handleNavbarClick}>
                 <CContainer fluid>
                     <CNavbarBrand>
-                        <h3>
-                            Харилцагч
-                        </h3>
+                        <h3>Харилцагч</h3>
                     </CNavbarBrand>
                 </CContainer>
             </CNavbar>

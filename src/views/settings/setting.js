@@ -257,7 +257,7 @@ const Settings = () => {
         </CContainer>
       </CNavbar>
       <main className="content">
-        <CCardBody className='mx-2'>
+        <CCardBody className='mt-2'>
           {showOrderSection && (
             <CCard >
               <CCardHeader>Нэмэлт тохиргоо</CCardHeader>
@@ -337,7 +337,7 @@ const Settings = () => {
               </CCardBody>
             </CCard>)}
 
-          <CCardBody className='max-2'>
+          <CCardBody className='mt-2'>
             {showOrderSection && (
               <CCard>
                 <CCardHeader>Кассын төлбөрийн төрөл</CCardHeader>
@@ -387,7 +387,7 @@ const Settings = () => {
               </CCard>
             )}
 
-            <CCardBody className='max-2'>
+            <CCardBody className='mt-2'>
               {showOrderSection && (
                 <CCard>
                   <CCardHeader>НӨАТ-ын баримт хэвлэх</CCardHeader>
