@@ -23,7 +23,7 @@ import PropTypes from 'prop-types';
 // import { useAuth } from 'src/AuthContext';
 //import { useHistory } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ setAuthenticated }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
