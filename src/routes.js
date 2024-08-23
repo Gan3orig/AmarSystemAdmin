@@ -64,11 +64,11 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Нүүр' },
   { path: '/dashboard', name: 'Хянах самбар', element: Dashboard },
-  {path: '/settings',name:'Тохиргоо' ,element:Settings},
-  {path: '/product',name:'Бараа бүтээгдэхүүн',element:Product},
+  { path: '/settings',name:'Тохиргоо' ,element:Settings},
+  //{ path: '/productlist',name:'Бараа бүтээгдэхүүн',element:Product},
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
-  {path:'/admin' ,name:'Админ', element:Admin},
-  {path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},
+  { path:'/admin' ,name:'Админ', element:Admin},
+  { path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },
@@ -112,10 +112,9 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },   
   //product 
-  { path: '/product/productlist', name: 'Бараа', element: ProductList },
+  { path: '/product/productlist', name: 'Бүтээгдэхүүн, Үйлчилгээ', element: ProductList },
   { path: '/product/categories', name: 'Категори', element: Categories },
   { path: '/product/extraCharge', name: 'Нэмэлт төлбөр', element: ExtraCharge },
 ]
-
 
 export default routes

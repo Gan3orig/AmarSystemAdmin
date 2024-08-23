@@ -22,13 +22,7 @@ import {
 	CAccordion,
 	CAccordionItem,
 	CAccordionHeader,
-	CAccordionBody,
-	CTable,
-	CTableRow,
-	CTableHead,
-	CTableDataCell,
-	CTableHeaderCell,
-	CTableBody
+	CAccordionBody
 } from '@coreui/react';
 
 //import checkAuth from 'src/checkAuth';
@@ -89,9 +83,7 @@ const Admin = () => {
 		},
 		// Add more entries as needed
 	  ];
-	  
-	//const [tableIndividualData, setTableIndvidualData] = useState({})
-
+	
 	const handleInputChange = (event) => {
 		setRegNo(event.target.value);
 	};
@@ -243,11 +235,13 @@ const Admin = () => {
 		};
 
 		fetchBranches();
+
+		
 	}, []);
 
 	return (		
 		<CRow>
-			<CAccordion alwaysOpen >
+			<CAccordion alwaysOpen expanded>
 			<CAccordionItem itemKey={1}>
 				<CAccordionHeader>TinCode & Merchant names</CAccordionHeader>
 				<CAccordionBody>
@@ -588,35 +582,6 @@ const Admin = () => {
 			<CAccordionItem itemKey={3}>
 				<CAccordionHeader>Terminals Info</CAccordionHeader>
 				<CAccordionBody>
-					<CTable responsive>
-					<CTableHead>
-						<CTableRow>
-						<CTableHeaderCell scope="col">#</CTableHeaderCell>
-						<CTableHeaderCell scope="col">Class</CTableHeaderCell>
-						<CTableHeaderCell scope="col">Heading</CTableHeaderCell>
-						<CTableHeaderCell scope="col">Heading</CTableHeaderCell>
-						</CTableRow>
-					</CTableHead>
-					<CTableBody>
-						<CTableRow>
-						<CTableHeaderCell scope="row">1</CTableHeaderCell>
-						<CTableDataCell>Mark</CTableDataCell>
-						<CTableDataCell>Otto</CTableDataCell>
-						<CTableDataCell>@mdo</CTableDataCell>
-						</CTableRow>
-						<CTableRow>
-						<CTableHeaderCell scope="row">2</CTableHeaderCell>
-						<CTableDataCell>Jacob</CTableDataCell>
-						<CTableDataCell>Thornton</CTableDataCell>
-						<CTableDataCell>@fat</CTableDataCell>
-						</CTableRow>
-						<CTableRow>
-						<CTableHeaderCell scope="row">3</CTableHeaderCell>
-						<CTableDataCell colSpan={2}>Larry the Bird</CTableDataCell>
-						<CTableDataCell>@twitter</CTableDataCell>
-						</CTableRow>
-					</CTableBody>
-					</CTable>
 				</CAccordionBody>
 			</CAccordionItem>
 			</CAccordion>

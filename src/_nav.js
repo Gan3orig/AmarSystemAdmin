@@ -54,13 +54,13 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Бараа бүтээгдэхүүн',
+    name: 'Бүртгэл',
     to: '/product',
     icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Барааны жагсаалт',
+        name: 'Бүтээгдэхүүн, үйлчилгээ',
         to: '/product/productlist',
       },
       {

@@ -18,6 +18,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 //import axios from 'axios';
 // import { useAuth } from 'src/AuthContext';
 //import { useHistory } from 'react-router-dom';
@@ -32,13 +33,13 @@ const Login = () => {
   const navigate = useNavigate();
   const HandleLogin = async (e) => {
     e.preventDefault();
-    setAlertMessage('');
     try {
       setLoading(true);
       if (!username || !password) {
         setAlertMessage('Хэрэглэгчийн нэр болон нууц үгээ оруулна уу');
         return;
       }
+      await new Promise(resolve => setTimeout(resolve, 2000));
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
     
@@ -57,6 +58,7 @@ const Login = () => {
       //history.push('/');
       if (response.ok) {
         if (result.isOK) {
+          //setAuthenticated(true);
           const data = JSON.parse(result.json)
           const currentTime = new Date().getTime();
           const expiryDate = currentTime + data.expiresIn * 1000;
@@ -157,8 +159,6 @@ const Login = () => {
     </div>
   );
 };
+Login.propTypes = { setAuthenticated: PropTypes.bool.isRequired };
 
 export default Login;
-
-
-

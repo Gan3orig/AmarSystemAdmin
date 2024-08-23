@@ -1,9 +1,8 @@
 import { CSpinner, useColorModes } from '@coreui/react';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect ,useState } from 'react';
 import { useSelector } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './scss/style.scss';
-//import { AuthProvider } from './AuthContext';
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
@@ -17,10 +16,11 @@ const ResetPassword = React.lazy(() => import('./views/pages/resetPwd/resetPassw
 const SetNewPassword = React.lazy(() => import('./views/pages/setNewPassword/setNewPassword'));
 //const Settings = React.lazy(() => import('./views/settings/setting'));
 
-const App = () => {
-  const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme');
-  const storedTheme = useSelector((state) => state.theme);
 
+const App = () => {
+  const { isColorModeSet, setColorMode } = useColorModes('amarsystems');
+  const storedTheme = useSelector((state) => state.theme);
+  //const isAuthenticated = AuthProvider();
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.href.split('?')[1]);
     const theme = urlParams.get('theme') && urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0];
@@ -42,14 +42,17 @@ const App = () => {
           </div>
         }
       >
+        
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/404" element={<Page404 />} />
           <Route path="/500" element={<Page500 />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/set-password" element={<SetNewPassword />} />
-          <Route path="*" element={<DefaultLayout />} />
           <Route path="/login" element={<Login />} />
+          <Route path="*" element={<DefaultLayout />} />
+          {/* <Route path="/" element={<Login/>} />
+          <Route path="*" element={<DefaultLayout/>} /> */}
         </Routes>
       </Suspense>
     </HashRouter>

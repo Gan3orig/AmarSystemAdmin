@@ -26,18 +26,16 @@ import {
   cilLockLocked,
   cilSettings,
   cilTask,
-  cilUser,
-  cilAccountLogout,
+  cilUser  
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-
 import initialAvatar from './../../assets/images/avatars/8.jpg'
 
 const AppHeaderDropdown = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const [avatar, setAvatar] = useState(initialAvatar)
   const [user, setUser] = useState({
-    name: 'Ganbol Ganzorig',
+    name: 'MajorSoft LLC',
     phoneNumber: '+976 70003214',
     email: 'info@majorsoft.mn',
   })

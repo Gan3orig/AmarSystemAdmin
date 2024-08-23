@@ -1,7 +1,10 @@
 import React from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const DefaultLayout = () => {
+  
   return (
     <div>
       <AppSidebar />
@@ -15,5 +18,6 @@ const DefaultLayout = () => {
     </div>
   )
 }
+//DefaultLayout.propTypes = { isAuthenticated: PropTypes.bool.isRequired };
 
 export default DefaultLayout

@@ -30,8 +30,8 @@ import { AppHeaderDropdown } from './header/index'
 
 const AppHeader = () => {
   const headerRef = useRef()
-  const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
-
+  //const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
+  const { colorMode, setColorMode } = useColorModes('amarsystems')
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
@@ -58,7 +58,7 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#/admin">Admin Tools</CNavLink>
+            <CNavLink href="#/product/productlist">Бүтээгдэхүүн,Үйлчилгээ</CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink href="#/settings">Тохиргоо</CNavLink>
