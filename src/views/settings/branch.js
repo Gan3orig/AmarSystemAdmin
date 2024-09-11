@@ -7,7 +7,7 @@ import {
     CFormLabel,
     CImage
 } from '@coreui/react';
-import branch from '../settings/photos/branch.png';
+import branch from '../settings/photos/subbranch.png';
 import AddBranch from './addBranch'; // Ensure the correct path
 
 const Branch = () => {

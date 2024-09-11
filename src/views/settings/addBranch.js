@@ -13,7 +13,8 @@ import {
     CModal,
     CModalBody,
     CModalHeader,
-    CModalTitle
+    CModalTitle,
+    CInputGroup
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilAirplay, cilLocationPin } from '@coreui/icons';
@@ -258,7 +259,7 @@ const AddBranch = ({ visible, setVisible }) => {
                                 value={selectedSubBranch}
                                 onChange={handleSubBranchChange}
                             >
-                                <option value="" disabled>Дэд салбарын байршил сонгох</option>
+                                <option value="" disabled>Салбарын байршил сонгох</option>
                                 {subBranches.map(subBranch => (
                                     <option key={subBranch.subBranchCode} value={subBranch.subBranchCode}>
                                         {subBranch.subBranchName}
@@ -270,47 +271,53 @@ const AddBranch = ({ visible, setVisible }) => {
                             <CFormLabel htmlFor="branchAddress">Салбарын хаяг</CFormLabel>
                             <CFormInput
                                 type="text"
-                                
-                               
+
+
                             />
                         </CRow>
                         <CRow md={4}>
                             <CFormLabel htmlFor="branchLocation">
-                                Салбарын байршил <CIcon icon={cilLocationPin} onClick={handleIconClick}></CIcon>
+                                Салбарын байршил
                             </CFormLabel>
+                            <CInputGroup>
                             <CFormInput
                                 type="text"
                                 id="branchAddress"
                                 value={newBranchLocation}
                                 onChange={(e) => setNewBranchLocation(e.target.value)}
                             />
-                      
-                        </CRow>
-                        <CRow md={3}>
-                            <CFormLabel htmlFor="branchPhoneNumber">Утасны дугаар</CFormLabel>
-                            <CFormInput
-                                type="text"
-                                id="branchPhoneNumber"
-                                value={newBranchContact}
-                                onChange={(e) => setNewBranchContact(e.target.value)}
-                            />
-                        </CRow>
-                        <CCol xs={12}>
-                            <div className="d-grid gap-2 d-md-block">
-                                <CButton color="primary" type="button" onClick={handleAddBranch}>
-                                    Хадгалах
-                                </CButton>
-                                <CButton color="secondary" onClick={() => setVisible(false)}>
-                                    Хаах
-                                </CButton>
-                            </div>
-                        </CCol>
-                    </CForm>
-                </CCardBody>
-            </CCard>
+                            <span className="input-group-text">
+                                <CIcon icon={cilLocationPin} onClick={handleIconClick} />
+                            </span>
+                            </CInputGroup>
 
-            {/* Map Modal */}
-            <CModal size="lg" visible={showMapModal} onClose={handleModalClose}>
+                    </CRow>
+                    <CRow md={4}>
+                        <CFormLabel htmlFor="branchPhoneNumber">Утасны дугаар</CFormLabel>
+                        <CFormInput
+                            type="text"
+                            id="branchPhoneNumber"
+                            value={newBranchContact}
+                            onChange={(e) => setNewBranchContact(e.target.value)}
+
+                        />
+                    </CRow>
+                    <div className="d-grid gap-2">
+                        
+                            <CButton color="primary" type="button" onClick={handleAddBranch}>
+                                Хадгалах
+                            </CButton>
+                            <CButton color="secondary" onClick={() => setVisible(false)}>
+                                Хаах
+                            </CButton>
+                        </div>
+                    
+                </CForm>
+            </CCardBody>
+        </CCard >
+
+            {/* Map Modal */ }
+            < CModal size = "lg" visible = { showMapModal } onClose = { handleModalClose } >
                 <CModalHeader onClose={handleModalClose}>
                     <CModalTitle>
                         <CIcon icon={cilLocationPin}></CIcon> Байршил оруулах
@@ -332,12 +339,12 @@ const AddBranch = ({ visible, setVisible }) => {
                         {/* Allow user to add a new marker */}
                         <LocationMarker setPosition={setBranchPosition} setNewBranchLocation={setNewBranchLocation} />
                     </MapContainer>
-                    <div className="d-grid gap-2 d-md-block mt-3">
+                    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
                         <CButton color="primary" onClick={handleModalClose}>Болих</CButton>
-                        <CButton color="outline-primary" onClick={() => { /* Handle save functionality here */ }}>Хадгалах</CButton>
+                        <CButton color="outline-primary" onClick={handleModalClose}>Хадгалах</CButton>
                     </div>
                 </CModalBody>
-            </CModal>
+            </CModal >
         </>
     );
 
