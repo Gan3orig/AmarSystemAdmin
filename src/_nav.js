@@ -51,15 +51,25 @@ const _nav = [
     icon: <CIcon icon={cilMap} customClassName="nav-icon" />
   },
   {
-    component:CNavTitle,
-    name:'Тохиргоо',
-  },
-  {
-    component: CNavItem,
+    component: CNavGroup,
     name: 'Тохиргоо',
     to: '/settings',
-    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />
-  },
+    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+    items: [ // Changed `item` to `items` (CoreUI uses `items` for groups)
+      {
+        component: CNavItem,
+        name: 'Тохиргоо',
+        to: '/settings',
+      },
+      {
+        component: CNavItem,
+        name: 'Салбар',
+        to: '/settings/branch', // Changed from './settings/branch' to '/settings/branch'
+      },
+    ],
+  }
+,  
+
   {
     component: CNavGroup,
     name: 'Бүртгэл',

@@ -3,38 +3,38 @@ import { useEffect, useState } from 'react';
 import { cilAirplay, cilPen, cilSettings, cilX } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import {
-    CButton,
-    CCard,
-    CCardBody,
-    CCardHeader,
-    CCol,
-    CCollapse,
-    CContainer,
-    CForm,
-    CFormCheck,
-    CFormInput,
-    CFormLabel,
-    CFormSelect,
-    CInputGroup,
-    CModal,
-    CModalBody,
-    CModalFooter,
-    CModalHeader,
-    CModalTitle,
-    CNavbar,
-    CNavbarBrand,
-    CNavbarNav,
-    CNavbarToggler,
-    CNavItem,
-    CNavLink,
-    CRow,
-    CTable,
-    CTableBody,
-    CTableDataCell,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow,
-    CFormSwitch
+  CButton,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CCollapse,
+  CContainer,
+  CForm,
+  CFormCheck,
+  CFormInput,
+  CFormLabel,
+  CFormSelect,
+  CInputGroup,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
+  CNavbar,
+  CNavbarBrand,
+  CNavbarNav,
+  CNavbarToggler,
+  CNavItem,
+  CNavLink,
+  CRow,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+  CFormSwitch
 } from '@coreui/react';
 
 const Settings = () => {
@@ -60,84 +60,84 @@ const Settings = () => {
   // State for editing branch
   const [editingBranch, setEditingBranch] = useState(null);
 
-    useEffect(() => {
-        const fetchBranches = async () => {
-            const url = 'https://api.ebarimt.mn/api/info/check/getBranchInfo';
-            const options = {
-                method: 'GET',
-                headers: { Accept: 'application/json' },
-            };
+  useEffect(() => {
+    const fetchBranches = async () => {
+      const url = 'https://api.ebarimt.mn/api/info/check/getBranchInfo';
+      const options = {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+      };
 
-            try {
-                const response = await fetch(url, options);
-                const data = await response.json();
-                console.log('API Data:', data);
-                const dataArray = Array.isArray(data) ? data : data.data || [];
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        console.log('API Data:', data);
+        const dataArray = Array.isArray(data) ? data : data.data || [];
 
-                if (Array.isArray(dataArray)) {
-                    const groupedBranches = dataArray.reduce((acc, curr) => {
-                        const { branchCode, branchName, subBranchCode, subBranchName } = curr;
-                        if (!acc[branchCode]) {
-                            acc[branchCode] = { branchCode, branchName, subBranches: [], location: '', contact: '' };
-                        }
-                        acc[branchCode].subBranches.push({ subBranchCode, subBranchName });
-                        return acc;
-                    }, {});
-
-                    setBranches(Object.values(groupedBranches));
-                } else {
-                    console.error('Unexpected data format:', dataArray);
-                }
-            } catch (error) {
-                console.error('Error fetching branch data:', error);
+        if (Array.isArray(dataArray)) {
+          const groupedBranches = dataArray.reduce((acc, curr) => {
+            const { branchCode, branchName, subBranchCode, subBranchName } = curr;
+            if (!acc[branchCode]) {
+              acc[branchCode] = { branchCode, branchName, subBranches: [], location: '', contact: '' };
             }
-        };
+            acc[branchCode].subBranches.push({ subBranchCode, subBranchName });
+            return acc;
+          }, {});
 
-        fetchBranches();
-    }, []);
-    const handleToggleBarimtSection = () => {
-        setshowBarimt(true);  // Always show the section when the button is clicked
-    };
-
-    const handleCheckRegistration = async () => {
-        const firstApiUrl = `https://api.ebarimt.mn/api/info/check/getTinInfo?regNo=${registrationNumber}`;
-        const firstApiOptions = {
-            method: 'GET',
-            headers: { Accept: 'application/json' },
-        };
-
-        try {
-            const firstApiResponse = await fetch(firstApiUrl, firstApiOptions);
-            const firstApiData = await firstApiResponse.json();
-
-
-            const tin = firstApiData?.data; // Adjust this based on the actual response structure
-
-            if (tin) {
-                const secondApiUrl = `https://api.ebarimt.mn/api/info/check/getInfo?tin=${tin}`;
-                const secondApiOptions = {
-                    method: 'GET',
-                    headers: { Accept: 'application/json' },
-                };
-
-                const secondApiResponse = await fetch(secondApiUrl, secondApiOptions);
-                const secondApiData = await secondApiResponse.json();
-                console.log(secondApiData)
-                setTaxPayerName(secondApiData.data.name);
-                setTaxpayerNo(tin);
-                setIsVATPayer(secondApiData.data.vatPayer);
-            }
-
-        } catch (error) {
-            console.error(error)
+          setBranches(Object.values(groupedBranches));
+        } else {
+          console.error('Unexpected data format:', dataArray);
         }
+      } catch (error) {
+        console.error('Error fetching branch data:', error);
+      }
     };
-    const handleBranchChange = (event) => {
-        const branchId = event.target.value;
-        setSelectedBranch(branchId);
-        const selectedBranchData = branches.find(branch => branch.branchCode === branchId);
-        setSubBranches(selectedBranchData ? selectedBranchData.subBranches : []);
+
+    fetchBranches();
+  }, []);
+  const handleToggleBarimtSection = () => {
+    setshowBarimt(true);  // Always show the section when the button is clicked
+  };
+
+  const handleCheckRegistration = async () => {
+    const firstApiUrl = `https://api.ebarimt.mn/api/info/check/getTinInfo?regNo=${registrationNumber}`;
+    const firstApiOptions = {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
     };
+
+    try {
+      const firstApiResponse = await fetch(firstApiUrl, firstApiOptions);
+      const firstApiData = await firstApiResponse.json();
+
+
+      const tin = firstApiData?.data; // Adjust this based on the actual response structure
+
+      if (tin) {
+        const secondApiUrl = `https://api.ebarimt.mn/api/info/check/getInfo?tin=${tin}`;
+        const secondApiOptions = {
+          method: 'GET',
+          headers: { Accept: 'application/json' },
+        };
+
+        const secondApiResponse = await fetch(secondApiUrl, secondApiOptions);
+        const secondApiData = await secondApiResponse.json();
+        console.log(secondApiData)
+        setTaxPayerName(secondApiData.data.name);
+        setTaxpayerNo(tin);
+        setIsVATPayer(secondApiData.data.vatPayer);
+      }
+
+    } catch (error) {
+      console.error(error)
+    }
+  };
+  const handleBranchChange = (event) => {
+    const branchId = event.target.value;
+    setSelectedBranch(branchId);
+    const selectedBranchData = branches.find(branch => branch.branchCode === branchId);
+    setSubBranches(selectedBranchData ? selectedBranchData.subBranches : []);
+  };
 
 
   const handleEditBranch = (branch) => {
@@ -148,67 +148,67 @@ const Settings = () => {
     setVisible(true); // Open the modal to edit
   };
 
-    const handleDeleteBranch = async (branchId) => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this branch?');
-        if (confirmDelete) {
+  const handleDeleteBranch = async (branchId) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this branch?');
+    if (confirmDelete) {
 
-            const url = `https://api.ebarimt.mn/api/info/check/deleteBranch/${branchId}`;
-            const options = {
-                method: 'DELETE',
-                headers: { Accept: 'application/json' },
-            };
+      const url = `https://api.ebarimt.mn/api/info/check/deleteBranch/${branchId}`;
+      const options = {
+        method: 'DELETE',
+        headers: { Accept: 'application/json' },
+      };
 
-            try {
-                const response = await fetch(url, options);
-                if (response.ok) {
+      try {
+        const response = await fetch(url, options);
+        if (response.ok) {
 
-                    setBranches(branches.filter(branch => branch.branchCode !== branchId));
-                } else {
-                    console.error('Failed to delete branch:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error deleting branch:', error);
-            }
-        }
-    };
-
-    const handleEditPOS = (posId) => {
-
-        console.log(`Edit POS with ID: ${posId}`);
-    };
-
-    const handleDeletePOS = (posId) => {
-
-        console.log(`Delete POS with ID: ${posId}`);
-    };
-
-    const handleAddBranch = () => {
-        const newBranch = {
-            branchCode: Date.now(),
-            branchName: newBranchName,
-            location: newBranchLocation,
-            contact: newBranchContact,
-            subBranches: []
-        };
-        if (editingBranch) {
-
-            setBranches(branches.map(branch =>
-                branch.branchCode === editingBranch.branchCode ? newBranch : branch
-            ));
-            setEditingBranch(null);
+          setBranches(branches.filter(branch => branch.branchCode !== branchId));
         } else {
-
-            setBranches([...branches, newBranch]);
+          console.error('Failed to delete branch:', response.statusText);
         }
-        setNewBranchName('');
-        setNewBranchType('');
-        setNewBranchLocation('');
-        setNewBranchContact('');
-        setVisible(false);
+      } catch (error) {
+        console.error('Error deleting branch:', error);
+      }
+    }
+  };
+
+  const handleEditPOS = (posId) => {
+
+    console.log(`Edit POS with ID: ${posId}`);
+  };
+
+  const handleDeletePOS = (posId) => {
+
+    console.log(`Delete POS with ID: ${posId}`);
+  };
+
+  const handleAddBranch = () => {
+    const newBranch = {
+      branchCode: Date.now(),
+      branchName: newBranchName,
+      location: newBranchLocation,
+      contact: newBranchContact,
+      subBranches: []
     };
+    if (editingBranch) {
+
+      setBranches(branches.map(branch =>
+        branch.branchCode === editingBranch.branchCode ? newBranch : branch
+      ));
+      setEditingBranch(null);
+    } else {
+
+      setBranches([...branches, newBranch]);
+    }
+    setNewBranchName('');
+    setNewBranchType('');
+    setNewBranchLocation('');
+    setNewBranchContact('');
+    setVisible(false);
+  };
 
   return (
-    //gue huuhde ene arai bishe 
+    
     <div className="app-container d-flex flex-column">
       {/* <nav className="d-flex gap-5">
         <h3><CIcon icon={cilSettings} /> Тохиргоо</h3>
@@ -400,7 +400,7 @@ const Settings = () => {
                       )}
                       {showBarimt && (
 
-                                        <div className='mt-2'>
+                        <div className='mt-2'>
 
                           <CFormLabel>Регистерийн дугаар</CFormLabel>
                           <CInputGroup className='mb-2'>
@@ -462,16 +462,16 @@ const Settings = () => {
                           </option>))}
                       </CFormSelect></CTableDataCell>
                       <CTableDataCell> <CFormSelect
-                    value=""
-                    onChange={(handleBranchChange) => { }}
-                  >
-                    <option value="" disabled>Сонгоно уу...</option>
-                    {subBranches.map((subBranch) => (
-                      <option key={subBranch.subBranchCode} value={subBranch.subBranchCode}>
-                        {subBranch.subBranchName}
-                      </option>
-                    ))}
-                    </CFormSelect>
+                        value=""
+                        onChange={(handleBranchChange) => { }}
+                      >
+                        <option value="" disabled>Сонгоно уу...</option>
+                        {subBranches.map((subBranch) => (
+                          <option key={subBranch.subBranchCode} value={subBranch.subBranchCode}>
+                            {subBranch.subBranchName}
+                          </option>
+                        ))}
+                      </CFormSelect>
                       </CTableDataCell>
 
                     </CTable>
@@ -485,9 +485,19 @@ const Settings = () => {
               {showAddBranchButton && (
                 <div >
                   <div>
-                    <CButton color="primary" onClick={() => setVisible(true)} >
-                      Салбар нэмэх
-                    </CButton>
+                    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                      <CButton
+                        color="primary"
+                        className="position end-0"
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent any default form or anchor behavior
+                          setVisible(true);   // Show the modal
+                        }}
+                      >
+                        Салбар нэмэх
+                      </CButton>
+                    </div>
+
                     <CTable>
                       <CTableHead>
                         <CTableRow>
