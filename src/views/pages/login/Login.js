@@ -12,34 +12,36 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CRow
+  CRow,
+  CSpinner,
 } from '@coreui/react';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { validateToken } from 'src/validateToken'; //MINII MUU VALIDATION
 //import axios from 'axios';
 // import { useAuth } from 'src/AuthContext';
 //import { useHistory } from 'react-router-dom';
 
-const Login = ({ setAuthenticated }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const isValid = validateToken(); // Validate the token
   //const history = useHistory();
-  const navigate = useNavigate();
   const HandleLogin = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
       if (!username || !password) {
         setAlertMessage('Хэрэглэгчийн нэр болон нууц үгээ оруулна уу');
         return;
       }
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      setIsLoading(true);
+      //await new Promise(resolve => setTimeout(resolve, 2000));
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
     
@@ -53,21 +55,27 @@ const Login = ({ setAuthenticated }) => {
         headers: myHeaders,
         body: raw
       };
-      const response = await fetch("https://api.majorsoft.mn/api/login", requestOptions);
+      const response = await fetch("https://api.majorsoft.mn/api/login",  {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: raw,
+      });
       const result = await response.json();
       //history.push('/');
       if (response.ok) {
         if (result.isOK) {
           //setAuthenticated(true);
           const data = JSON.parse(result.json)
-          const currentTime = new Date().getTime();
-          const expiryDate = currentTime + data.expiresIn * 1000;
+          //const currentTime = new Date().getTime();
+          const expiryDate =  data.expiresIn;
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("user-info", data.userId);
           localStorage.setItem("expiryDate", expiryDate);
           localStorage.setItem("isAuthenticated", true);
           //setAlertMessage(result.message);
-          navigate('/dashboard');
+          window.location.href = '/';
         } else {
           setAlertMessage(result.message);
         }
@@ -75,9 +83,9 @@ const Login = ({ setAuthenticated }) => {
         setAlertMessage(result.message);
       }
     } catch (error) {
+      setIsLoading(false);
       setAlertMessage(error.message);
     }
-    finally{setLoading(false);}
   };
 
   const togglePasswordVisibility = () => {
@@ -93,13 +101,14 @@ const Login = ({ setAuthenticated }) => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm onSubmit={HandleLogin}>
-                    <h1>Нэвтрэх</h1>
+                    <h2>Нэвтрэх</h2>
                     <p className="text-body-secondary">Та өөрийн бүртгэлтэй хаягаар нэвтрэнэ үү</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
                       <CFormInput
+                        type="username"
                         placeholder="Хэрэглэгчийн нэр"
                         autoComplete="username"
                         value={username}
@@ -124,9 +133,10 @@ const Login = ({ setAuthenticated }) => {
                     {alertMessage && <CAlert color='danger' dismissible onClose={() => setAlertMessage('')}>{alertMessage}</CAlert>}
                     <CRow>
                       <CCol xs={6}>
-                        <CButton type="submit" color="primary" className="px-4">
+                        {!isLoading && <CButton type="submit" color="primary" className="px-4"> 
                           Нэвтрэх
-                        </CButton>
+                        </CButton>}
+                        {isLoading && <CButton type="submit" color="primary" className="px-4"><CSpinner className="text-center" />....</CButton>  }
                       </CCol>
                       <CCol xs={6} className="text-right">
                         <Link to="/reset-password">

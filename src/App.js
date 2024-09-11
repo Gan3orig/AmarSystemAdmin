@@ -3,10 +3,11 @@ import React, { Suspense, useEffect ,useState } from 'react';
 import { useSelector } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './scss/style.scss';
+import { validateToken } from 'src/validateToken'; //MINII MUU VALIDATION
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
-
+const ProtectedRoute = React.lazy(() => import ('./ProtectedRoute'));
 // Pages
 const Login = React.lazy(() => import('./views/pages/login/Login'));
 const Register = React.lazy(() => import('./views/pages/register/Register'));
@@ -16,11 +17,11 @@ const ResetPassword = React.lazy(() => import('./views/pages/resetPwd/resetPassw
 const SetNewPassword = React.lazy(() => import('./views/pages/setNewPassword/setNewPassword'));
 //const Settings = React.lazy(() => import('./views/settings/setting'));
 
-
 const App = () => {
+  const isValid = validateToken(); // Validate the token
   const { isColorModeSet, setColorMode } = useColorModes('amarsystems');
   const storedTheme = useSelector((state) => state.theme);
-  //const isAuthenticated = AuthProvider();
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.href.split('?')[1]);
     const theme = urlParams.get('theme') && urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0];
@@ -42,7 +43,6 @@ const App = () => {
           </div>
         }
       >
-        
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/404" element={<Page404 />} />
@@ -50,9 +50,9 @@ const App = () => {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/set-password" element={<SetNewPassword />} />
           <Route path="/login" element={<Login />} />
-          <Route path="*" element={<DefaultLayout />} />
-          {/* <Route path="/" element={<Login/>} />
-          <Route path="*" element={<DefaultLayout/>} /> */}
+          {/* <Route path="*" element={<DefaultLayout />} /> */}
+          {/* <Route path="*" element={<ProtectedRoute><DefaultLayout /></ProtectedRoute>} /> */}
+          {isValid ? <Route path="*" element={<Login />} /> : <Route path="*" element={<DefaultLayout />} /> }
         </Routes>
       </Suspense>
     </HashRouter>

@@ -1,17 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
-import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom'
+import { validateToken } from 'src/validateToken'
 
 const DefaultLayout = () => {
-  
   return (
     <div>
       <AppSidebar />
       <div className="wrapper d-flex flex-column min-vh-100">
         <AppHeader />
         <div className="body flex-grow-1">
-          <AppContent />
+          <AppContent /> 
         </div>
         <AppFooter />
       </div>

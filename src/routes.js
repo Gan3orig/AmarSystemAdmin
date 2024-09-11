@@ -1,8 +1,8 @@
-import { element } from 'prop-types'
 import React from 'react'
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard')) 
 const Admin = React.lazy(()=>import('./views/admin/admin'))
+const terminalMap = React.lazy(()=>import('./views/admin/terminalMap'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 const Employee =React.lazy(()=>import('./views/employee/employee'))
@@ -64,10 +64,11 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Нүүр' },
   { path: '/dashboard', name: 'Хянах самбар', element: Dashboard },
-  {path: '/settings',name:'Тохиргоо' ,element:Settings},
+  { path: '/settings',name:'Тохиргоо' ,element:Settings},
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path:'/admin' ,name:'Админ', element:Admin},
+  { path:'/terminalMap' ,name:'Терминал', element: terminalMap},
   { path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

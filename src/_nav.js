@@ -6,6 +6,7 @@ import {
   cilDescription,
   cilDevices,
   cilDrop,
+  cilMap,
   cilNotes,
   cilPencil,
   cilPuzzle,
@@ -16,6 +17,7 @@ import {
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import { marker } from 'leaflet'
 
 const _nav = [
   {
@@ -41,6 +43,12 @@ const _nav = [
       color: 'warning',
       text: '1',
     },
+  },
+  {
+    component: CNavItem,
+    name: 'Terminal Maps',
+    to: '/terminalMap',
+    icon: <CIcon icon={cilMap} customClassName="nav-icon" />
   },
   {
     component:CNavTitle,
