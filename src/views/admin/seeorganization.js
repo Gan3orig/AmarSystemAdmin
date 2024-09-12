@@ -18,12 +18,13 @@ import EditModal from './editModal';
 import PropTypes from 'prop-types';
 import CIcon from '@coreui/icons-react';
 import { cilX, cilPen } from '@coreui/icons';
-
+import Modal from './qpayModal';
 const SeeOrganization = ({ data }) => {
   const [showTable, setShowTable] = useState(null); // null, 'organization', or 'individual'
   const [editModal, setEditModal] = useState(false);
   const [editData, setEditData] = useState({});
   const [datas, setDatas] = useState([]);
+  const [qpayModal, setQpayModal] = useState(false)
 
   useEffect(() => {
     setDatas(data);
@@ -34,21 +35,26 @@ const SeeOrganization = ({ data }) => {
     setShowTable(type);
     setEditModal(true);
   };
+  function handleQpayModal() {
+    setQpayModal(!qpayModal)
+  }
 
   const handleDelete = (id) => {
     // Handle delete logic here
-    console.log(`Deleted item with ID: ${id}`);
   };
 
   return (
     <>
-      <CNavbar expand="lg" className="border rounded-3 mt-5">
+      <CNavbar expand="lg" className="border rounded-3 mt-1">
         <CContainer fluid>
           <CNavbarBrand>
             <h4>Qpay холбогдсон байгууллагууд</h4>
           </CNavbarBrand>
           <CNavbarToggler aria-label="Toggle navigation" />
           <CNavbarNav>
+            <CNavItem>
+              <CButton color='primary' onClick={handleQpayModal}>Шинэ холболт</CButton>
+            </CNavItem>
             <CNavItem>
               <CNavLink onClick={() => setShowTable('organization')}>Байгууллагууд</CNavLink>
             </CNavItem>
@@ -159,6 +165,13 @@ const SeeOrganization = ({ data }) => {
           type={showTable}
         />
       )}
+      {qpayModal && (
+        <Modal
+          isVisible={qpayModal}
+          handleClose={handleQpayModal} />
+      )
+
+      }
     </>
   );
 };

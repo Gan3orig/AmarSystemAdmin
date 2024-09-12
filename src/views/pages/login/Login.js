@@ -43,8 +43,10 @@ const Login = () => {
       setIsLoading(true);
       //await new Promise(resolve => setTimeout(resolve, 2000));
       const myHeaders = new Headers();
+      console.log(myHeaders
+      )
       myHeaders.append("Content-Type", "application/json");
-    
+    console.log(myHeaders)
       const raw = JSON.stringify({
         "username": username,
         "password": password
@@ -55,14 +57,9 @@ const Login = () => {
         headers: myHeaders,
         body: raw
       };
-      const response = await fetch("https://api.majorsoft.mn/api/login",  {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: raw,
-      });
+      const response = await fetch("https://api.majorsoft.mn/api/login", requestOptions);
       const result = await response.json();
+      console.log(result)
       //history.push('/');
       if (response.ok) {
         if (result.isOK) {

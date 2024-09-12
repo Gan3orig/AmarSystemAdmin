@@ -8,6 +8,7 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Employee =React.lazy(()=>import('./views/employee/employee'))
 //Settings
 const Settings=React.lazy(()=> import('./views/settings/setting'))
+const Branch=React.lazy(()=>import('./views/settings/branch'))
 //Product
 
 const Categories = React.lazy(() => import('./views/product/categories'));
@@ -64,7 +65,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Нүүр' },
   { path: '/dashboard', name: 'Хянах самбар', element: Dashboard },
-  { path: '/settings',name:'Тохиргоо' ,element:Settings},
+  {path: '/settings',name:'Тохиргоо' ,element:Settings},
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path:'/admin' ,name:'Админ', element:Admin},
@@ -116,6 +117,12 @@ const routes = [
   { path: '/product/productlist', name: 'Бүтээгдэхүүн, Үйлчилгээ', element: ProductList },
   { path: '/product/categories', name: 'Категори', element: Categories },
   { path: '/product/extraCharge', name: 'Нэмэлт төлбөр', element: ExtraCharge },
+  //settings
+  {path: '/settings',name:'Тохиргоо' ,element:Settings},
+  {path:'/settings/branch',name:'Салбарууд',element:Branch},
+
+
+
 ]
 
 export default routes
