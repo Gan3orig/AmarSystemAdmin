@@ -1,35 +1,87 @@
-import React from 'react';
+//import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-
-// Fix for default marker icons in Leaflet
+//import React, { useEffect, useState } from 'react';
 import L from 'leaflet';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon from 'src/assets/images/marker.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
+
+// Fix for default marker icons in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   shadowUrl: markerShadow,
+  iconSize: [20, 20],
+  shadowSize: [12, 12]
 });
 
-const Map = () => {
-  const position = [47.8914133262357,106.896511316299]; // Default position (latitude, longitude)
+const TerminalMap = () => {
+  //const position = [47.8914133262357,106.896511316299]; // Default position (latitude, longitude)
+  const [locations, setLocations] = useState([]);
+  const customIcon = new L.Icon({
+    iconUrl: markerIcon,
+    iconSize: [20, 20],
+    iconAnchor: [21, 21],
+    popupAnchor: [1, -34],
+    shadowUrl: markerShadow,
+    shadowSize: [12, 12]
+  });
+  //const token = localStorage.getItem('token');
+  // Fetch JSON data on component mount
+  // useEffect(() => {
+  //   fetch('https://api.majorsoft.mn/api/terminalMap')
+  //     .then(response => response.json())
+  //     .then(data => setLocations(data))
+  //     .catch(error => console.error('Error fetching locations:', error));
+  // }, []);
+  useEffect(() => {
+    const fetchLocations = async () => {
+      const token = localStorage.getItem('token'); // Retrieve the Bearer token from localStorage or another storage mechanism
 
+      try {
+        const response = await fetch('https://api.majorsoft.mn/api/terminalMap', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`, // Attach the token to the Authorization header
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setLocations(data); // Update state with the fetched data
+        } else {
+          console.error('Failed to fetch locations:', response.status);
+        }
+      } catch (error) {
+        console.error('Error fetching locations:', error);
+      }
+    };
+
+    fetchLocations(); // Call the async function to fetch data
+  }, []);
   return (
-    <MapContainer center={position} zoom={13} style={{ height: '100vh', width: '100%' }}>
+    <MapContainer center={[47, 106]} zoom={6} style={{ height: '80vh', width: '100%' }}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker position={position}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
+      {locations.map(location => (
+        <Marker key={location.terminalId} position={[location.locationLat, location.locationLng]} icon={customIcon} >
+          <Popup>
+            <strong>{location.businessName}</strong><br />
+            {location.entityName}
+            <br/>✆{location.phone1},{location.phone2}
+            <br/>®{location.registerNo}
+            <br/>{location.createDate}
+          </Popup>
+        </Marker>
+      ))}
     </MapContainer>
   );
 };
 
-export default Map;
+export default TerminalMap;
