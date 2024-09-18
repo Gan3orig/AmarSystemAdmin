@@ -9,7 +9,10 @@ export function validateToken(){
         //const decodedToken = token;
         const expireIn = expiryDate / 1000;
         const currentTime = Date.now() / 1000; // Convert to seconds
-        return expireIn > currentTime;
+        if(expireIn < currentTime){
+            return true
+        }
+       return false
     } catch (error) {
         return false;
     }

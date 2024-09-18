@@ -23,24 +23,25 @@ import {
 } from '@coreui/react';
 
 import PropTypes from 'prop-types';
+import { cilX } from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
 
-const Modal = (isVisible , handleClose) => {
+// eslint-disable-next-line react/prop-types
+const Modal = ({ isVisible, handleClose }) => {
     const [regNo, setRegNo] = useState('');
-	//huvi hun register
-	const [individualReg, setIndividualReg] = useState('');
-	const [selectedBranch, setSelectedBranch] = useState('');
-	const [selectedSubBranch, setSelectedSubBranch] = useState('');
-	const [response, setResponse] = useState(null);
-	const [secondResponse, setSecondResponse] = useState(null);
-	const [error, setError] = useState(null);
+    const [individualReg, setIndividualReg] = useState('');
+    const [selectedBranch, setSelectedBranch] = useState('');
+    const [selectedSubBranch, setSelectedSubBranch] = useState('');
+    const [response, setResponse] = useState(null);
+    const [secondResponse, setSecondResponse] = useState(null);
+    const [error, setError] = useState(null);
     const [mmc, setMmc] = useState([]);
-	const [visibleA, setVisibleA] = useState(false);
-	const [individual, setIndividual] = useState(false);
-	const [organization, setOrganization] = useState(false);
-	const [subBranches, setSubBranches] = useState([]);
-	const [branches, setBranches] = useState([]);
-	const [selectedMmc, setSelectedMmc] = useState('');
-	
+    const [visibleA, setVisibleA] = useState(false);
+    const [individual, setIndividual] = useState(false);
+    const [organization, setOrganization] = useState(false);
+    const [subBranches, setSubBranches] = useState([]);
+    const [branches, setBranches] = useState([]);
+    const [selectedMmc, setSelectedMmc] = useState('');
 	const handleCheck = async (regValue) => {
 		const apiUrl = `https://api.ebarimt.mn/api/info/check/getTinInfo?regNo=${regValue}`;
 		const apiOptions = {
@@ -79,20 +80,7 @@ const Modal = (isVisible , handleClose) => {
 			setVisibleA(false);
 		}
 	};
-	// const mmcValue= async()=>{
-	//   const mmcUrl='https://l.facebook.com/l.php?u=https%3A%2F%2Fapi.majorsoft.mn%2Fapi%2FQPay%2FmccCode%3Ffbclid%3DIwZXh0bgNhZW0CMTAAAR3C6XtqHOn7ITv42phBQvCA6Vu8vMbDYbCAbWRFbx-XTD3EMny2Hb4mNKw_aem_kIRjBJne7igKE6zvLG_njA&h=AT12ueg-BUusEa-xhzfkmmxRFSVHreZMgN-F9ZcwFiWxo2fY9a-zIsyin6KXO4cO9z7z4S4ZggK_8zFuIbuHgjpjMBDY-48PgPDdgU8BzmzdiDI5HvXF0Wcskfz989Q4T5SnKw';
-	//   const option={
-	//     method:'GET',
-	//     header: { Accept: 'application/json' },
-	//   }
-	//   const mmcResponse=await fetch(mmcUrl,option);
-	//   const mmcData=await mmcResponse.json();
-	//   console.log(mmcData);
-	//   setMmc(mmcData);
-	// }
-	//   useEffect(()=>{
-	//    mmcValue();
-	//   }, []);
+
 
 
 
@@ -242,6 +230,13 @@ const Modal = (isVisible , handleClose) => {
                                 Байгууллага
                             </CNavLink>
                         </CNavItem>
+                     
+                        <CNavItem>
+                        <button onClick={handleClose} className="btn btn-link p-0">
+                            <CIcon icon={cilX} />
+                        </button>
+                    </CNavItem>
+
                     </CNavbarNav>
                 </CContainer>
             </CNavbar>
@@ -467,8 +462,9 @@ const Modal = (isVisible , handleClose) => {
             )}
         </CModal>
     )};
+  
     Modal.propTypes = {
-        onClose: PropTypes.func.isRequired
-      };;
-    
+        isVisible: PropTypes.bool.isRequired,   // Make sure to validate isVisible
+        handleClose: PropTypes.func.isRequired, // Validate handleClose
+    };
     export default Modal;

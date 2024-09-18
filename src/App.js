@@ -1,13 +1,13 @@
 import { CSpinner, useColorModes } from '@coreui/react';
-import React, { Suspense, useEffect ,useState } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
 import './scss/style.scss';
-import { validateToken } from 'src/validateToken'; //MINII MUU VALIDATION
-
+import { validateToken } from 'src/validateToken';
+import ProtectedRoute from './ProtectedRoute';
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
-const ProtectedRoute = React.lazy(() => import ('./ProtectedRoute'));
+
 // Pages
 const Login = React.lazy(() => import('./views/pages/login/Login'));
 const Register = React.lazy(() => import('./views/pages/register/Register'));
@@ -15,7 +15,6 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'));
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 const ResetPassword = React.lazy(() => import('./views/pages/resetPwd/resetPassword'));
 const SetNewPassword = React.lazy(() => import('./views/pages/setNewPassword/setNewPassword'));
-//const Settings = React.lazy(() => import('./views/settings/setting'));
 
 const App = () => {
   const isValid = validateToken(); // Validate the token
@@ -50,9 +49,24 @@ const App = () => {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/set-password" element={<SetNewPassword />} />
           <Route path="/login" element={<Login />} />
-          {/* <Route path="*" element={<DefaultLayout />} /> */}
-          {/* <Route path="*" element={<ProtectedRoute><DefaultLayout /></ProtectedRoute>} /> */}
-          {isValid ? <Route path="*" element={<Login />} /> : <Route path="*" element={<DefaultLayout />} /> }
+
+          {/* Redirect root to dashboard if authenticated */}
+          <Route
+            path="/"
+            element={
+              isValid ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
+            }
+          />
+
+          {/* Protected Routes */}
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute isValid={isValid}>
+                <DefaultLayout />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Suspense>
     </HashRouter>

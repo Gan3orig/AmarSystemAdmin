@@ -21,10 +21,6 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { validateToken } from 'src/validateToken'; //MINII MUU VALIDATION
-//import axios from 'axios';
-// import { useAuth } from 'src/AuthContext';
-//import { useHistory } from 'react-router-dom';
-
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -63,8 +59,8 @@ const Login = () => {
       //history.push('/');
       if (response.ok) {
         if (result.isOK) {
-          //setAuthenticated(true);
           const data = JSON.parse(result.json)
+          console.log(data)
           //const currentTime = new Date().getTime();
           const expiryDate =  data.expiresIn;
           localStorage.setItem("token", data.accessToken);
@@ -166,6 +162,6 @@ const Login = () => {
     </div>
   );
 };
-Login.propTypes = { setAuthenticated: PropTypes.bool.isRequired };
+// Login.propTypes = { setAuthenticated: PropTypes.bool.isRequired };
 
 export default Login;
