@@ -241,12 +241,12 @@ const Settings = () => {
                   Нэмэлт тохиргоо
                 </CNavLink>
               </CNavItem>
-              <CNavItem className={`${showAddBranchButton ? 'border-bottom fw-bold' : ''} `}>
+              {/* <CNavItem className={`${showAddBranchButton ? 'border-bottom fw-bold' : ''} `}>
                 <CNavLink onClick={() => {
                   setShowAddBranchButton(true);
                   setShowOrderSection(false); // Hide the order section
                 }} className='cursour-pointer'>Салбарууд</CNavLink>
-              </CNavItem>
+              </CNavItem> */}
               {/* <CNavItem>
               <CNavLink href="#" disabled>
                 Disabled

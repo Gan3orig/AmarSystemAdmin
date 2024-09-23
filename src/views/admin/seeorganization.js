@@ -61,6 +61,7 @@ const SeeOrganization = ({ data }) => {
             <CNavItem>
               <CNavLink onClick={() => setShowTable('individual')}>Хувь хүн</CNavLink>
             </CNavItem>
+           
           </CNavbarNav>
         </CContainer>
       </CNavbar>

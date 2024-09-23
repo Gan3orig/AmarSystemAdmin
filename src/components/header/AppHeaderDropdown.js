@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import {
   CAvatar,
   CBadge,
@@ -16,7 +17,7 @@ import {
   CForm,
   CFormLabel,
   CFormInput,
-} from '@coreui/react'
+} from '@coreui/react';
 import {
   cilBell,
   cilCreditCard,
@@ -27,40 +28,51 @@ import {
   cilSettings,
   cilTask,
   cilUser  
+<<<<<<< HEAD
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import initialAvatar from './../../assets/images/avatars/1.jpg'
+=======
+} from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
+import initialAvatar from './../../assets/images/avatars/8.jpg';
+>>>>>>> f150d2fc80c663de41d74f26d593a20a75c6fc69
 
 const AppHeaderDropdown = () => {
-  const [modalVisible, setModalVisible] = useState(false)
-  const [avatar, setAvatar] = useState(initialAvatar)
+  const [modalVisible, setModalVisible] = useState(false);
+  const [avatar, setAvatar] = useState(initialAvatar);
   const [user, setUser] = useState({
     name: 'MajorSoft LLC',
     phoneNumber: '+976 70003214',
     email: 'info@majorsoft.mn',
-  })
-
-  // Ref for the file input
-  const fileInputRef = useRef(null)
+  });
+  
+  const navigate = useNavigate(); // Use useNavigate hook
+  const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0]
+    const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setAvatar(reader.result)
-      }
-      reader.readAsDataURL(file)
+        setAvatar(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   const handleEditPhotoClick = () => {
-    fileInputRef.current.click()  
-  }
+    fileInputRef.current.click();  
+  };
 
   const handleSaveChanges = () => {
-    setModalVisible(false)
-  }
+    setModalVisible(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login'); // Correctly handle navigation in the callback
+  };
 
   return (
     <>
@@ -110,7 +122,7 @@ const AppHeaderDropdown = () => {
             <CBadge color="primary" className="ms-2">42</CBadge>
           </CDropdownItem>
           <CDropdownDivider />
-          <CDropdownItem href="#/login">
+          <CDropdownItem onClick={handleLogout}> {/* Handle logout via onClick */}
             <CIcon icon={cilLockLocked} className="me-2" />
             Гарах
           </CDropdownItem>
@@ -128,7 +140,7 @@ const AppHeaderDropdown = () => {
           <div className="text-center mb-4">
             <CAvatar src={avatar} size="xl" className="mb-3" style={{ width: '150px', height: '150px', borderRadius: '50%' }} />
             <div className="d-grid gap-2 d-md-block">
-              <CButton className="position-sticky" color="primary" size="sm"onClick={handleEditPhotoClick}>
+              <CButton className="position-sticky" color="primary" size="sm" onClick={handleEditPhotoClick}>
                 Зураг солих
               </CButton>
             </div>
@@ -154,7 +166,7 @@ const AppHeaderDropdown = () => {
         </CModalFooter>
       </CModal>
     </>
-  )
-}
+  );
+};
 
-export default AppHeaderDropdown
+export default AppHeaderDropdown;
