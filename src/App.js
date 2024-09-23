@@ -15,6 +15,7 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'));
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 const ResetPassword = React.lazy(() => import('./views/pages/resetPwd/resetPassword'));
 const SetNewPassword = React.lazy(() => import('./views/pages/setNewPassword/setNewPassword'));
+const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard')) 
 
 const App = () => {
   const isValid = validateToken(); // Validate the token
@@ -54,7 +55,7 @@ const App = () => {
           <Route
             path="/"
             element={
-              isValid ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
+            <Dashboard/>
             }
           />
 

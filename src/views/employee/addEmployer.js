@@ -5,7 +5,7 @@ const AddEmployeeList = () => {
         <main className='d-flex justify-content-center mt-2'>
             <CCard style={{ maxWidth: '800px', width: '100%' }}>
                 <CCardHeader>
-                    <CCardTitle>Ажилчин нэмэх</CCardTitle>
+                    <CCardTitle>Ажилчин нэмeх</CCardTitle>
                 </CCardHeader>
                 <CCardBody>
                     <CRow>
