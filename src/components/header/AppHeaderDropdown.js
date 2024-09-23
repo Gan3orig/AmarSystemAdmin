@@ -29,7 +29,7 @@ import {
   cilUser  
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import initialAvatar from './../../assets/images/avatars/8.jpg'
+import initialAvatar from './../../assets/images/avatars/1.jpg'
 
 const AppHeaderDropdown = () => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -122,7 +122,7 @@ const AppHeaderDropdown = () => {
         onClose={() => setModalVisible(false)}
       >
         <CModalHeader>
-          <h5 className="modal-title">Profile</h5>
+          <h5 className="modal-title">Хэрэглэгчийн мэдээлэл</h5>
         </CModalHeader>
         <CModalBody>
           <div className="text-center mb-4">
