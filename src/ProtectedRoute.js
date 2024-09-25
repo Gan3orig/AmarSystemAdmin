@@ -5,5 +5,5 @@ import { Navigate } from 'react-router-dom';
 const ProtectedRoute = ({ isValid, children }) => {
   return isValid ? children : <Navigate to="/login" />;
 };
-
+//isValid aar shalgasnaar nevtersn uguig shalgah blmjtoi 
 export default ProtectedRoute;

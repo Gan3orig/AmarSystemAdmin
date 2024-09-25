@@ -75,7 +75,7 @@ const AppHeaderDropdown = () => {
           <CAvatar src={avatar} size="md" />
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
-          <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Account</CDropdownHeader>
+          <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Хэрэглэгчийн мэдээлэл</CDropdownHeader>
           <CDropdownItem href="#">
             <CIcon icon={cilBell} className="me-2" />
             Updates
@@ -99,15 +99,15 @@ const AppHeaderDropdown = () => {
           <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader>
           <CDropdownItem onClick={() => setModalVisible(true)}>
             <CIcon icon={cilUser} className="me-2" />
-            Profile
+            Нүүр хуудас
           </CDropdownItem>
           <CDropdownItem href="#">
             <CIcon icon={cilSettings} className="me-2" />
-            Settings
+           Тохиргоо
           </CDropdownItem>
           <CDropdownItem href="#">
             <CIcon icon={cilCreditCard} className="me-2" />
-            Payments
+           Төлбөр
             <CBadge color="secondary" className="ms-2">42</CBadge>
           </CDropdownItem>
           <CDropdownItem href="#">

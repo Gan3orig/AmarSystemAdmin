@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react'
-import { NavLink } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useEffect, useRef } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   CContainer,
   CDropdown,
@@ -13,34 +13,46 @@ import {
   CNavLink,
   CNavItem,
   useColorModes,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+} from '@coreui/react';
+import CIcon from '@coreui/icons-react';
 import {
   cilBell,
   cilContrast,
   cilEnvelopeOpen,
+  cilGlobeAlt,
   cilList,
   cilMenu,
   cilMoon,
   cilSun,
-} from '@coreui/icons'
+} from '@coreui/icons';
 
-import { AppBreadcrumb } from './index'
-import { AppHeaderDropdown } from './header/index'
+import { AppBreadcrumb } from './index';
+import { AppHeaderDropdown } from './header/index';
+import { useTranslation } from 'react-i18next';
 
 const AppHeader = () => {
-  const headerRef = useRef()
-  //const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
-  const { colorMode, setColorMode } = useColorModes('amarsystems')
-  const dispatch = useDispatch()
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const headerRef = useRef();
+  const { colorMode, setColorMode } = useColorModes('amarsystems');
+  const dispatch = useDispatch();
+  const sidebarShow = useSelector((state) => state.sidebarShow);
 
   useEffect(() => {
-    document.addEventListener('scroll', () => {
+    const handleScroll = () => {
       headerRef.current &&
-        headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
-    })
-  }, [])
+        headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0);
+    };
+
+    document.addEventListener('scroll', handleScroll);
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const { i18n } = useTranslation(); // Moved outside of the LanguageSwitcher function
+
+  const handleLanguageChange = (lang) => {
+    i18n.changeLanguage(lang);
+  };
 
   return (
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
@@ -58,7 +70,7 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#/product/productlist">Бүтээгдэхүүн,Үйлчилгээ</CNavLink>
+            <CNavLink href="#/product/productlist">Бүтээгдэхүүн, Үйлчилгээ</CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink href="#/settings">Тохиргоо</CNavLink>
@@ -80,8 +92,25 @@ const AppHeader = () => {
               <CIcon icon={cilEnvelopeOpen} size="lg" />
             </CNavLink>
           </CNavItem>
+         
         </CHeaderNav>
         <CHeaderNav>
+        <CDropdown variant="nav-item" placement="bottom-end">
+            <CDropdownToggle caret={false} className="d-flex align-items-center">
+              <CIcon icon={cilGlobeAlt} size="lg" />
+              <span className="ms-2">
+                {i18n.language === 'mn' ? 'Монгол' : 'English'}
+              </span>
+            </CDropdownToggle>
+            <CDropdownMenu>
+              <CDropdownItem onClick={() => handleLanguageChange('mn')}>
+                Монгол
+              </CDropdownItem>
+              <CDropdownItem onClick={() => handleLanguageChange('en')}>
+                English
+              </CDropdownItem>
+            </CDropdownMenu>
+          </CDropdown>
           <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
           </li>
@@ -135,7 +164,7 @@ const AppHeader = () => {
         <AppBreadcrumb />
       </CContainer>
     </CHeader>
-  )
-}
+  );
+};
 
-export default AppHeader
+export default AppHeader;

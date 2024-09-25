@@ -1,21 +1,33 @@
+import { element } from 'prop-types'
 import React from 'react'
 
+
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard')) 
+//admin
 const Admin = React.lazy(()=>import('./views/admin/admin'))
 const terminalMap = React.lazy(()=>import('./views/admin/terminalMap'))
-const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
-const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
-const Employee =React.lazy(()=>import('./views/employee/employee'))
+const terminal=React.lazy(()=>import('./views/admin/terminal'))
+
+ //regastration
+
+ const productList = React.lazy(() => import('./views/registration/productlist.js'));
+const Customer=React.lazy(()=>import('./views/registration/customer'))
+
+//flow
+// const cashFlow = React.lazy(() => import('./views/flow/cashFlow'));
+// const itemTransaction = React.lazy(() => import('./views/flow/itemTransaction'));
+// const count = React.lazy(() => import('./views/flow/count'));
+// const payReceiveable = React.lazy(() => import('./views/flow/payReceiveable'));
+// const cardTransaction = React.lazy(() => import('./views/flow/cardTransaction'));
+
+
+
 //Settings
 const Settings=React.lazy(()=> import('./views/settings/setting'))
 const Branch=React.lazy(()=>import('./views/settings/branch'))
-//Product
 
-const Categories = React.lazy(() => import('./views/product/categories'));
-const ProductList = React.lazy(() => import('./views/product/productlist'));
-const ExtraCharge = React.lazy(() => import('./views/product/extraCharge'));
-//Customer
-const Interlocutor=React.lazy(()=>import('./views/interlocutor/interlocutor'))
+
+
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -61,6 +73,9 @@ const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
+const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
+const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
+const Employee =React.lazy(()=>import('./views/employee/employee'))
 
 const routes = [
   { path: '/', exact: true, name: 'Нүүр' },
@@ -70,7 +85,7 @@ const routes = [
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path:'/admin' ,name:'Админ', element:Admin},
   { path:'/terminalMap' ,name:'Терминал', element: terminalMap},
-  { path:'/interlocutor' ,name:'Харилцагчид', element:Interlocutor},
+  { path:'/costumer' ,name:'Харилцагчид', element:Customer},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },
@@ -113,14 +128,15 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', element: Modals },
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },   
-  //product 
-  { path: '/product/productlist', name: 'Бүтээгдэхүүн, Үйлчилгээ', element: ProductList },
-  { path: '/product/categories', name: 'Категори', element: Categories },
-  { path: '/product/extraCharge', name: 'Нэмэлт төлбөр', element: ExtraCharge },
+
+ 
   //settings
   {path: '/settings',name:'Тохиргоо' ,element:Settings},
   {path:'/settings/branch',name:'Салбарууд',element:Branch},
 
+
+  //registration
+  {path:'/registration/productList',name:"Бүртгэл" ,element:productList}
 
 
 ]
