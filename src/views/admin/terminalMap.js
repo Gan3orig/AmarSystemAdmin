@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import markerIcon from 'src/assets/images/marker.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { CAlert, CContainer } from '@coreui/react'
 
 
 // Fix for default marker icons in Leaflet
@@ -29,18 +30,10 @@ const TerminalMap = () => {
     shadowUrl: markerShadow,
     shadowSize: [12, 12]
   });
-  //const token = localStorage.getItem('token');
-  // Fetch JSON data on component mount
-  // useEffect(() => {
-  //   fetch('https://api.majorsoft.mn/api/terminalMap')
-  //     .then(response => response.json())
-  //     .then(data => setLocations(data))
-  //     .catch(error => console.error('Error fetching locations:', error));
-  // }, []);
+  const [visible, setVisible] = useState(false)
   useEffect(() => {
     const fetchLocations = async () => {
       const token = localStorage.getItem('token'); // Retrieve the Bearer token from localStorage or another storage mechanism
-
       try {
         const response = await fetch('https://api.majorsoft.mn/api/terminalMap', {
           method: 'GET',
@@ -49,11 +42,12 @@ const TerminalMap = () => {
             'Content-Type': 'application/json'
           }
         });
-
         if (response.ok) {
+          setVisible(false);
           const data = await response.json();
           setLocations(data); // Update state with the fetched data
         } else {
+          setVisible(true);
           console.error('Failed to fetch locations:', response.status);
         }
       } catch (error) {
@@ -64,7 +58,12 @@ const TerminalMap = () => {
     fetchLocations(); // Call the async function to fetch data
   }, []);
   return (
-    <MapContainer center={[47, 106]} zoom={6} style={{ height: '80vh', width: '100%' }}>
+    <CContainer>
+      <CAlert color="warning" visible={visible} closeButton onShowChange={setVisible}>
+        <strong>Анхааруулга!</strong> Хэрэглэгчээр нэвтрээгүй байна. <a href="/login#/login" className="alert-link">Нэвтрэх</a>.
+      </CAlert>
+      <MapContainer center={[47, 106]} zoom={6} style={{ height: '80vh', width: '100%' }}>
+      
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -80,7 +79,7 @@ const TerminalMap = () => {
           </Popup>
         </Marker>
       ))}
-    </MapContainer>
+    </MapContainer></CContainer>
   );
 };
 

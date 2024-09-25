@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
+import { CAlert, CContainer } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
 import { validateToken } from 'src/validateToken'
 
 const DefaultLayout = () => {
   return (
-    <div>
+    <div>      
       <AppSidebar />
       <div className="wrapper d-flex flex-column min-vh-100">
         <AppHeader />
