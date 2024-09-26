@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk_coreui_AmarSystem=self.webpackChunk_coreui_AmarSystem||[]).push([[2397],{32397:(e,r,s)=>{s.r(r),s.d(r,{default:()=>c});s(65043);var t=s(73216),u=s(76547),a=s(70579);const c=()=>{if(!(0,u.k)())return(0,a.jsx)(t.C5,{to:"/login",replace:!0})}}}]);
-//# sourceMappingURL=2397.f21564ed.chunk.js.map
