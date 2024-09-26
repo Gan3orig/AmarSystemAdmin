@@ -21,7 +21,7 @@ import {
     CTableHeaderCell,
     CTableDataCell,
 } from '@coreui/react';
-import AddCategory from './addCategory'; // Import your AddCategory component here
+import AddCategory from '../notUsed/addCategory'; // Import your AddCategory component here
 
 const timeOptions = () => {
     const options = [];

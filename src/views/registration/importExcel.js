@@ -42,7 +42,7 @@ const ImportExcel = ({ visible, onClose }) => {
                     {/* Adding an anchor tag for the download functionality */}
                     <a 
                         href="example/Жишээ файл.xlsx" 
-                        download="Жишээ файл.xlsx"
+                        // download="Жишээ файл.xlsx"
                         style={{ textDecoration: 'none' }}
                     >
                         <CButton color="link">

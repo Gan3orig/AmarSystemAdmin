@@ -1,19 +1,25 @@
 import {
   cilBell,
+  cilBellExclamation,
   cilCalculator,
   cilChartPie,
   cilCursor,
   cilDescription,
   cilDevices,
   cilDrop,
+  cilList,
   cilMap,
   cilNotes,
   cilPencil,
   cilPuzzle,
   cilSettings,
+  cilShareBoxed,
   cilSpeedometer,
   cilStar,
+  cilTerminal,
+  cilTransfer,
   cilUser,
+  cilUserPlus,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
@@ -30,46 +36,42 @@ const _nav = [
       text: 'Шинэ',
     },
   },
+  //admin
   {
     component: CNavTitle,
     name: 'Admin Panel',
   },
   {
-    component: CNavItem,
-    name: 'Tools',
-    to: '/admin',
-    icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
-    badge: {
-      color: 'warning',
-      text: '1',
-    },
-  },
-  {
-    component: CNavItem,
-    name: 'Terminal Maps',
-    to: '/terminalMap',
-    icon: <CIcon icon={cilMap} customClassName="nav-icon" />
-  },
-  {
     component: CNavGroup,
-    name: 'Тохиргоо',
-    to: '/settings',
-    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
-    items: [ // Changed `item` to `items` (CoreUI uses `items` for groups)
+    name: 'Админ',
+    icon:<CIcon icon={cilUser} customClassName="nav-icon"/>,
+    items: [
       {
         component: CNavItem,
-        name: 'Тохиргоо',
-        to: '/settings',
+        name: 'Tools',
+        to: '/admin',
+      
+      
       },
       {
         component: CNavItem,
-        name: 'Салбар',
-        to: '/settings/branch', // Changed from './settings/branch' to '/settings/branch'
+        name: 'Terminal Maps',
+        to: '/terminalMap',
+       
+      },
+      {
+        component: CNavItem,
+        name: 'Terminal',
+        to: '/terminal',
+      
       },
     ],
-  }
-,  
-
+  },
+  //Burtgel
+  {
+    component: CNavTitle,
+    name: 'Бүртгэл',
+  },
   {
     component: CNavGroup,
     name: 'Бүртгэл',
@@ -79,40 +81,84 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Бүтээгдэхүүн, үйлчилгээ',
-        to: '/product/productlist',
+        to: '/registration/productlist',
+       
       },
       {
         component: CNavItem,
-        name: 'Категори',
-        to: '/product/categories',
+        name: 'Харилцагч',
+        to: 'registration/interlocutor',
+       
       },
-      {
-        component: CNavItem,
-        name: 'Нэмэлт төлбөр',
-        to: '/product/extraCharge',
-      },
+    
     ],
   },
+  //Flow
   {
     component: CNavTitle,
-    name: 'Харилцагч',
+    name: 'Гүйлгээ',
+   
   },
   {
-    component: CNavItem,
-    name: 'Харилцагч',
-      to: '/interlocutor',
-        icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-  },
-  {
+    component: CNavGroup,
+    name: 'Гүйлгээ',
+    to: '/flow',
+    icon: <CIcon icon={cilTransfer} size="sm"customClassName="nav-icon" />,
+    items: [ 
+      {
+        component: CNavItem,
+        name: 'Мөнгөн гүйлгээ',
+        to: '/flow/cashFlow',
+      },
+      {
+        component: CNavItem,
+        name: 'Орлого/Зарлага',
+        to: '/flow/itemTransaction', 
+      },
+      {
+        component: CNavItem,
+        name: 'Тооллого',
+        to: '/flow/count', 
+      },
+      {
+        component: CNavItem,
+        name: 'Өглөг/Авлаг',
+        to: '/flow/payReceiveable', 
+      },
+      {
+        component: CNavItem,
+        name: 'Картын гүйлгээ',
+        to: '/flow/CardTransaction', 
+      },
+    ],
+  }
+,  
+//Settings
+{
     component: CNavTitle,
-    name: 'Ажилчин',
+    name: 'Тохиргоо',
   },
   {
-    component: CNavItem,
-    name: 'Aжилчин',
-      to: '/employee',
-        icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-  },
+    component: CNavGroup,
+    name: 'Тохиргоо',
+    to: '/settings',
+    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+    items: [ 
+      {
+        component: CNavItem,
+        name: 'Салбар',
+        to: '/settings/branch',
+      },
+      {
+        component: CNavItem,
+        name: 'Терминал',
+        to: '/admin/terminal',
+      },
+     
+    ],
+  }
+,  
+
 {
   component: CNavTitle,
     name: 'Theme',

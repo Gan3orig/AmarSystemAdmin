@@ -7,7 +7,7 @@ import {
     CImage,
 } from '@coreui/react';
 import { useState } from 'react';
-import AddCategory from './addCategory'; // Import the AddCategory component
+import AddCategory from '../notUsed/addCategory'; // Import the AddCategory component
 import category from './photos/categories.png';
 
 const Category = () => {

@@ -4,7 +4,7 @@ import {
     CNavbar,
     CNavbarBrand,
 } from '@coreui/react';
-import PopUp from './PopUp'; // Ensure PopUp is correctly imported
+
 
 const Interlocutor = () => {
     const [showPopUp, setShowPopUp] = useState(false);
@@ -23,7 +23,7 @@ const Interlocutor = () => {
                 </CContainer>
             </CNavbar>
 
-            {showPopUp && <PopUp />} {/* Render PopUp when showPopUp is true */}
+        
         </div>
     );
 };
