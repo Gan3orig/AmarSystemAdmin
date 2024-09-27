@@ -50,9 +50,9 @@ const ProductList = () => {
                                 color='primary' 
                                 className='my-2' 
                                 onClick={handleAddProduct}
-                                aria-label={t('addProduct')} 
+                                aria-label={t('r.addItem')} 
                             >
-                                {t('add_product')}
+                                {t('r.addItem')}
                             </CButton>
                             <CButton 
                                 className='my-2' 

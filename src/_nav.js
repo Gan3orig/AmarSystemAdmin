@@ -1,34 +1,30 @@
 import {
   cilBell,
-  cilBellExclamation,
   cilCalculator,
   cilChartPie,
   cilCursor,
   cilDescription,
-  cilDevices,
   cilDrop,
-  cilList,
-  cilMap,
   cilNotes,
   cilPencil,
   cilPuzzle,
   cilSettings,
-  cilShareBoxed,
   cilSpeedometer,
   cilStar,
-  cilTerminal,
   cilTransfer,
   cilUser,
-  cilUserPlus,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
-import { marker } from 'leaflet'
+import { Translation } from 'react-i18next'
 
-const _nav = [
-  {
+
+  const _nav = [
+    {
+  
+  
     component: CNavItem,
-    name: 'Хянах самбар',
+    name: <Translation>{(t) => <>{t('nav.dashboard')}</>}</Translation>,
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
     badge: {
@@ -39,11 +35,11 @@ const _nav = [
   //admin
   {
     component: CNavTitle,
-    name: 'Admin Panel',
+    name: <Translation>{(t) => <>{t('nav.adminPanel')}</>}</Translation>,
   },
   {
     component: CNavGroup,
-    name: 'Админ',
+    name: <Translation>{(t) => <>{t('nav.adminPanel')}</>}</Translation>,
     icon:<CIcon icon={cilUser} customClassName="nav-icon"/>,
     items: [
       {
@@ -70,24 +66,24 @@ const _nav = [
   //Burtgel
   {
     component: CNavTitle,
-    name: 'Бүртгэл',
+    name: <Translation>{(t) => <>{t('nav.registration')}</>}</Translation>,
   },
   {
     component: CNavGroup,
-    name: 'Бүртгэл',
+    name: <Translation>{(t) => <>{t('nav.registration')}</>}</Translation>,
     to: '/product',
     icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Бүтээгдэхүүн, үйлчилгээ',
+        name: <Translation>{(t) => <>{t('nav.product')}</>}</Translation>,
         to: '/registration/productlist',
        
       },
       {
         component: CNavItem,
-        name: 'Харилцагч',
-        to: 'registration/interlocutor',
+        name: <Translation>{(t) => <>{t('nav.costumer')}</>}</Translation>,
+        to: '/interlocutor',
        
       },
     
@@ -96,38 +92,38 @@ const _nav = [
   //Flow
   {
     component: CNavTitle,
-    name: 'Гүйлгээ',
+    name: <Translation>{(t) => <>{t('nav.transactions')}</>}</Translation>,
    
   },
   {
     component: CNavGroup,
-    name: 'Гүйлгээ',
+    name: <Translation>{(t) => <>{t('nav.transactions')}</>}</Translation>,
     to: '/flow',
     icon: <CIcon icon={cilTransfer} size="sm"customClassName="nav-icon" />,
     items: [ 
       {
         component: CNavItem,
-        name: 'Мөнгөн гүйлгээ',
+        name: <Translation>{(t) => <>{t('nav.cashFlow')}</>}</Translation>,
         to: '/flow/cashFlow',
       },
       {
         component: CNavItem,
-        name: 'Орлого/Зарлага',
+        name: <Translation>{(t) => <>{t('nav.itemTransaction')}</>}</Translation>,
         to: '/flow/itemTransaction', 
       },
       {
         component: CNavItem,
-        name: 'Тооллого',
+        name: <Translation>{(t) => <>{t('nav.Count')}</>}</Translation>,
         to: '/flow/count', 
       },
       {
         component: CNavItem,
-        name: 'Өглөг/Авлаг',
+        name: <Translation>{(t) => <>{t('nav.payReceiveable')}</>}</Translation>,
         to: '/flow/payReceiveable', 
       },
       {
         component: CNavItem,
-        name: 'Картын гүйлгээ',
+        name: <Translation>{(t) => <>{t('nav.CardTransaction')}</>}</Translation>,
         to: '/flow/CardTransaction', 
       },
     ],
@@ -136,22 +132,22 @@ const _nav = [
 //Settings
 {
     component: CNavTitle,
-    name: 'Тохиргоо',
+    name: <Translation>{(t) => <>{t('nav.Settings')}</>}</Translation>,
   },
   {
     component: CNavGroup,
-    name: 'Тохиргоо',
+    name: <Translation>{(t) => <>{t('nav.Settings')}</>}</Translation>,
     to: '/settings',
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
     items: [ 
       {
         component: CNavItem,
-        name: 'Салбар',
+        name: <Translation>{(t) => <>{t('nav.brunch')}</>}</Translation>,
         to: '/settings/branch',
       },
       {
         component: CNavItem,
-        name: 'Терминал',
+        name: <Translation>{(t) => <>{t('nav.terminal')}</>}</Translation>,
         to: '/admin/terminal',
       },
      
@@ -436,4 +432,5 @@ const _nav = [
   },
 ]
 
-export default _nav
+
+export default _nav;

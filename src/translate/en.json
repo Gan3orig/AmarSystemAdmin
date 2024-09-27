@@ -1,7 +1,61 @@
 {
-    "products": "Products",
-    "manage_products": "You can manage your products from here.",
-    "add_product": "Add Product",
-    "import_excel": "Import Excel"
-  }
+  "nav.dashboard": "Dashboard",
+  "nav.adminPanel": "Admin Panel",
+  "nav.registration": "Registration",
+  "nav.product": "Product Service",
+  "nav.costumer": "Customer",
+  "nav.transactions": "Transaction",
+  "nav.cashFlow": "Cash Flow",
+  "nav.itemTransaction":"Item Transaction",
+  "nav.Count":"Count",
+  "nav.payReceiveable":"Pay Receiveable",
+  "nav.CardTransaction":"Card Transaction",
+   "nav.Settings":"Settings",
+   "nav.brunch":"Brunch",
+   "nav.terminal":"Terminal",
+
+   "dashboard":"Dashboard",
+   "products_services":"Producst Service",
+   "settings":"Settings",
+   "select":"Select",
+   "description":"Description",
+   "save":"Save",
+   "single":"Single Product",
+   "crushed":"Kilogram-force",
+  "products":"Product",
+  "manage_products":"Manage Products",
+   
+    "r.quantity":"Quantity",
+
+    "r.addItem":"Add Item",
+    "r.barcode":"Barcode",
+    "r.barcodePlaceholder":"barcode",
+    "r.category":"Category",
+    "r.productName":"Product Name",
+    "r.productNamePlaceholder":"product Name",
+    "r.productType":"Product Type",
+    "r.packageCountPlaceholder":"Package Count",
+    "r.isService":"Is Service",
+    "selectTime":"Select Time",
+    "r.descriptionPlaceholder":"description",
+    "r.price":"Price",
+    "r.pricePlaceholder":"price",
+    "r.cost":"Cost",
+    "r.costPlaceholder":"cost",
+    "r.ageLimit":"Age Limit",
   
+    "r.supplier":"Supplier",
+    "r.products":"Products",
+    "r.groupItems":"Group Item"
+
+
+
+
+
+
+
+
+
+
+
+}
