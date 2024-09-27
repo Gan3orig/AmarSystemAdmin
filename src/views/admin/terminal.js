@@ -1,13 +1,13 @@
-//import React from 'react';
-import React, { useEffect, useState } from 'react';
-import { CAlert, CContainer,CFormLabel,CFormInput } from '@coreui/react'
+// //import React from 'react';
+// import React, { useEffect, useState } from 'react';
+// import { CAlert, CContainer,CFormLabel,CFormInput } from '@coreui/react'
 
-const Terminal = () => {
-    const [data, setData] = useState([]);
-  const [visible, setVisible] = useState(false)
-  const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterCategory, setFilterCategory] = useState('');
+// const Terminal = () => {
+//     const [data, setData] = useState([]);
+//   const [visible, setVisible] = useState(false)
+//   const [filteredData, setFilteredData] = useState([]);
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [filterCategory, setFilterCategory] = useState('');
  
   const fields = ['name', 'category', 'otherField']; // Define table columns
   useEffect(() => {
@@ -44,8 +44,8 @@ const Terminal = () => {
         filterData(searchTerm, category);
       };
 
-    fetchLocations(); // Call the async function to fetch data
-    // Search functionality
+//     fetchLocations(); // Call the async function to fetch data
+//     // Search functionality
   
    // Function to filter data based on search term and category
    const filterData = (searchTerm, category) => {
@@ -79,4 +79,4 @@ const Terminal = () => {
   );
 };
 
-export default Terminal;
+// export default Terminal;

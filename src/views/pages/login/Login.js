@@ -1,4 +1,4 @@
-import { cilLockLocked, cilUser } from '@coreui/icons';
+import { cilLockLocked, cilUser, cilGlobeAlt } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import {
   CAlert,
@@ -13,62 +13,69 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-  CSpinner,
+  CSpinner
 } from '@coreui/react';
-import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { validateToken } from 'src/validateToken'; //MINII MUU VALIDATION
+import { validateToken } from 'src/validateToken'; // Validation
+import { useTranslation } from 'react-i18next';
+
 const Login = () => {
+  const { t, i18n } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const isValid = validateToken(); // Validate the token
-  //const history = useHistory();
-  const HandleLogin = async (e) => {
+  const navigate = useNavigate(); // Use navigate for redirection
+
+  useEffect(() => {
+    if (isValid) {
+      navigate('/'); // Redirect if already authenticated
+    }
+  }, [isValid, navigate]);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setAlertMessage(''); // Reset alert message
+    if (!username || !password) {
+      setAlertMessage(t('fillCredentials'));
+      return;
+    }
+    
+    setIsLoading(true); // Start loading
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    
+    const raw = JSON.stringify({
+      username,
+      password,
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+    };
+
     try {
-      if (!username || !password) {
-        setAlertMessage('Хэрэглэгчийн нэр болон нууц үгээ оруулна уу');
-        return;
-      }
-      setIsLoading(true);
-      //await new Promise(resolve => setTimeout(resolve, 2000));
-      const myHeaders = new Headers();
-      console.log(myHeaders
-      )
-      myHeaders.append("Content-Type", "application/json");
-    console.log(myHeaders)
-      const raw = JSON.stringify({
-        "username": username,
-        "password": password
-      });
-  
-      const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw
-      };
       const response = await fetch("https://api.majorsoft.mn/api/login", requestOptions);
       const result = await response.json();
-      console.log(result)
-      //history.push('/');
+
       if (response.ok) {
         if (result.isOK) {
-          const data = JSON.parse(result.json)
-          console.log(data)
-          //const currentTime = new Date().getTime();
-          const expiryDate =  data.expiresIn;
+          const data = JSON.parse(result.json);
+          const expiryDate = data.expiresIn;
+
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("user-info", data.userId);
           localStorage.setItem("expiryDate", expiryDate);
           localStorage.setItem("isAuthenticated", true);
-          //setAlertMessage(result.message);
-          window.location.href = '/';
+
+          navigate('/'); // Redirect to home on successful login
         } else {
           setAlertMessage(result.message);
         }
@@ -76,13 +83,18 @@ const Login = () => {
         setAlertMessage(result.message);
       }
     } catch (error) {
-      setIsLoading(false);
       setAlertMessage(error.message);
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleLanguageChange = (lang) => {
+    i18n.changeLanguage(lang); // Change the language
   };
 
   return (
@@ -93,16 +105,16 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm onSubmit={HandleLogin}>
-                    <h2>Нэвтрэх</h2>
-                    <p className="text-body-secondary">Та өөрийн бүртгэлтэй хаягаар нэвтрэнэ үү</p>
+                  <CForm onSubmit={handleLogin}>
+                    <h2>{t('login')}</h2>
+                    <p className="text-body-secondary">{t('enterCredentials')}</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
                       <CFormInput
-                        type="username"
-                        placeholder="Хэрэглэгчийн нэр"
+                        type="text"
+                        placeholder={t('username')}
                         autoComplete="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
@@ -114,7 +126,7 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         type={showPassword ? "text" : "password"}
-                        placeholder="Нууц үг"
+                        placeholder={t('password')}
                         autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -126,17 +138,30 @@ const Login = () => {
                     {alertMessage && <CAlert color='danger' dismissible onClose={() => setAlertMessage('')}>{alertMessage}</CAlert>}
                     <CRow>
                       <CCol xs={6}>
-                        {!isLoading && <CButton type="submit" color="primary" className="px-4"> 
-                          Нэвтрэх
-                        </CButton>}
-                        {isLoading && <CButton type="submit" color="primary" className="px-4"><CSpinner className="text-center" />....</CButton>  }
+                        <CButton type="submit" color="primary" className="px-4" disabled={isLoading}>
+                          {isLoading ? <CSpinner size="sm" /> : t('login')}
+                        </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
                         <Link to="/reset-password">
                           <CButton color="link" className="px-0">
-                            Нууц үг мартсан
+                            {t('forgotPassword')}
                           </CButton>
                         </Link>
+                        {/* <CInputGroup className="mt-2">
+                          <CInputGroupText caret={false} className="d-flex align-items-center">
+                            <CIcon icon={cilGlobeAlt} size="lg" />
+                            <span className="ms-2">
+                              {i18n.language === 'mn' ? t('language.mongolian') : t('language.english')}
+                            </span>
+                          </CInputGroupText>
+                          <CInputGroup onClick={() => handleLanguageChange('mn')} className="cursor-pointer">
+                            {t('language.mongolian')}
+                          </CInputGroup>
+                          <CInputGroup onClick={() => handleLanguageChange('en')} className="cursor-pointer">
+                            {t('language.english')}
+                          </CInputGroup>
+                        </CInputGroup> */}
                       </CCol>
                     </CRow>
                   </CForm>
@@ -145,11 +170,11 @@ const Login = () => {
               <CCard className="text-white bg-primary py-5">
                 <CCardBody className="text-center">
                   <div>
-                    <h2>Бүртгүүлэх</h2>
-                    <p>Бизнесээ ухаалгаар хяна</p>
+                    <h2>{t('register')}</h2>
+                    <p>{t('registerBusiness')}</p>
                     <Link to="/register">
                       <CButton color="primary" className="mt-3">
-                        Одоо бүртгүүлэх
+                        {t('nowRegister')}
                       </CButton>
                     </Link>
                   </div>
@@ -162,6 +187,8 @@ const Login = () => {
     </div>
   );
 };
+
+// Uncomment and update propTypes if needed
 // Login.propTypes = { setAuthenticated: PropTypes.bool.isRequired };
 
 export default Login;

@@ -24,6 +24,7 @@
    "crushed":"Kilogram-force",
   "products":"Product",
   "manage_products":"Manage Products",
+  
    
     "r.quantity":"Quantity",
 
@@ -46,7 +47,25 @@
   
     "r.supplier":"Supplier",
     "r.products":"Products",
-    "r.groupItems":"Group Item"
+    "r.groupItems":"Group Item",
+
+    
+      "login": "Login",
+      "enterCredentials": "Please enter your credentials",
+      "username": "Username",
+      "password": "Password",
+      "forgotPassword": "Forgot password",
+      "register": "Register",
+      "registerBusiness": "Manage your business wisely",
+      "nowRegister": "Register now",
+      "language": {
+        "mongolian": "Mongolian",
+        "english": "English"
+      },
+      "fillCredentials": "Please fill in your username and password."
+    
+    }
+    
 
 
 
@@ -58,4 +77,3 @@
 
 
 
-}

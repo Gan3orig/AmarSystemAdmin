@@ -38,11 +38,7 @@ import { Translation } from 'react-i18next'
     name: <Translation>{(t) => <>{t('nav.adminPanel')}</>}</Translation>,
   },
   {
-    component: CNavGroup,
-    name: <Translation>{(t) => <>{t('nav.adminPanel')}</>}</Translation>,
-    icon:<CIcon icon={cilUser} customClassName="nav-icon"/>,
-    items: [
-      {
+  
         component: CNavItem,
         name: 'Tools',
         to: '/admin',
@@ -53,14 +49,10 @@ import { Translation } from 'react-i18next'
         to: '/terminalMap',
        
       },
-      {
-        component: CNavItem,
-        name: 'Terminal',
-        to: '/terminal',
+     
       
-      },
-    ],
-  },
+     
+   
   //Burtgel
   {
     component: CNavTitle,
