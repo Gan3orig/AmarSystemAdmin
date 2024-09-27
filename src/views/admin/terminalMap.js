@@ -54,13 +54,12 @@ const TerminalMap = () => {
         console.error('Error fetching locations:', error);
       }
     };
-
     fetchLocations(); // Call the async function to fetch data
   }, []);
   return (
     <CContainer>
       <CAlert color="warning" visible={visible} closeButton onShowChange={setVisible}>
-        <strong>Анхааруулга!</strong> Хэрэглэгчээр нэвтрээгүй байна. <a href="/login#/login" className="alert-link">Нэвтрэх</a>.
+        <strong>Анхааруулга!</strong> Хэрэглэгчээр нэвтрээгүй байна. <a href="/#/login" className="alert-link">Нэвтрэх</a>.
       </CAlert>
       <MapContainer center={[47, 106]} zoom={6} style={{ height: '80vh', width: '100%' }}>
       

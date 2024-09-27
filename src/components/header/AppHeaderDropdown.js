@@ -27,11 +27,18 @@ import {
   cilLockLocked,
   cilSettings,
   cilTask,
+<<<<<<< HEAD
   cilUser  
 
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import initialAvatar from './../../assets/images/avatars/1.jpg'
+=======
+  cilUser
+} from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
+import initialAvatar from './../../assets/images/userLight.png'
+>>>>>>> d6a7ab88ddec3d3972a361b165c7379750a49ea3
 
 
 const AppHeaderDropdown = () => {
@@ -77,20 +84,24 @@ const AppHeaderDropdown = () => {
           <CAvatar src={avatar} size="md" />
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
+<<<<<<< HEAD
+          <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Мэдээлэл</CDropdownHeader>
+=======
           <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Хэрэглэгчийн мэдээлэл</CDropdownHeader>
+>>>>>>> 0d0d517a126a9a4d573b6021d7ffc8cf32d06381
           <CDropdownItem href="#">
             <CIcon icon={cilBell} className="me-2" />
-            Updates
+            Шинэчлэлтүүд
             <CBadge color="info" className="ms-2">42</CBadge>
           </CDropdownItem>
           <CDropdownItem href="#">
             <CIcon icon={cilEnvelopeOpen} className="me-2" />
-            Messages
+            Мессеж
             <CBadge color="success" className="ms-2">42</CBadge>
           </CDropdownItem>
           <CDropdownItem href="#">
             <CIcon icon={cilTask} className="me-2" />
-            Tasks
+            Ажилууд
             <CBadge color="danger" className="ms-2">42</CBadge>
           </CDropdownItem>
           <CDropdownItem href="#">
@@ -98,9 +109,20 @@ const AppHeaderDropdown = () => {
             Comments
             <CBadge color="warning" className="ms-2">42</CBadge>
           </CDropdownItem>
-          <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader>
+          <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Тохиргоонууд</CDropdownHeader>
           <CDropdownItem onClick={() => setModalVisible(true)}>
             <CIcon icon={cilUser} className="me-2" />
+<<<<<<< HEAD
+            Хэрэглэгч
+          </CDropdownItem>
+          <CDropdownItem href="#">
+            <CIcon icon={cilSettings} className="me-2" />
+            Тохиргоо
+          </CDropdownItem>
+          <CDropdownItem href="#">
+            <CIcon icon={cilCreditCard} className="me-2" />
+            Төлбөр
+=======
             Нүүр хуудас
           </CDropdownItem>
           <CDropdownItem href="#">
@@ -110,11 +132,12 @@ const AppHeaderDropdown = () => {
           <CDropdownItem href="#">
             <CIcon icon={cilCreditCard} className="me-2" />
            Төлбөр
+>>>>>>> 0d0d517a126a9a4d573b6021d7ffc8cf32d06381
             <CBadge color="secondary" className="ms-2">42</CBadge>
           </CDropdownItem>
           <CDropdownItem href="#">
             <CIcon icon={cilFile} className="me-2" />
-            Projects
+            Төсөл
             <CBadge color="primary" className="ms-2">42</CBadge>
           </CDropdownItem>
           <CDropdownDivider />
