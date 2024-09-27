@@ -85,6 +85,7 @@ const routes = [
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path:'/admin' ,name:'Админ', element:Admin},
   { path:'/terminalMap' ,name:'Терминал', element: terminalMap},
+  { path:'/terminal' ,name:'Терминал', element: terminal},
   { path:'/costumer' ,name:'Харилцагчид', element:Customer},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

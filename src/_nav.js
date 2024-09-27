@@ -23,8 +23,9 @@ import {
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+//import { useTranslation } from 'react-i18next'
 import { marker } from 'leaflet'
-
+//const { t } = useTranslation();
 const _nav = [
   {
     component: CNavItem,
@@ -50,8 +51,6 @@ const _nav = [
         component: CNavItem,
         name: 'Tools',
         to: '/admin',
-      
-      
       },
       {
         component: CNavItem,

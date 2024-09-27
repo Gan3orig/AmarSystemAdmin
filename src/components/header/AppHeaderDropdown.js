@@ -76,11 +76,6 @@ const AppHeaderDropdown = () => {
           <CAvatar src={avatar} size="md" />
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
-<<<<<<< HEAD
-          <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Мэдээлэл</CDropdownHeader>
-=======
-          <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Хэрэглэгчийн мэдээлэл</CDropdownHeader>
->>>>>>> 0d0d517a126a9a4d573b6021d7ffc8cf32d06381
           <CDropdownItem href="#">
             <CIcon icon={cilBell} className="me-2" />
             Шинэчлэлтүүд
@@ -104,27 +99,6 @@ const AppHeaderDropdown = () => {
           <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Тохиргоонууд</CDropdownHeader>
           <CDropdownItem onClick={() => setModalVisible(true)}>
             <CIcon icon={cilUser} className="me-2" />
-<<<<<<< HEAD
-            Хэрэглэгч
-          </CDropdownItem>
-          <CDropdownItem href="#">
-            <CIcon icon={cilSettings} className="me-2" />
-            Тохиргоо
-          </CDropdownItem>
-          <CDropdownItem href="#">
-            <CIcon icon={cilCreditCard} className="me-2" />
-            Төлбөр
-=======
-            Нүүр хуудас
-          </CDropdownItem>
-          <CDropdownItem href="#">
-            <CIcon icon={cilSettings} className="me-2" />
-           Тохиргоо
-          </CDropdownItem>
-          <CDropdownItem href="#">
-            <CIcon icon={cilCreditCard} className="me-2" />
-           Төлбөр
->>>>>>> 0d0d517a126a9a4d573b6021d7ffc8cf32d06381
             <CBadge color="secondary" className="ms-2">42</CBadge>
           </CDropdownItem>
           <CDropdownItem href="#">
