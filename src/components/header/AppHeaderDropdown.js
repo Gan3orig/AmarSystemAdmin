@@ -27,10 +27,18 @@ import {
   cilLockLocked,
   cilSettings,
   cilTask,
+<<<<<<< HEAD
+  cilUser  
+
+} from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
+import initialAvatar from './../../assets/images/avatars/1.jpg'
+=======
   cilUser
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import initialAvatar from './../../assets/images/userLight.png'
+>>>>>>> d6a7ab88ddec3d3972a361b165c7379750a49ea3
 
 
 const AppHeaderDropdown = () => {

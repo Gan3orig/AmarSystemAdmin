@@ -22,6 +22,8 @@ import {
     CTableDataCell,
 } from '@coreui/react';
 import AddCategory from '../notUsed/addCategory'; // Import your AddCategory component here
+import { useTranslation } from 'react-i18next';
+
 
 const timeOptions = () => {
     const options = [];
@@ -51,7 +53,9 @@ const importOptions = [
     { value: 'TACHI', label: 'ТАЛХ ЧИХЭР ХХК' },
 ];
 
+    
 const AddProduct = () => {
+    const { t } = useTranslation();
     const [productName, setProductName] = useState('');
     const [productPrice, setProductPrice] = useState('');
     const [productDescription, setProductDescription] = useState('');
@@ -126,20 +130,20 @@ const AddProduct = () => {
     return (
         <main className='d-flex flex-column align-items-center mt-2'>
             <CCard style={{ maxWidth: '800px', width: '100%' }}>
-                <CCardHeader>Бараа нэмэх</CCardHeader>
+                <CCardHeader>{t('r.addItem')}</CCardHeader>
                 <CCardBody>
                     <CForm onSubmit={handleSubmit}>
                         <CRow className='mb-3'>
                             <CCol md={6}>
-                                <CFormLabel>Баркод</CFormLabel>
+                                <CFormLabel>{t('r.barcode')}</CFormLabel>
                                 <CFormInput
                                     type='number'
-                                    placeholder='Баркод'
+                                    placeholder={t('r.barcodePlaceholder')}
                                     required
                                 />
                             </CCol>
                             <CCol md={6}>
-                                <CFormLabel>Категори</CFormLabel>
+                                <CFormLabel>{t('r.category')}</CFormLabel>
                                 <CCol>
                                     <CRow>
                                         <CCol xs={9}>
@@ -147,7 +151,7 @@ const AddProduct = () => {
                                                 value={selectedCategory}
                                                 onChange={handleCategoryChange}
                                             >
-                                                <option value="">Сонгох</option>
+                                                <option value="">{t('select')}</option>
                                                 {categories.map((category) => (
                                                     <option key={category.id} value={category.id}>
                                                         {category.name}
@@ -164,12 +168,12 @@ const AddProduct = () => {
                         </CRow>
                         <CRow className='mb-3'>
                             <CCol>
-                                <CFormLabel>Барааны нэр</CFormLabel>
+                                <CFormLabel>{t('r.productName')}</CFormLabel>
                                 <CFormInput
                                     type='text'
                                     value={productName}
                                     onChange={(e) => setProductName(e.target.value)}
-                                    placeholder='Барааны нэрийг оруулна уу'
+                                    placeholder={t('r.productNamePlaceholder')}
                                     required
                                 />
                             </CCol>
@@ -177,12 +181,12 @@ const AddProduct = () => {
                         <CContainer>
                             <CRow className='mb-3'>
                                 <CCol>
-                                    <CFormLabel>Барааны төрөл</CFormLabel>
+                                    <CFormLabel>{t('r.productType')}</CFormLabel>
                                     <CFormCheck
                                         type='radio'
                                         name='productType'
                                         id='shirheg'
-                                        label='Ширхэг'
+                                        label={t('single')}
                                         checked={productType === 'shirheg'}
                                         onChange={() => setProductType('shirheg')}
                                     />
@@ -190,7 +194,7 @@ const AddProduct = () => {
                                         type='radio'
                                         name='productType'
                                         id='butarhai'
-                                        label='Бутархай'
+                                        label={t('crushed')}
                                         checked={productType === 'butarhai'}
                                         onChange={() => setProductType('butarhai')}
                                     />
@@ -199,7 +203,7 @@ const AddProduct = () => {
                                             type='number'
                                             value={packageCount}
                                             onChange={(e) => setPackageCount(e.target.value)}
-                                            placeholder='Багцын тоог оруулна уу'
+                                            placeholder={t('r.packageCountPlaceholder')}
                                         />
                                     )}
                                 </CCol>
@@ -210,19 +214,19 @@ const AddProduct = () => {
                                 <CFormCheck
                                     type='checkbox'
                                     id='service'
-                                    label="Үйлчилгээ эсэх"
+                                    label={t('r.isService')}
                                     checked={isService}
                                     onChange={(e) => setIsService(e.target.checked)}
                                 />
                             </CCol>
                             {isService && (
                                 <CCol md={6}>
-                                    <CFormLabel>Цаг сонгох</CFormLabel>
+                                    <CFormLabel>{t('r.selectTime')}</CFormLabel>
                                     <CFormSelect
                                         value={serviceTime}
                                         onChange={(e) => setServiceTime(e.target.value)}
                                     >
-                                        <option value="">Сонгох</option>
+                                        <option value="">{t('select')}</option>
                                         {timeOptions().map((time) => (
                                             <option key={time} value={time}>
                                                 {time}
@@ -234,43 +238,43 @@ const AddProduct = () => {
                         </CRow>
                         <CRow className='mb-3'>
                             <CCol>
-                                <CFormLabel>Тайлбар</CFormLabel>
+                                <CFormLabel>{t('description')}</CFormLabel>
                                 <CFormInput
                                     type='text'
                                     value={productDescription}
                                     onChange={(e) => setProductDescription(e.target.value)}
-                                    placeholder='Барааны тайлбарыг оруулна уу'
+                                    placeholder={t('r.descriptionPlaceholder')}
                                 />
                             </CCol>
                         </CRow>
                         <CRow className='mb-3'>
                             <CCol md={6}>
-                                <CFormLabel>Үнэ</CFormLabel>
+                                <CFormLabel>{t('r.price')}</CFormLabel>
                                 <CFormInput
                                     type='number'
                                     value={productPrice}
                                     onChange={(e) => setProductPrice(e.target.value)}
-                                    placeholder='Үнийг оруулна уу'
+                                    placeholder={t('r.pricePlaceholder')}
                                     required
                                 />
                             </CCol>
                             <CCol md={6}>
-                                <CFormLabel>Өртөг</CFormLabel>
+                                <CFormLabel>{t('r.cost')}</CFormLabel>
                                 <CFormInput
                                     type='number'
-                                    placeholder='Өртөг'
+                                    placeholder={t('r.costPlaceholder')}
                                     required
                                 />
                             </CCol>
                         </CRow>
                         <CRow className='mb-3'>
                             <CCol md={6}>
-                                <CFormLabel>Насны хязгаар</CFormLabel>
+                                <CFormLabel>{t('r.ageLimit')}</CFormLabel>
                                 <CFormSelect
                                     value={ageLimit}
                                     onChange={(e) => setAgeLimit(e.target.value)}
                                 >
-                                    <option value="">Сонгох</option>
+                                    <option value="">{t('select')}</option>
                                     {ageOptions.map((option) => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
@@ -279,12 +283,12 @@ const AddProduct = () => {
                                 </CFormSelect>
                             </CCol>
                             <CCol md={6}>
-                                <CFormLabel>Нийлүүлэгч</CFormLabel>
+                                <CFormLabel>{t('r.supplier')}</CFormLabel>
                                 <CFormSelect
                                     value={importValue}
                                     onChange={(e) => setImport(e.target.value)}
                                 >
-                                    <option value="">Сонгох</option>
+                                    <option value="">{t('select')}</option>
                                     {importOptions.map((option) => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
@@ -294,16 +298,16 @@ const AddProduct = () => {
                             </CCol>
                         </CRow>
                         <CButton type='submit' color='primary'>
-                            Хадгалах
+                            {t('save')}
                         </CButton>
                     </CForm>
                 </CCardBody>
             </CCard>
             <CCard style={{ maxWidth: '800px', width: '100%', marginBottom: '1rem' }} className='mt-2'>
-                <CCardHeader>Бараа</CCardHeader>
+                <CCardHeader>{t('r.products')}</CCardHeader>
                 <CCardBody>
                     <CRow>
-                        <CCol>Бараа багцлах</CCol>
+                        <CCol>{t('r.groupItems')}</CCol>
                         <CCol className='end-0'>
                             <CFormSwitch onChange={handleSwitchChange} size="xl" className='d-flex justify-content-end' />
                         </CCol>
@@ -311,10 +315,10 @@ const AddProduct = () => {
                     {isTableVisible && (
                         <CTable>
                             <CTableHead>
-                                <CTableHeaderCell>Баркод</CTableHeaderCell>
-                                <CTableHeaderCell>Нэр</CTableHeaderCell>
-                                <CTableHeaderCell>Тоо ширхэг</CTableHeaderCell>
-                                <CTableHeaderCell>Үнэ</CTableHeaderCell>
+                                <CTableHeaderCell>{t('r.barcode')}</CTableHeaderCell>
+                                <CTableHeaderCell>{t('r.productName')}</CTableHeaderCell>
+                                <CTableHeaderCell>{t('r.quantity')}</CTableHeaderCell>
+                                <CTableHeaderCell>{t('r.price')}</CTableHeaderCell>
                                 <CTableHeaderCell></CTableHeaderCell>
                             </CTableHead>
                             <CTableBody>
@@ -330,10 +334,10 @@ const AddProduct = () => {
                     )}
                 </CCardBody>
             </CCard>
-            {addModal && <AddCategory visibleCat={addModal} handleModalCat={handleModalCat} />} 
-       
+            {addModal && <AddCategory visibleCat={addModal} handleModalCat={handleModalCat} />}
         </main>
     );
 };
+
 
 export default AddProduct;

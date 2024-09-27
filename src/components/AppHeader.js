@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  CAlert,
   CContainer,
   CDropdown,
   CDropdownItem,
@@ -26,7 +25,6 @@ import {
   cilMoon,
   cilSun,
 } from '@coreui/icons';
-
 import { AppBreadcrumb } from './index';
 import { AppHeaderDropdown } from './header/index';
 import { useTranslation } from 'react-i18next';
@@ -36,6 +34,7 @@ const AppHeader = () => {
   const { colorMode, setColorMode } = useColorModes('amarsystems');
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state) => state.sidebarShow);
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,8 +47,6 @@ const AppHeader = () => {
       document.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  const { i18n } = useTranslation(); // Moved outside of the LanguageSwitcher function
 
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang);
@@ -67,14 +64,14 @@ const AppHeader = () => {
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
             <CNavLink to="/dashboard" as={NavLink}>
-              Хянах самбар
+              {i18n.t('dashboard')}
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#/product/productlist">Бүтээгдэхүүн, Үйлчилгээ</CNavLink>
+            <CNavLink href="#/product/productlist">{i18n.t('products_services')}</CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#/settings">Тохиргоо</CNavLink>
+            <CNavLink href="#/settings">{i18n.t('settings')}</CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
@@ -93,10 +90,9 @@ const AppHeader = () => {
               <CIcon icon={cilEnvelopeOpen} size="lg" />
             </CNavLink>
           </CNavItem>
-         
         </CHeaderNav>
         <CHeaderNav>
-        <CDropdown variant="nav-item" placement="bottom-end">
+          <CDropdown variant="nav-item" placement="bottom-end">
             <CDropdownToggle caret={false} className="d-flex align-items-center">
               <CIcon icon={cilGlobeAlt} size="lg" />
               <span className="ms-2">
@@ -133,7 +129,7 @@ const AppHeader = () => {
                 type="button"
                 onClick={() => setColorMode('light')}
               >
-                <CIcon className="me-2" icon={cilSun} size="lg" /> Light
+                <CIcon className="me-2" icon={cilSun} size="lg" /> {i18n.t('light')}
               </CDropdownItem>
               <CDropdownItem
                 active={colorMode === 'dark'}
@@ -142,7 +138,7 @@ const AppHeader = () => {
                 type="button"
                 onClick={() => setColorMode('dark')}
               >
-                <CIcon className="me-2" icon={cilMoon} size="lg" /> Dark
+                <CIcon className="me-2" icon={cilMoon} size="lg" /> {i18n.t('dark')}
               </CDropdownItem>
               <CDropdownItem
                 active={colorMode === 'auto'}
@@ -151,7 +147,7 @@ const AppHeader = () => {
                 type="button"
                 onClick={() => setColorMode('auto')}
               >
-                <CIcon className="me-2" icon={cilContrast} size="lg" /> Auto
+                <CIcon className="me-2" icon={cilContrast} size="lg" /> {i18n.t('auto')}
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
