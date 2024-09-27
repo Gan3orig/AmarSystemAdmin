@@ -32,11 +32,11 @@ const Terminal = () => {
       } catch (error) {
         console.error('Error fetching locations:', error);
       }
-      const handleSearch = (event) => {
-        const searchTerm = event.target.value.toLowerCase();
-        setSearchTerm(searchTerm);
-        filterData(searchTerm, filterCategory);
-      };
+    //   const handleSearch = (event) => {
+    //     const searchTerm = event.target.value.toLowerCase();
+    //     setSearchTerm(searchTerm);
+    //     filterData(searchTerm, filterCategory);
+    //   };
       // Filter functionality
       const handleFilter = (event) => {
         const category = event.target.value;
@@ -73,7 +73,7 @@ const Terminal = () => {
           type="text"
           placeholder="Search..."
           value={searchTerm}
-          onChange={handleSearch}
+        //   onChange={handleSearch}
         />
       </CContainer>
   );
