@@ -46,8 +46,6 @@ import { Translation } from 'react-i18next'
         component: CNavItem,
         name: 'Tools',
         to: '/admin',
-      
-      
       },
       {
         component: CNavItem,
