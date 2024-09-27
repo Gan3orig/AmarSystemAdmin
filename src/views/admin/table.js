@@ -10,8 +10,10 @@ import {
   CContainer, 
   CInputGroup, 
   CInputGroupText, 
-  CFormInput ,
- 
+  CFormInput, 
+  CButton, 
+  CPagination, 
+  CPaginationItem 
 } from '@coreui/react';
 import { cilSearch } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
@@ -20,6 +22,8 @@ const Table = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15; // Change this to set how many items you want per page
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,6 +61,17 @@ const Table = () => {
     location.registerNo.includes(searchTerm)
   );
 
+  // Calculate the current items to display
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
   return (
     <CContainer>
       {loading ? (
@@ -65,7 +80,7 @@ const Table = () => {
         </div>
       ) : (
         <>
-             <CInputGroup className="mb-3">
+          <CInputGroup className="mb-3">
             <CFormInput
               type="text"
               placeholder="Хайх"
@@ -78,7 +93,7 @@ const Table = () => {
           </CInputGroup>
 
           <CTable align="middle" hover responsive bordered>
-            <CTableHead color="dark">
+            <CTableHead color="primary">
               <CTableRow>
                 <CTableHeaderCell>*</CTableHeaderCell>
                 <CTableHeaderCell>Нэр</CTableHeaderCell>
@@ -89,9 +104,9 @@ const Table = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {filteredData.map((location, index) => (
+              {currentItems.map((location, index) => (
                 <CTableRow key={location.terminalId}>
-                  <CTableDataCell>{index + 1}</CTableDataCell>
+                  <CTableDataCell>{indexOfFirstItem + index + 1}</CTableDataCell>
                   <CTableDataCell>{location.businessName}</CTableDataCell>
                   <CTableDataCell>{location.entityName}</CTableDataCell>
                   <CTableDataCell>{location.phone1}, {location.phone2}</CTableDataCell>
@@ -101,6 +116,52 @@ const Table = () => {
               ))}
             </CTableBody>
           </CTable>
+
+          {/* Pagination Controls */}
+          <CPagination aria-label="Page navigation example" className="mt-3">
+            <CPaginationItem 
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
+              disabled={currentPage === 1}
+            >
+             Өмнөх
+            </CPaginationItem>
+
+            {Array.from({ length: totalPages }, (_, index) => {
+              const pageNumber = index + 1;
+
+              // Show first and last pages and pages around current
+              if (pageNumber === 1 || pageNumber === totalPages || 
+                  (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)) {
+                return (
+                  <CPaginationItem 
+                    key={pageNumber} 
+                    onClick={() => setCurrentPage(pageNumber)} 
+                    active={currentPage === pageNumber}
+                  >
+                    {pageNumber}
+                  </CPaginationItem>
+                );
+              }
+
+              // Show ellipses
+              if (pageNumber === 2 && currentPage > 3) {
+                return <CPaginationItem key="ellipsis-left" disabled>...</CPaginationItem>;
+              }
+
+              if (pageNumber === totalPages - 1 && currentPage < totalPages - 2) {
+                return <CPaginationItem key="ellipsis-right" disabled>...</CPaginationItem>;
+              }
+
+              return null; 
+            })}
+
+            <CPaginationItem 
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
+              disabled={currentPage === totalPages}
+            >
+           Дараах
+            </CPaginationItem>
+          </CPagination>
         </>
       )}
     </CContainer>
