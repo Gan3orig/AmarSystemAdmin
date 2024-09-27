@@ -1,14 +1,11 @@
-//import React from 'react';
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-//import React, { useEffect, useState } from 'react';
 import L from 'leaflet';
 import markerIcon from 'src/assets/images/marker.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import { CAlert, CContainer } from '@coreui/react'
-
-
+import { CAlert, CContainer, CAccordion, CAccordionItem, CAccordionHeader, CAccordionBody } from '@coreui/react';
+import Table from './table'
 // Fix for default marker icons in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -20,8 +17,9 @@ L.Icon.Default.mergeOptions({
 });
 
 const TerminalMap = () => {
-  //const position = [47.8914133262357,106.896511316299]; // Default position (latitude, longitude)
   const [locations, setLocations] = useState([]);
+  const [visible, setVisible] = useState(false);
+
   const customIcon = new L.Icon({
     iconUrl: markerIcon,
     iconSize: [20, 20],
@@ -30,10 +28,10 @@ const TerminalMap = () => {
     shadowUrl: markerShadow,
     shadowSize: [12, 12]
   });
-  const [visible, setVisible] = useState(false)
+
   useEffect(() => {
     const fetchLocations = async () => {
-      const token = localStorage.getItem('token'); // Retrieve the Bearer token from localStorage or another storage mechanism
+      const token = localStorage.getItem('token'); // Retrieve the Bearer token from localStorage
       try {
         const response = await fetch('https://api.majorsoft.mn/api/terminalMap', {
           method: 'GET',
@@ -56,29 +54,47 @@ const TerminalMap = () => {
     };
     fetchLocations(); // Call the async function to fetch data
   }, []);
+
   return (
     <CContainer>
       <CAlert color="warning" visible={visible} closeButton onShowChange={setVisible}>
         <strong>Анхааруулга!</strong> Хэрэглэгчээр нэвтрээгүй байна. <a href="/#/login" className="alert-link">Нэвтрэх</a>.
       </CAlert>
-      <MapContainer center={[47, 106]} zoom={6} style={{ height: '80vh', width: '100%' }}>
-      
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      {locations.map(location => (
-        <Marker key={location.terminalId} position={[location.locationLat, location.locationLng]} icon={customIcon} >
-          <Popup>
-            <strong>{location.businessName}</strong><br />
-            {location.entityName}
-            <br/>✆{location.phone1},{location.phone2}
-            <br/>®{location.registerNo}
-            <br/>{location.createDate}
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer></CContainer>
+      <CAccordion activeItemKey={1} alwaysOpen>
+        <CAccordionItem itemKey={1}>
+          <CAccordionHeader>
+            Салбарын байршил (Terminal Map)
+          </CAccordionHeader>
+          <CAccordionBody>
+            <MapContainer center={[47, 106]} zoom={6} style={{ height: '80vh', width: '100%' }}>
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              {locations.map(location => (
+                <Marker key={location.terminalId} position={[location.locationLat, location.locationLng]} icon={customIcon}>
+                  <Popup>
+                    <strong>{location.businessName}</strong><br />
+                    {location.entityName}
+                    <br />✆{location.phone1},{location.phone2}
+                    <br />®{location.registerNo}
+                    <br />{location.createDate}
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </CAccordionBody>
+        </CAccordionItem>
+        <CAccordionItem itemKey={2}>
+          <CAccordionHeader>
+            Салбарын мэдээлэл (Terminal Information)
+          </CAccordionHeader>
+          <CAccordionBody>
+           <Table/>
+          </CAccordionBody>
+        </CAccordionItem>
+      </CAccordion>
+    </CContainer>
   );
 };
 
