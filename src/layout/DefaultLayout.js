@@ -1,23 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
-import { CAlert, CContainer } from '@coreui/react'
-import { useNavigate } from 'react-router-dom'
-import { validateToken } from 'src/validateToken'
+import React, { useEffect } from 'react';
+import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index';
+import { CAlert, CContainer } from '@coreui/react';
+import { useNavigate } from 'react-router-dom';
+import { validateToken } from 'src/validateToken';
 
 const DefaultLayout = () => {
+  const navigate = useNavigate(); 
+  const isValid = validateToken();
+
+  useEffect(() => {
+    if (!isValid) {
+      navigate('/login');
+    }
+  }, [isValid, navigate]);
+
   return (
-    <div>      
+    <div>
       <AppSidebar />
       <div className="wrapper d-flex flex-column min-vh-100">
         <AppHeader />
         <div className="body flex-grow-1">
-          <AppContent /> 
+          <AppContent />
         </div>
         <AppFooter />
       </div>
     </div>
-  )
-}
-//DefaultLayout.propTypes = { isAuthenticated: PropTypes.bool.isRequired };
+  );
+};
 
-export default DefaultLayout
+export default DefaultLayout;

@@ -1,18 +1,20 @@
-//import jwt_decode from 'jsonwebtoken';
-//import { useNavigate } from 'react-router-dom';
-
 export function validateToken(){
     const token = localStorage.getItem('token');
     const expiryDate = localStorage.getItem('expiryDate');
-    if (!token) return false;
+    
+    if (!token || !expiryDate) return false; // No token or expiry date, return false
+    
     try {
-        //const decodedToken = token;
-        const expireIn = expiryDate / 1000;
-        const currentTime = Date.now() / 1000; // Convert to seconds
-        if(expireIn < currentTime){
-            return true
+        const currentTime = Date.now(); // Current time in milliseconds
+        const expireIn = new Date(expiryDate).getTime(); // Ensure expiryDate is in milliseconds
+        
+        // If the token has expired, return false
+        if (expireIn < currentTime) {
+            return false;
         }
-       return false
+        
+        // Token is still valid
+        return true;
     } catch (error) {
         return false;
     }

@@ -23,20 +23,20 @@ import { validateToken } from 'src/validateToken'; // Validation
 import { useTranslation } from 'react-i18next';
 
 const Login = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const isValid = validateToken(); // Validate the token
   const navigate = useNavigate(); // Use navigate for redirection
 
   useEffect(() => {
+    const isValid = validateToken(); // Validate the token on mount
     if (isValid) {
-      navigate('/'); 
+      navigate('/dashboard'); 
     }
-  }, [isValid, navigate]);
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -69,14 +69,14 @@ const Login = () => {
         if (result.isOK) {
           const data = JSON.parse(result.json);
           const expiryDate = data.expiresIn;
-
+            console.log('hi')
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("user-info", data.userId);
           localStorage.setItem("expiryDate", expiryDate);
           localStorage.setItem("isAuthenticated", true);
-          localStorage.setItem("role", data.role);
+          localStorage.setItem("role", "admin");
 
-          navigate('/Dashboard'); 
+          navigate('/dashboard'); 
         } else {
           setAlertMessage(result.message);
         }
@@ -94,9 +94,6 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleLanguageChange = (lang) => {
-    i18n.changeLanguage(lang); 
-  };
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">

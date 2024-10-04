@@ -13,7 +13,8 @@
    "nav.Settings":"Settings",
    "nav.brunch":"Brunch",
    "nav.terminal":"Terminal",
-
+   "nav.tools":"Admin",
+   "nav.terminalMaps": "Terminal Map",
    "dashboard":"Dashboard",
    "products_services":"Producst Service",
    "settings":"Settings",
@@ -55,7 +56,7 @@
       "username": "Username",
       "password": "Password",
       "forgotPassword": "Forgot password",
-      "register": "Register",
+    
       "registerBusiness": "Manage your business wisely",
       "nowRegister": "Register now",
       "language": {

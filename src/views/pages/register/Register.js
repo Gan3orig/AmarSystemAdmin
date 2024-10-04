@@ -103,8 +103,8 @@ const Register = () => {
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <CForm onSubmit={handleSignUp}>
-                  <h1>{t('register.title')}</h1> {/* Translation for "Бүртгүүлэх" */}
-                  <p className="text-body-secondary">{t('register.subtitle')}</p> {/* Translation for "Шинэ хаяг нээх" */}
+                  <h1>{t('register.title')}</h1> 
+                  <p className="text-body-secondary">{t('register.subtitle')}</p> 
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilUser} />
@@ -130,7 +130,7 @@ const Register = () => {
                       <CIcon icon={cilPhone} />
                     </CInputGroupText>
                     <CFormInput
-                      placeholder={t('register.phonePlaceholder')} // Translation for "Утас"
+                      placeholder={t('register.phonePlaceholder')}
                       autoComplete="Phone_number"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
@@ -142,7 +142,7 @@ const Register = () => {
                     </CInputGroupText>
                     <CFormInput
                       type={showPassword ? 'text' : 'password'}
-                      placeholder={t('register.passwordPlaceholder')} // Translation for "Нууц үг"
+                      placeholder={t('register.passwordPlaceholder')}
                       autoComplete="new-password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -154,7 +154,7 @@ const Register = () => {
                     </CInputGroupText>
                     <CFormInput
                       type={showPassword ? 'text' : 'password'}
-                      placeholder={t('register.confirmPasswordPlaceholder')} // Translation for "Нууц үг давтана уу"
+                      placeholder={t('register.confirmPasswordPlaceholder')}
                       autoComplete="new-password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -175,7 +175,7 @@ const Register = () => {
                   )}
                   <div className="d-grid">
                     <CButton color="primary" type="submit">
-                      {t('register.submitButton')} {/* Translation for "Бүртгүүлэх" */}
+                      {t('register.submitButton')} 
                     </CButton>
                   </div>
                 </CForm>
