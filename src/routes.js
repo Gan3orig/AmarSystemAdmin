@@ -6,7 +6,7 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 //admin
 const Admin = React.lazy(()=>import('./views/admin/admin'))
 const terminalMap = React.lazy(()=>import('./views/admin/terminalMap'))
-const terminal=React.lazy(()=>import('./views/admin/terminal'))
+
 
  //regastration
 
@@ -80,12 +80,13 @@ const Employee =React.lazy(()=>import('./views/employee/employee'))
 const routes = [
   { path: '/', exact: true, name: 'Нүүр' },
   { path: '/dashboard', name: 'Хянах самбар', element: Dashboard },
+
   {path: '/settings',name:'Тохиргоо' ,element:Settings},
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path:'/admin' ,name:'Админ', element:Admin},
   { path:'/terminalMap' ,name:'Терминал', element: terminalMap},
-  { path:'/terminal' ,name:'Терминал', element: terminal},
+
   { path:'/costumer' ,name:'Харилцагчид', element:Customer},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

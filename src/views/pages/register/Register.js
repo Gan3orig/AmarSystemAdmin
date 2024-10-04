@@ -17,8 +17,10 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Import i18n hook
 
 const Register = () => {
+  const { t } = useTranslation(); // Initialize translation hook
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +28,7 @@ const Register = () => {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -34,12 +36,12 @@ const Register = () => {
     e.preventDefault();
 
     if (!name || !email || !password || !confirmPassword) {
-      setError('Бүх талбаруудыг бөглөнө үү');
+      setError(t('error.fieldsRequired')); // Use translation key
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Нууц үг тохирохгүй байна');
+      setError(t('error.passwordMismatch')); // Use translation key
       return;
     }
 
@@ -66,18 +68,18 @@ const Register = () => {
     try {
       const response = await fetch('https://api.majorsoft.mn/api/userAccount', requestOptions);
       const result = await response.json();
-      console.log(response);
-      console.log(result.isOK);
       if (result.isOK) {
         setSuccess(result.message);
         resetForm();
-        setTimeout(()=>{navigate('/login');},2000)
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
       } else {
         setError(result.message);
       }
     } catch (error) {
       console.error('Error:', error);
-      setError('Алдаа гарлаа');
+      setError(t('error.general')); // Use translation key
     }
   };
 
@@ -101,14 +103,14 @@ const Register = () => {
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <CForm onSubmit={handleSignUp}>
-                  <h1>Бүртгүүлэх</h1>
-                  <p className="text-body-secondary">Шинэ хаяг нээх</p>
+                  <h1>{t('register.title')}</h1> {/* Translation for "Бүртгүүлэх" */}
+                  <p className="text-body-secondary">{t('register.subtitle')}</p> {/* Translation for "Шинэ хаяг нээх" */}
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilUser} />
                     </CInputGroupText>
                     <CFormInput
-                      placeholder="Нэр"
+                      placeholder={t('register.namePlaceholder')} // Translation for "Нэр"
                       autoComplete="username"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -117,7 +119,7 @@ const Register = () => {
                   <CInputGroup className="mb-3">
                     <CInputGroupText>@</CInputGroupText>
                     <CFormInput
-                      placeholder="Email"
+                      placeholder={t('register.emailPlaceholder')} // Translation for "Email"
                       autoComplete="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -128,7 +130,7 @@ const Register = () => {
                       <CIcon icon={cilPhone} />
                     </CInputGroupText>
                     <CFormInput
-                      placeholder="Утас"
+                      placeholder={t('register.phonePlaceholder')} // Translation for "Утас"
                       autoComplete="Phone_number"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
@@ -140,7 +142,7 @@ const Register = () => {
                     </CInputGroupText>
                     <CFormInput
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Нууц үг"
+                      placeholder={t('register.passwordPlaceholder')} // Translation for "Нууц үг"
                       autoComplete="new-password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -152,7 +154,7 @@ const Register = () => {
                     </CInputGroupText>
                     <CFormInput
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Нууц үг давтана уу"
+                      placeholder={t('register.confirmPasswordPlaceholder')} // Translation for "Нууц үг давтана уу"
                       autoComplete="new-password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -173,7 +175,7 @@ const Register = () => {
                   )}
                   <div className="d-grid">
                     <CButton color="primary" type="submit">
-                      Бүртгүүлэх
+                      {t('register.submitButton')} {/* Translation for "Бүртгүүлэх" */}
                     </CButton>
                   </div>
                 </CForm>

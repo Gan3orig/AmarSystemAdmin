@@ -62,7 +62,25 @@
         "mongolian": "Mongolian",
         "english": "English"
       },
-      "fillCredentials": "Please fill in your username and password."
+      "fillCredentials": "Please fill in your username and password.",
+      
+        "register": {
+          "title": "Register",
+          "subtitle": "Create a new account",
+          "namePlaceholder": "Name",
+          "emailPlaceholder": "Email",
+          "phonePlaceholder": "Phone",
+          "passwordPlaceholder": "Password",
+          "confirmPasswordPlaceholder": "Confirm Password",
+          "submitButton": "Register"
+        },
+        "error": {
+          "fieldsRequired": "Please fill in all fields",
+          "passwordMismatch": "Passwords do not match",
+          "general": "An error occurred"
+        }
+      
+      
     
     }
     

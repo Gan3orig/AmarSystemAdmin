@@ -56,7 +56,25 @@
       "mongolian": "Монгол",
       "english": "English"
     },
-    "fillCredentials": "Бүртгэлээ бөглөж өгнө үү."
+    "fillCredentials": "Бүртгэлээ бөглөж өгнө үү.",
+    
+      "register": {
+       
+        "subtitle": "Шинэ хаяг нээх",
+        "namePlaceholder": "Нэр",
+        "emailPlaceholder": "Email",
+        "phonePlaceholder": "Утас",
+        "passwordPlaceholder": "Нууц үг",
+        "confirmPasswordPlaceholder": "Нууц үг давтана уу",
+        "submitButton": "Бүртгүүлэх"
+      },
+      "error": {
+        "fieldsRequired": "Бүх талбаруудыг бөглөнө үү",
+        "passwordMismatch": "Нууц үг тохирохгүй байна",
+        "general": "Алдаа гарлаа"
+      }
+    
+    
   
   
 

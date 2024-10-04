@@ -34,7 +34,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isValid) {
-      navigate('/'); // Redirect if already authenticated
+      navigate('/'); 
     }
   }, [isValid, navigate]);
 
@@ -74,8 +74,9 @@ const Login = () => {
           localStorage.setItem("user-info", data.userId);
           localStorage.setItem("expiryDate", expiryDate);
           localStorage.setItem("isAuthenticated", true);
+          localStorage.setItem("role", data.role);
 
-          navigate('/Dashboard'); // Redirect to home on successful login
+          navigate('/Dashboard'); 
         } else {
           setAlertMessage(result.message);
         }
@@ -85,7 +86,7 @@ const Login = () => {
     } catch (error) {
       setAlertMessage(error.message);
     } finally {
-      setIsLoading(false); // End loading
+      setIsLoading(false);
     }
   };
 
@@ -94,7 +95,7 @@ const Login = () => {
   };
 
   const handleLanguageChange = (lang) => {
-    i18n.changeLanguage(lang); // Change the language
+    i18n.changeLanguage(lang); 
   };
 
   return (
@@ -148,20 +149,7 @@ const Login = () => {
                             {t('forgotPassword')}
                           </CButton>
                         </Link>
-                        {/* <CInputGroup className="mt-2">
-                          <CInputGroupText caret={false} className="d-flex align-items-center">
-                            <CIcon icon={cilGlobeAlt} size="lg" />
-                            <span className="ms-2">
-                              {i18n.language === 'mn' ? t('language.mongolian') : t('language.english')}
-                            </span>
-                          </CInputGroupText>
-                          <CInputGroup onClick={() => handleLanguageChange('mn')} className="cursor-pointer">
-                            {t('language.mongolian')}
-                          </CInputGroup>
-                          <CInputGroup onClick={() => handleLanguageChange('en')} className="cursor-pointer">
-                            {t('language.english')}
-                          </CInputGroup>
-                        </CInputGroup> */}
+                    
                       </CCol>
                     </CRow>
                   </CForm>
@@ -170,7 +158,7 @@ const Login = () => {
               <CCard className="text-white bg-primary py-5">
                 <CCardBody className="text-center">
                   <div>
-                    <h2>{t('register')}</h2>
+                    <h2>{t('register.title')}</h2>
                     <p>{t('registerBusiness')}</p>
                     <Link to="/register">
                       <CButton color="primary" className="mt-3">
@@ -188,7 +176,5 @@ const Login = () => {
   );
 };
 
-// Uncomment and update propTypes if needed
-// Login.propTypes = { setAuthenticated: PropTypes.bool.isRequired };
 
 export default Login;
