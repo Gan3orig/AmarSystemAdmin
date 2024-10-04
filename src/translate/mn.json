@@ -8,12 +8,14 @@
   "nav.cashFlow": "Мөнгөн гүйлгээ",
   "nav.itemTransaction": "Орлго/Зарлага",
   "nav.Count": "Тооллого",
-  "nav.tools":"Админ",
+  "nav.tools": "Админ",
   "nav.payReceiveable": "Өглөг/Авлага",
   "nav.CardTransaction": "Картын гүйлгээ",
   "nav.Settings": "Тохиргоо",
   "nav.brunch": "Салбар",
   "nav.terminalMaps": "Терминал",
+
+  "nav.action": "Үйлдлүүд",
   "dashboard": "Хянах самбар",
   "products_services": "Бүтээгдэхүүн үйлчилгээ",
   "settings": "Тохиргоо",
@@ -44,39 +46,33 @@
   "r.supplier": "Нийлүүлэгч",
   "r.products": "Бараа",
   "r.groupItems": "Багц бүтээгдэхүүн",
- 
-    "login": "Нэвтрэх",
-    "enterCredentials": "Та өөрийн бүртгэлтэй хаягаар нэвтрэнэ үү",
-    "username": "Хэрэглэгчийн нэр",
-    "password": "Нууц үг",
-    "forgotPassword": "Нууц үг мартсан",
-    "register": "Бүртгүүлэх",
-    "registerBusiness": "Бизнесээ ухаалгаар хяна",
-    "nowRegister": "Одоо бүртгүүлэх",
-    "language": {
-      "mongolian": "Монгол",
-      "english": "English"
-    },
-    "fillCredentials": "Бүртгэлээ бөглөж өгнө үү.",
-    
-      "register": {
-       
-        "subtitle": "Шинэ хаяг нээх",
-        "namePlaceholder": "Нэр",
-        "emailPlaceholder": "Email",
-        "phonePlaceholder": "Утас",
-        "passwordPlaceholder": "Нууц үг",
-        "confirmPasswordPlaceholder": "Нууц үг давтана уу",
-        "submitButton": "Бүртгүүлэх"
-      },
-      "error": {
-        "fieldsRequired": "Бүх талбаруудыг бөглөнө үү",
-        "passwordMismatch": "Нууц үг тохирохгүй байна",
-        "general": "Алдаа гарлаа"
-      }
-    
-    
-  
-  
 
+  "login": "Нэвтрэх",
+  "enterCredentials": "Та өөрийн бүртгэлтэй хаягаар нэвтрэнэ үү",
+  "username": "Хэрэглэгчийн нэр",
+  "password": "Нууц үг",
+  "forgotPassword": "Нууц үг мартсан",
+  "register": "Бүртгүүлэх",
+  "registerBusiness": "Бизнесээ ухаалгаар хяна",
+  "nowRegister": "Одоо бүртгүүлэх",
+  "language": {
+    "mongolian": "Монгол",
+    "english": "English"
+  },
+  "fillCredentials": "Бүртгэлээ бөглөж өгнө үү.",
+
+  "register": {
+    "subtitle": "Шинэ хаяг нээх",
+    "namePlaceholder": "Нэр",
+    "emailPlaceholder": "Email",
+    "phonePlaceholder": "Утас",
+    "passwordPlaceholder": "Нууц үг",
+    "confirmPasswordPlaceholder": "Нууц үг давтана уу",
+    "submitButton": "Бүртгүүлэх"
+  },
+  "error": {
+    "fieldsRequired": "Бүх талбаруудыг бөглөнө үү",
+    "passwordMismatch": "Нууц үг тохирохгүй байна",
+    "general": "Алдаа гарлаа"
+  }
 }
