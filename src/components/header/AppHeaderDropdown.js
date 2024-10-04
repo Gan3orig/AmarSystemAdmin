@@ -27,11 +27,10 @@ import {
   cilLockLocked,
   cilSettings, 
   cilTask,
-
-  cilUser  
-} from '@coreui/icons';
-import CIcon from '@coreui/icons-react';
-import initialAvatar from './../../assets/images/avatars/8.jpg';
+  cilUser
+} from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
+import initialAvatar from './../../assets/images/userLight.png'
 
 const AppHeaderDropdown = () => {
   const [modalVisible, setModalVisible] = useState(false);
