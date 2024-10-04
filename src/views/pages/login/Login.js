@@ -75,7 +75,7 @@ const Login = () => {
           localStorage.setItem("expiryDate", expiryDate);
           localStorage.setItem("isAuthenticated", true);
 
-          navigate('/'); // Redirect to home on successful login
+          navigate('/Dashboard'); // Redirect to home on successful login
         } else {
           setAlertMessage(result.message);
         }
