@@ -24,6 +24,4 @@ export function getPermissions(isAuthenticated) {
   return roles[role].permissions;
 }
 
-
-
 export default roles;

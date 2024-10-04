@@ -3,10 +3,9 @@ import React from 'react'
 
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard')) 
-//admin
+//adminPanel
 const Admin = React.lazy(()=>import('./views/admin/admin'))
 const terminalMap = React.lazy(()=>import('./views/admin/terminalMap'))
-const terminal=React.lazy(()=>import('./views/admin/terminal'))
 
  //regastration
 
@@ -20,13 +19,9 @@ const Customer=React.lazy(()=>import('./views/registration/customer'))
 // const payReceiveable = React.lazy(() => import('./views/flow/payReceiveable'));
 // const cardTransaction = React.lazy(() => import('./views/flow/cardTransaction'));
 
-
-
 //Settings
 const Settings=React.lazy(()=> import('./views/settings/setting'))
 const Branch=React.lazy(()=>import('./views/settings/branch'))
-
-
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -85,7 +80,6 @@ const routes = [
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path:'/admin' ,name:'Админ', element:Admin},
   { path:'/terminalMap' ,name:'Терминал', element: terminalMap},
-  { path:'/terminal' ,name:'Терминал', element: terminal},
   { path:'/costumer' ,name:'Харилцагчид', element:Customer},
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

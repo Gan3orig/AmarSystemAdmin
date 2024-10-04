@@ -127,23 +127,7 @@ const Admin = () => {
 			setVisibleA(false);
 		}
 	};
-	// const mmcValue= async()=>{
-	//   const mmcUrl='https://l.facebook.com/l.php?u=https%3A%2F%2Fapi.majorsoft.mn%2Fapi%2FQPay%2FmccCode%3Ffbclid%3DIwZXh0bgNhZW0CMTAAAR3C6XtqHOn7ITv42phBQvCA6Vu8vMbDYbCAbWRFbx-XTD3EMny2Hb4mNKw_aem_kIRjBJne7igKE6zvLG_njA&h=AT12ueg-BUusEa-xhzfkmmxRFSVHreZMgN-F9ZcwFiWxo2fY9a-zIsyin6KXO4cO9z7z4S4ZggK_8zFuIbuHgjpjMBDY-48PgPDdgU8BzmzdiDI5HvXF0Wcskfz989Q4T5SnKw';
-	//   const option={
-	//     method:'GET',
-	//     header: { Accept: 'application/json' },
-	//   }
-	//   const mmcResponse=await fetch(mmcUrl,option);
-	//   const mmcData=await mmcResponse.json();
-	//   console.log(mmcData);
-	//   setMmc(mmcData);
-	// }
-	//   useEffect(()=>{
-	//    mmcValue();
-	//   }, []);
-
-
-
+	
 	const handleCheckUser = () => {
 		handleCheck(regNo);
 	};

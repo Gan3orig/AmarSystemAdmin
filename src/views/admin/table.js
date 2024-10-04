@@ -111,7 +111,7 @@ const Table = () => {
                   <CTableDataCell>{location.entityName}</CTableDataCell>
                   <CTableDataCell>{location.phone1}, {location.phone2}</CTableDataCell>
                   <CTableDataCell>{location.registerNo}</CTableDataCell>
-                  <CTableDataCell>{new Date(location.createDate).toLocaleDateString()}</CTableDataCell>
+                  <CTableDataCell>{new Date(location.licenseExpireDate).toLocaleDateString()}</CTableDataCell>
                 </CTableRow>
               ))}
             </CTableBody>

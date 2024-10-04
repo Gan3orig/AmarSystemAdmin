@@ -58,7 +58,7 @@ const TerminalMap = () => {
   return (
     <CContainer>
       <CAlert color="warning" visible={visible} closeButton onShowChange={setVisible}>
-        <strong>Анхааруулга!</strong> Хэрэглэгчээр нэвтрээгүй байна. <a href="/#/login" className="alert-link">Нэвтрэх</a>.
+        <strong>Анхааруулга!</strong> Хэрэглэгчээр нэвтрээгүй байна. <a href="'/login'" className="alert-link">Нэвтрэх</a>.
       </CAlert>
       <CAccordion activeItemKey={1} alwaysOpen>
         <CAccordionItem itemKey={1}>
@@ -74,7 +74,7 @@ const TerminalMap = () => {
               {locations.map(location => (
                 <Marker key={location.terminalId} position={[location.locationLat, location.locationLng]} icon={customIcon}>
                   <Popup>
-                    <strong>{location.businessName}</strong><br />
+                    <strong>{location.businessName}</strong><br/>
                     {location.entityName}
                     <br />✆{location.phone1},{location.phone2}
                     <br />®{location.registerNo}
