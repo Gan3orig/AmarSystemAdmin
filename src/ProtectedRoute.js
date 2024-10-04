@@ -1,9 +1,12 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
-
-// eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ isValid, children }) => {
   return isValid ? children : <Navigate to="/login" />;
 };
-//isValid aar shalgasnaar nevtersn uguig shalgah blmjtoi 
+
+ProtectedRoute.propTypes = {
+  isValid: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
 export default ProtectedRoute;

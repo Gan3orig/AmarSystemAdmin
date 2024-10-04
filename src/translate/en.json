@@ -13,7 +13,8 @@
    "nav.Settings":"Settings",
    "nav.brunch":"Brunch",
    "nav.terminal":"Terminal",
-
+   "nav.tools":"Admin",
+   "nav.terminalMaps": "Terminal Map",
    "dashboard":"Dashboard",
    "products_services":"Producst Service",
    "settings":"Settings",
@@ -55,14 +56,32 @@
       "username": "Username",
       "password": "Password",
       "forgotPassword": "Forgot password",
-      "register": "Register",
+    
       "registerBusiness": "Manage your business wisely",
       "nowRegister": "Register now",
       "language": {
         "mongolian": "Mongolian",
         "english": "English"
       },
-      "fillCredentials": "Please fill in your username and password."
+      "fillCredentials": "Please fill in your username and password.",
+      
+        "register": {
+          "title": "Register",
+          "subtitle": "Create a new account",
+          "namePlaceholder": "Name",
+          "emailPlaceholder": "Email",
+          "phonePlaceholder": "Phone",
+          "passwordPlaceholder": "Password",
+          "confirmPasswordPlaceholder": "Confirm Password",
+          "submitButton": "Register"
+        },
+        "error": {
+          "fieldsRequired": "Please fill in all fields",
+          "passwordMismatch": "Passwords do not match",
+          "general": "An error occurred"
+        }
+      
+      
     
     }
     

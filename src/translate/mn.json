@@ -8,11 +8,12 @@
   "nav.cashFlow": "Мөнгөн гүйлгээ",
   "nav.itemTransaction": "Орлго/Зарлага",
   "nav.Count": "Тооллого",
+  "nav.tools":"Админ",
   "nav.payReceiveable": "Өглөг/Авлага",
   "nav.CardTransaction": "Картын гүйлгээ",
   "nav.Settings": "Тохиргоо",
   "nav.brunch": "Салбар",
-  "nav.terminal": "Терминал",
+  "nav.terminalMaps": "Терминал",
   "dashboard": "Хянах самбар",
   "products_services": "Бүтээгдэхүүн үйлчилгээ",
   "settings": "Тохиргоо",
@@ -56,7 +57,25 @@
       "mongolian": "Монгол",
       "english": "English"
     },
-    "fillCredentials": "Бүртгэлээ бөглөж өгнө үү."
+    "fillCredentials": "Бүртгэлээ бөглөж өгнө үү.",
+    
+      "register": {
+       
+        "subtitle": "Шинэ хаяг нээх",
+        "namePlaceholder": "Нэр",
+        "emailPlaceholder": "Email",
+        "phonePlaceholder": "Утас",
+        "passwordPlaceholder": "Нууц үг",
+        "confirmPasswordPlaceholder": "Нууц үг давтана уу",
+        "submitButton": "Бүртгүүлэх"
+      },
+      "error": {
+        "fieldsRequired": "Бүх талбаруудыг бөглөнө үү",
+        "passwordMismatch": "Нууц үг тохирохгүй байна",
+        "general": "Алдаа гарлаа"
+      }
+    
+    
   
   
 

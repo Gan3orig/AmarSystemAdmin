@@ -35,9 +35,13 @@ const Table = () => {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
-        });
+          
+        }
+      );
 
         if (response.ok) {
+          const data = await response.json();
+          console.log(data);
           const result = await response.json();
           setData(result); // Assume API returns an array of data
         } else {
