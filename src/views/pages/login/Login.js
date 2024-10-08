@@ -74,7 +74,7 @@ const Login = () => {
           localStorage.setItem("user-info", data.userId);
           localStorage.setItem("expiryDate", expiryDate);
           localStorage.setItem("isAuthenticated", true);
-          localStorage.setItem("role", "admin");
+          localStorage.setItem("role", "s");
 
           navigate('/dashboard'); 
         } else {

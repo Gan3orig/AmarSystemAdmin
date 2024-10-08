@@ -6,93 +6,78 @@
   "nav.costumer": "Customer",
   "nav.transactions": "Transaction",
   "nav.cashFlow": "Cash Flow",
-  "nav.itemTransaction":"Item Transaction",
-  "nav.Count":"Count",
-  "nav.payReceiveable":"Pay Receiveable",
-  "nav.CardTransaction":"Card Transaction",
-   "nav.Settings":"Settings",
-   "nav.brunch":"Brunch",
-   "nav.terminal":"Terminal",
-   "nav.tools":"Admin",
-   "nav.terminalMaps": "Terminal Map",
-   "dashboard":"Dashboard",
-   "products_services":"Producst Service",
-   "settings":"Settings",
-   "select":"Select",
-   "description":"Description",
-   "save":"Save",
-   "single":"Single Product",
-   "crushed":"Kilogram-force",
-  "products":"Product",
-  "manage_products":"Manage Products",
-  
-   
-    "r.quantity":"Quantity",
+  "nav.itemTransaction": "Item Transaction",
+  "nav.Count": "Count",
+  "nav.payReceiveable": "Pay Receiveable",
+  "nav.CardTransaction": "Card Transaction",
+  "nav.Settings": "Settings",
+  "nav.brunch": "Brunch",
+  "nav.terminal": "Terminal",
+  "nav.tools": "Admin",
+  "nav.terminalMaps": "Terminal Map",
+  "dashboard": "Dashboard",
+  "products_services": "Producst Service",
+  "settings": "Settings",
+  "select": "Select",
+  "description": "Description",
+  "save": "Save",
+  "single": "Single Product",
+  "crushed": "Kilogram-force",
+  "products": "Product",
+  "manage_products": "Manage Products",
 
-    "r.addItem":"Add Item",
-    "r.barcode":"Barcode",
-    "r.barcodePlaceholder":"barcode",
-    "r.category":"Category",
-    "r.productName":"Product Name",
-    "r.productNamePlaceholder":"product Name",
-    "r.productType":"Product Type",
-    "r.packageCountPlaceholder":"Package Count",
-    "r.isService":"Is Service",
-    "selectTime":"Select Time",
-    "r.descriptionPlaceholder":"description",
-    "r.price":"Price",
-    "r.pricePlaceholder":"price",
-    "r.cost":"Cost",
-    "r.costPlaceholder":"cost",
-    "r.ageLimit":"Age Limit",
-  
-    "r.supplier":"Supplier",
-    "r.products":"Products",
-    "r.groupItems":"Group Item",
+  "nav.action": "Actions",
 
-    
-      "login": "Login",
-      "enterCredentials": "Please enter your credentials",
-      "username": "Username",
-      "password": "Password",
-      "forgotPassword": "Forgot password",
-    
-      "registerBusiness": "Manage your business wisely",
-      "nowRegister": "Register now",
-      "language": {
-        "mongolian": "Mongolian",
-        "english": "English"
-      },
-      "fillCredentials": "Please fill in your username and password.",
-      
-        "register": {
-          "title": "Register",
-          "subtitle": "Create a new account",
-          "namePlaceholder": "Name",
-          "emailPlaceholder": "Email",
-          "phonePlaceholder": "Phone",
-          "passwordPlaceholder": "Password",
-          "confirmPasswordPlaceholder": "Confirm Password",
-          "submitButton": "Register"
-        },
-        "error": {
-          "fieldsRequired": "Please fill in all fields",
-          "passwordMismatch": "Passwords do not match",
-          "general": "An error occurred"
-        }
-      
-      
-    
-    }
-    
+  "r.quantity": "Quantity",
 
+  "r.addItem": "Add Item",
+  "r.barcode": "Barcode",
+  "r.barcodePlaceholder": "barcode",
+  "r.category": "Category",
+  "r.productName": "Product Name",
+  "r.productNamePlaceholder": "product Name",
+  "r.productType": "Product Type",
+  "r.packageCountPlaceholder": "Package Count",
+  "r.isService": "Is Service",
+  "selectTime": "Select Time",
+  "r.descriptionPlaceholder": "description",
+  "r.price": "Price",
+  "r.pricePlaceholder": "price",
+  "r.cost": "Cost",
+  "r.costPlaceholder": "cost",
+  "r.ageLimit": "Age Limit",
 
+  "r.supplier": "Supplier",
+  "r.products": "Products",
+  "r.groupItems": "Group Item",
 
+  "login": "Login",
+  "enterCredentials": "Please enter your credentials",
+  "username": "Username",
+  "password": "Password",
+  "forgotPassword": "Forgot password",
 
+  "registerBusiness": "Manage your business wisely",
+  "nowRegister": "Register now",
+  "language": {
+    "mongolian": "Mongolian",
+    "english": "English"
+  },
+  "fillCredentials": "Please fill in your username and password.",
 
-
-
-
-
-
-
+  "register": {
+    "title": "Register",
+    "subtitle": "Create a new account",
+    "namePlaceholder": "Name",
+    "emailPlaceholder": "Email",
+    "phonePlaceholder": "Phone",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm Password",
+    "submitButton": "Register"
+  },
+  "error": {
+    "fieldsRequired": "Please fill in all fields",
+    "passwordMismatch": "Passwords do not match",
+    "general": "An error occurred"
+  }
+}
