@@ -1,9 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   CAvatar,
-  CBadge,
   CDropdown,
   CDropdownDivider,
   CDropdownHeader,
@@ -18,46 +16,47 @@ import {
   CForm,
   CFormLabel,
   CFormInput,
-} from '@coreui/react';
-import {
-  cilSettings,
-  cilLockLocked,
-  cilUser,
-} from '@coreui/icons';
-import CIcon from '@coreui/icons-react';
-import initialAvatar from './../../assets/images/userLight.png';
+} from "@coreui/react";
+import { cilSettings, cilUser, cilLockLocked } from "@coreui/icons";
+import CIcon from "@coreui/icons-react";
+import initialAvatar from "./../../assets/images/userLight.png";
 
 const AppHeaderDropdown = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [avatar, setAvatar] = useState(initialAvatar);
-  const [user, setUser] = useState({
-    id: localStorage.getItem("userIf"), // Getting userId from localStorage
- 
-  });
+  const [user, setUser] = useState({});
 
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-
   useEffect(() => {
     const fetchMerchantData = async () => {
-      const userId = localStorage.getItem("userIf"); // Retrieve userId from localStorage
+      const userId = localStorage.getItem("userId");
   
-      if (!userId) return; // Return if no userId found
+      if (!userId) {
+        console.error("User ID is not found in local storage.");
+        return;
+      }
   
       try {
-        const response = await axios.get(`https://api.majorsoft.mn/api/merchant/${userId}`);
-        const merchantData = response.data;
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          `https://api.majorsoft.mn/api/merchantData?userId=${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
   
-        if (merchantData) {
-          setUser((prevUser) => ({
-            ...prevUser,
-            id: merchantData.id,
-            name: merchantData.name,
-            merchantName: merchantData.merchantName,
-          }));
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+  
+        const merchantData = await response.json();
+        setUser(merchantData.data)
+        
       } catch (error) {
-        console.error('Error fetching merchant data:', error);
+        console.error("Error fetching merchant data:", error.message);
       }
     };
   
@@ -76,33 +75,55 @@ const AppHeaderDropdown = () => {
   };
 
   const handleEditPhotoClick = () => {
-    fileInputRef.current.click();  
+    fileInputRef.current.click();
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
+    // Add save logic here if needed
     setModalVisible(false);
   };
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
     <>
       <CDropdown variant="nav-item">
-        <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
+        <CDropdownToggle
+          placement="bottom-end"
+          className="py-0 pe-0"
+          caret={false}
+        >
           <CAvatar src={avatar} size="md" />
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
-          <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Хэрэглэгчийн мэдээлэл</CDropdownHeader>
-          <CDropdownItem>
-            Merchant ID: {user.id} {/* Displaying userId */}
-          </CDropdownItem>
-          <CDropdownItem>
-            Merchant Name: {user.merchantName}
-          </CDropdownItem>
-          <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader>
+          <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">
+            Хэрэглэгчийн мэдээлэл
+          </CDropdownHeader>
+          
+          {user.length > 1 && (
+  user.map((merchant, index) => (
+    <>
+    <CDropdownItem>Merchant ID: {merchant.merchantId}</CDropdownItem>
+      <CDropdownItem>Merchant Name: {merchant.merchantName}</CDropdownItem>
+      </>
+  )))
+}
+{user.length == 1 && (
+ <>
+    <CDropdownItem>Merchant ID: {user[0].merchantId}</CDropdownItem>
+      <CDropdownItem>Merchant Name: {user[0].merchantName}</CDropdownItem>
+      </>
+ )
+}
+
+            
+
+          <CDropdownHeader className="bg-body-secondary fw-semibold my-2">
+            Settings
+          </CDropdownHeader>
           <CDropdownItem onClick={() => setModalVisible(true)}>
             <CIcon icon={cilUser} className="me-2" />
             Нүүр хуудас
@@ -125,24 +146,48 @@ const AppHeaderDropdown = () => {
         </CModalHeader>
         <CModalBody>
           <div className="text-center mb-4">
-            <CAvatar src={avatar} size="xl" className="mb-3" style={{ width: '150px', height: '150px', borderRadius: '50%' }} />
+            <CAvatar
+              src={avatar}
+              size="xl"
+              className="mb-3"
+              style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+            />
             <div className="d-grid gap-2 d-md-block">
-              <CButton color="primary" size="sm" onClick={handleEditPhotoClick}>Зураг солих</CButton>
+              <CButton color="primary" size="sm" onClick={handleEditPhotoClick}>
+                Зураг солих
+              </CButton>
             </div>
-            <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
           </div>
           <CForm>
-            <CFormLabel>Нэр</CFormLabel>
-            <CFormInput type="text" value={user.name} onChange={(e) => setUser({ ...user, name: e.target.value })} />
-            <CFormLabel>Утасны дугаар</CFormLabel>
-            <CFormInput type="text" value={user.phoneNumber} onChange={(e) => setUser({ ...user, phoneNumber: e.target.value })} />
-            <CFormLabel>Э-Шуудан</CFormLabel>
-            <CFormInput type="email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} />
+            <CFormLabel>Merchant Name</CFormLabel>
+            <CFormInput
+              type="text"
+              value={user.merchantName}
+              onChange={(e) =>
+                setUser({ ...user, merchantName: e.target.value })
+              }
+            />
+            <CFormLabel>Merchant ID</CFormLabel>
+            <CFormInput
+              type="text"
+              value={user.merchantId}
+              onChange={(e) => setUser({ ...user, merchantId: e.target.value })}
+            />
           </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setModalVisible(false)}>Хаах</CButton>
-          <CButton color="primary" onClick={handleSaveChanges}>Хадгалах</CButton>
+          <CButton color="secondary" onClick={() => setModalVisible(false)}>
+            Хаах
+          </CButton>
+          <CButton color="primary" onClick={handleSaveChanges}>
+            Хадгалах
+          </CButton>
         </CModalFooter>
       </CModal>
     </>
@@ -150,3 +195,4 @@ const AppHeaderDropdown = () => {
 };
 
 export default AppHeaderDropdown;
+ 

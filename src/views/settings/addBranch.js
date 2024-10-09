@@ -50,7 +50,7 @@ const geocodeZipCode = async (zipCode) => {
 
 // LocationMarker component handles marker placement on map
 // eslint-disable-next-line react/prop-types
-const LocationMarker = ({ setPosition, setNewBranchLocation }) => {
+const LocationMarker = ({ setPosition, setNewBranchLocationLat,setNewBranchLocationLng }) => {
     const [markerPosition, setMarkerPosition] = useState(null);
 
     useMapEvents({
@@ -58,7 +58,8 @@ const LocationMarker = ({ setPosition, setNewBranchLocation }) => {
             const { lat, lng } = e.latlng;
             setMarkerPosition([lat, lng]);
             setPosition([lat, lng]);
-            setNewBranchLocation(`Lat: ${lat}, Lng: ${lng}`);
+            setNewBranchLocationLat(lat);
+            setNewBranchLocationLng(lng)
         },
     });
 
@@ -77,14 +78,17 @@ const AddBranch = ({ visible, setVisible }) => {
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedSubBranch, setSelectedSubBranch] = useState('');
     const [newBranchName, setNewBranchName] = useState('');
-    const [newBranchLocation, setNewBranchLocation] = useState('');
+    const [newBranchLocationLat, setNewBranchLocationLat] = useState('');
+    const [newBranchLocationLng, setNewBranchLocationLng] = useState('');
     const [newBranchContact, setNewBranchContact] = useState('');
+    const [newBranchAddress,setNewBranchAddress] = useState('');
     const [newBranchType, setNewBranchType] = useState('');
     const [branchPosition, setBranchPosition] = useState([51.505, -0.09]); // Default position
     const [subBranchPosition, setSubBranchPosition] = useState([51.505, -0.09]); // Default position
     const [showMapModal, setShowMapModal] = useState(false);
     const [zipCode, setZipCode] = useState('');
-
+    
+    const userId = localStorage.getItem('userId')
     // Fetch branch data from API
     useEffect(() => {
         const fetchBranches = async () => {
@@ -120,77 +124,65 @@ const AddBranch = ({ visible, setVisible }) => {
         fetchBranches();
     }, []);
 
+   
     // Handle branch selection
     const handleBranchChange = (event) => {
         const branchId = event.target.value;
         setSelectedBranch(branchId);
         const selectedBranchData = branches.find(branch => branch.branchCode === branchId);
         setSubBranches(selectedBranchData ? selectedBranchData.subBranches : []);
-        if (selectedBranchData && selectedBranchData.location) {
-            const { latitude, longitude } = selectedBranchData.location;
-            setBranchPosition([latitude, longitude]);
-            setNewBranchLocation(`Lat: ${latitude}, Lng: ${longitude}`);
-        }
     };
 
     // Handle sub-branch selection
     const handleSubBranchChange = (e) => {
         const subBranchId = e.target.value;
         setSelectedSubBranch(subBranchId);
-        const selectedSubBranchData = subBranches.find(subBranch => subBranch.subBranchCode === subBranchId);
-        if (selectedSubBranchData && selectedSubBranchData.location) {
-            const { latitude, longitude } = selectedSubBranchData.location;
-            setSubBranchPosition([latitude, longitude]);
-            setNewBranchLocation(`Lat: ${latitude}, Lng: ${longitude}`);
-        }
     };
-
-    // Add branch functionality
-    const handleAddBranch = () => {
-        if (!newBranchName || !newBranchLocation || !newBranchContact || !newBranchType) {
+    const handleAddBranch = async() => {
+        
+        if (!newBranchName || !newBranchLocationLat || !newBranchContact || !newBranchType) {
             alert('Please fill in all required fields.');
             return;
         }
-
-        const newBranch = {
-            branchCode: Date.now(),
+        const branchData = {
             branchName: newBranchName,
-            location: branchPosition,
-            contact: newBranchContact,
-            branchType: newBranchType,
-            subBranches: []
+            businessTypeId: newBranchType,
+            branchCode: selectedBranch,
+            subBranchCode: selectedSubBranch,
+            locationLat: String(newBranchLocationLat),
+            locationLng: String(newBranchLocationLng),
+            phone: newBranchContact,
+            address: newBranchAddress,
+            logoSmall: 'dasdsadasasdasdasddas',
+            createUserId: userId,
+            newBranch: true // Assuming newBranch is a boolean flag
         };
-
-        setBranches([...branches, newBranch]);
-        // Reset form fields
-        setNewBranchName('');
-        setNewBranchType('');
-        setNewBranchLocation('');
-        setNewBranchContact('');
-        setSelectedBranch('');
-        setSelectedSubBranch('');
-        setBranchPosition([51.505, -0.09]);
-        setSubBranchPosition([51.505, -0.09]);
-        setZipCode('');
-        setVisible(false);
-    };
-
-    // Handle zip code change and geocode
-    const handleZipCodeChange = async (e) => {
-        const zip = e.target.value;
-        setZipCode(zip);
-        if (zip.length === 5) {
-            const location = await geocodeZipCode(zip);
-            if (location) {
-                setBranchPosition(location);
-                setSubBranchPosition(location);
-                setNewBranchLocation(`Lat: ${location[0]}, Lng: ${location[1]}`);
-            } else {
-                alert('Location not found for this zip code.');
+        
+            try {
+              const response = await fetch('https://api.majorsoft.mn/api/branchService', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(branchData)
+              });
+          
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+          
+              const data = await response.json();
+              console.log('Branch Service Created:', data);
+              return data;
+            } catch (error) {
+              console.error('Error creating branch service:', error);
             }
-        }
-    };
-
+          
+       
+          
+          
+    }
     const handleIconClick = () => {
         setShowMapModal(true);
     };
@@ -206,7 +198,7 @@ const AddBranch = ({ visible, setVisible }) => {
 
     return (
         <>
-            <CCard>
+            <CCard className='w-60'>
                 <CCardHeader>
                     <h4>{/* If you have editing functionality, toggle title here */}Салбар нэмэх</h4>
                 </CCardHeader>
@@ -229,12 +221,12 @@ const AddBranch = ({ visible, setVisible }) => {
                                 onChange={(e) => setNewBranchType(e.target.value)}
                             >
                                 <option value="" disabled>Сонгох</option>
-                                <option value="store">Дэлгүүр</option>
-                                <option value="restaurant">Ресторан</option>
-                                <option value="fastfood">Түргэн хоол</option>
-                                <option value="salon">Салон</option>
-                                <option value="pharmacy">Эмийн сан</option>
-                                <option value="hotel">Зочид Буудал</option>
+                                <option value="0">Дэлгүүр</option>
+                                <option value="1">Ресторан</option>
+                                <option value="2">Түргэн хоол</option>
+                                <option value="3">Салон</option>
+                                <option value="4">Эмийн сан</option>
+                                <option value="5">Зочид Буудал</option>
                             </CFormSelect>
                         </CRow>
                         <CRow md={4}>
@@ -271,8 +263,9 @@ const AddBranch = ({ visible, setVisible }) => {
                             <CFormLabel htmlFor="branchAddress">Салбарын хаяг</CFormLabel>
                             <CFormInput
                                 type="text"
-
-
+                                id='branchAddress'
+                                value={newBranchAddress}
+                                onChange={(e) => setNewBranchAddress(e.target.value)}
                             />
                         </CRow>
                         <CRow md={4}>
@@ -282,9 +275,8 @@ const AddBranch = ({ visible, setVisible }) => {
                             <CInputGroup>
                             <CFormInput
                                 type="text"
-                                id="branchAddress"
-                                value={newBranchLocation}
-                                onChange={(e) => setNewBranchLocation(e.target.value)}
+                                id="branchLocation"
+                                value={`${newBranchLocationLat} ${newBranchLocationLng}`}
                             />
                             <span className="input-group-text">
                                 <CIcon icon={cilLocationPin} onClick={handleIconClick} />
@@ -337,7 +329,7 @@ const AddBranch = ({ visible, setVisible }) => {
                             </Marker>
                         ))}
                         {/* Allow user to add a new marker */}
-                        <LocationMarker setPosition={setBranchPosition} setNewBranchLocation={setNewBranchLocation} />
+                        <LocationMarker setPosition={setBranchPosition} setNewBranchLocationLat={setNewBranchLocationLat} setNewBranchLocationLng={setNewBranchLocationLng} />
                     </MapContainer>
                     <div className="d-grid gap-2 d-md-flex justify-content-md-end">
                         <CButton color="primary" onClick={handleModalClose}>Болих</CButton>
