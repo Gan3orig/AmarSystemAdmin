@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
   CAvatar,
   CBadge,
@@ -28,21 +29,49 @@ import {
   cilSettings, 
   cilTask,
   cilUser
-} from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import initialAvatar from './../../assets/images/userLight.png'
+} from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
+import initialAvatar from './../../assets/images/userLight.png';
 
 const AppHeaderDropdown = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [avatar, setAvatar] = useState(initialAvatar);
   const [user, setUser] = useState({
-    name: 'MajorSoft LLC',
-    phoneNumber: '+976 70003214',
-    email: 'info@majorsoft.mn',
+    id: 123, // example user ID, replace this with the actual ID or fetch it dynamically
+    name: '',
+    phoneNumber: '',
+    email: '',
+    merchantName: ''
   });
   
-  const navigate = useNavigate(); // Use useNavigate hook
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const fetchMerchantData = async () => {
+      const userId = localStorage.getItem("userIf"); // Retrieve userId from localStorage
+  
+      try {
+        const response = await axios.get(`https://api.majorsoft.mn/api/merchant/${userId}`);
+        const merchantData = response.data;
+  
+        // Assuming `merchantData` has fields `id` and `name`
+        if (merchantData) {
+          setUser((prevUser) => ({
+            ...prevUser,
+            id: merchantData.id,
+            name: merchantData.name,
+            merchantName: merchantData.merchantName, // Adjust according to actual API response
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching merchant data:', error);
+      }
+    };
+  
+    fetchMerchantData();
+  }, []);
+  
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -65,7 +94,7 @@ const AppHeaderDropdown = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate('/login'); // Correctly handle navigation in the callback
+    navigate('/login');
   };
 
   return (
@@ -76,7 +105,14 @@ const AppHeaderDropdown = () => {
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
           <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Хэрэглэгчийн мэдээлэл</CDropdownHeader>
-          <CDropdownItem href="#">
+          <CDropdownItem>
+   Merchant ID: {user.merchantId}
+  </CDropdownItem>
+  
+  <CDropdownItem>
+   Merchant Name: {user.merchantName}
+  </CDropdownItem>
+          {/* <CDropdownItem href="#">
             <CIcon icon={cilBell} className="me-2" />
             Updates
             <CBadge color="info" className="ms-2">42</CBadge>
@@ -95,7 +131,7 @@ const AppHeaderDropdown = () => {
             <CIcon icon={cilCommentSquare} className="me-2" />
             Comments
             <CBadge color="warning" className="ms-2">42</CBadge>
-          </CDropdownItem>
+          </CDropdownItem> */}
           <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader>
           <CDropdownItem onClick={() => setModalVisible(true)}>
             <CIcon icon={cilUser} className="me-2" />
@@ -116,17 +152,14 @@ const AppHeaderDropdown = () => {
             <CBadge color="primary" className="ms-2">42</CBadge>
           </CDropdownItem>
           <CDropdownDivider />
-          <CDropdownItem onClick={handleLogout}> {/* Handle logout via onClick */}
+          <CDropdownItem onClick={handleLogout}>
             <CIcon icon={cilLockLocked} className="me-2" />
             Гарах
           </CDropdownItem>
         </CDropdownMenu>
       </CDropdown>
 
-      <CModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-      >
+      <CModal visible={modalVisible} onClose={() => setModalVisible(false)}>
         <CModalHeader>
           <h5 className="modal-title">Profile</h5>
         </CModalHeader>
@@ -134,16 +167,9 @@ const AppHeaderDropdown = () => {
           <div className="text-center mb-4">
             <CAvatar src={avatar} size="xl" className="mb-3" style={{ width: '150px', height: '150px', borderRadius: '50%' }} />
             <div className="d-grid gap-2 d-md-block">
-              <CButton className="position-sticky" color="primary" size="sm" onClick={handleEditPhotoClick}>
-                Зураг солих
-              </CButton>
+              <CButton color="primary" size="sm" onClick={handleEditPhotoClick}>Зураг солих</CButton>
             </div>
-            <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
-            />
+            <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
           </div>
           <CForm>
             <CFormLabel>Нэр</CFormLabel>

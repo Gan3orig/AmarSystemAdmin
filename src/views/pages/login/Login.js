@@ -69,12 +69,14 @@ const Login = () => {
         if (result.isOK) {
           const data = JSON.parse(result.json);
           const expiryDate = data.expiresIn;
-            console.log('hi')
+            console.log(data)
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("user-info", data.userId);
           localStorage.setItem("expiryDate", expiryDate);
           localStorage.setItem("isAuthenticated", true);
-          localStorage.setItem("role", "s");
+          localStorage.setItem("role", data.role);
+          localStorage.setItem("userIf",data.userId);
+
 
           navigate('/dashboard'); 
         } else {
