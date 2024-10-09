@@ -20,15 +20,9 @@ import {
   CFormInput,
 } from '@coreui/react';
 import {
-  cilBell,
-  cilCreditCard,
-  cilCommentSquare,
-  cilEnvelopeOpen,
-  cilFile,
+  cilSettings,
   cilLockLocked,
-  cilSettings, 
-  cilTask,
-  cilUser
+  cilUser,
 } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import initialAvatar from './../../assets/images/userLight.png';
@@ -37,13 +31,10 @@ const AppHeaderDropdown = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [avatar, setAvatar] = useState(initialAvatar);
   const [user, setUser] = useState({
-    id: 123, // example user ID, replace this with the actual ID or fetch it dynamically
-    name: '',
-    phoneNumber: '',
-    email: '',
-    merchantName: ''
+    id: localStorage.getItem("userIf"), // Getting userId from localStorage
+ 
   });
-  
+
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
@@ -51,17 +42,18 @@ const AppHeaderDropdown = () => {
     const fetchMerchantData = async () => {
       const userId = localStorage.getItem("userIf"); // Retrieve userId from localStorage
   
+      if (!userId) return; // Return if no userId found
+  
       try {
         const response = await axios.get(`https://api.majorsoft.mn/api/merchant/${userId}`);
         const merchantData = response.data;
   
-        // Assuming `merchantData` has fields `id` and `name`
         if (merchantData) {
           setUser((prevUser) => ({
             ...prevUser,
             id: merchantData.id,
             name: merchantData.name,
-            merchantName: merchantData.merchantName, // Adjust according to actual API response
+            merchantName: merchantData.merchantName,
           }));
         }
       } catch (error) {
@@ -71,7 +63,6 @@ const AppHeaderDropdown = () => {
   
     fetchMerchantData();
   }, []);
-  
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -106,32 +97,11 @@ const AppHeaderDropdown = () => {
         <CDropdownMenu className="pt-0" placement="bottom-end">
           <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Хэрэглэгчийн мэдээлэл</CDropdownHeader>
           <CDropdownItem>
-   Merchant ID: {user.merchantId}
-  </CDropdownItem>
-  
-  <CDropdownItem>
-   Merchant Name: {user.merchantName}
-  </CDropdownItem>
-          {/* <CDropdownItem href="#">
-            <CIcon icon={cilBell} className="me-2" />
-            Updates
-            <CBadge color="info" className="ms-2">42</CBadge>
+            Merchant ID: {user.id} {/* Displaying userId */}
           </CDropdownItem>
-          <CDropdownItem href="#">
-            <CIcon icon={cilEnvelopeOpen} className="me-2" />
-            Messages
-            <CBadge color="success" className="ms-2">42</CBadge>
+          <CDropdownItem>
+            Merchant Name: {user.merchantName}
           </CDropdownItem>
-          <CDropdownItem href="#">
-            <CIcon icon={cilTask} className="me-2" />
-            Tasks
-            <CBadge color="danger" className="ms-2">42</CBadge>
-          </CDropdownItem>
-          <CDropdownItem href="#">
-            <CIcon icon={cilCommentSquare} className="me-2" />
-            Comments
-            <CBadge color="warning" className="ms-2">42</CBadge>
-          </CDropdownItem> */}
           <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader>
           <CDropdownItem onClick={() => setModalVisible(true)}>
             <CIcon icon={cilUser} className="me-2" />
@@ -139,17 +109,7 @@ const AppHeaderDropdown = () => {
           </CDropdownItem>
           <CDropdownItem href="#">
             <CIcon icon={cilSettings} className="me-2" />
-           Тохиргоо
-          </CDropdownItem>
-          <CDropdownItem href="#">
-            <CIcon icon={cilCreditCard} className="me-2" />
-           Төлбөр
-            <CBadge color="secondary" className="ms-2">42</CBadge>
-          </CDropdownItem>
-          <CDropdownItem href="#">
-            <CIcon icon={cilFile} className="me-2" />
-            Projects
-            <CBadge color="primary" className="ms-2">42</CBadge>
+            Тохиргоо
           </CDropdownItem>
           <CDropdownDivider />
           <CDropdownItem onClick={handleLogout}>
