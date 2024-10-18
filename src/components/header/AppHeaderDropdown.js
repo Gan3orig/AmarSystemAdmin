@@ -28,15 +28,16 @@ const AppHeaderDropdown = () => {
 
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+
   useEffect(() => {
     const fetchMerchantData = async () => {
       const userId = localStorage.getItem("userId");
-  
+
       if (!userId) {
         console.error("User ID is not found in local storage.");
         return;
       }
-  
+
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
@@ -47,19 +48,23 @@ const AppHeaderDropdown = () => {
             },
           }
         );
-  
+
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-  
+
         const merchantData = await response.json();
-        setUser(merchantData.data)
-        
+
+        // Save merchantId to localStorage
+        if (merchantData.data && merchantData.data.length > 0) {
+          setUser(merchantData.data);
+          localStorage.setItem("merchantId", merchantData.data[0].merchantId); // Ensure this line is executed correctly
+        }
       } catch (error) {
         console.error("Error fetching merchant data:", error.message);
       }
     };
-  
+
     fetchMerchantData();
   }, []);
 
@@ -104,22 +109,19 @@ const AppHeaderDropdown = () => {
           </CDropdownHeader>
           
           {user.length > 1 && (
-  user.map((merchant, index) => (
-    <>
-    <CDropdownItem>Merchant ID: {merchant.merchantId}</CDropdownItem>
-      <CDropdownItem>Merchant Name: {merchant.merchantName}</CDropdownItem>
-      </>
-  )))
-}
-{user.length == 1 && (
- <>
-    <CDropdownItem>Merchant ID: {user[0].merchantId}</CDropdownItem>
-      <CDropdownItem>Merchant Name: {user[0].merchantName}</CDropdownItem>
-      </>
- )
-}
-
-            
+            user.map((merchant, index) => (
+              <React.Fragment key={index}>
+                <CDropdownItem>Merchant ID: {merchant.merchantId}</CDropdownItem>
+                <CDropdownItem>Merchant Name: {merchant.merchantName}</CDropdownItem>
+              </React.Fragment>
+            ))
+          )}
+          {user.length === 1 && (
+            <>
+              <CDropdownItem>Merchant ID: {user[0].merchantId}</CDropdownItem>
+              <CDropdownItem>Merchant Name: {user[0].merchantName}</CDropdownItem>
+            </>
+          )}
 
           <CDropdownHeader className="bg-body-secondary fw-semibold my-2">
             Settings
@@ -195,4 +197,3 @@ const AppHeaderDropdown = () => {
 };
 
 export default AppHeaderDropdown;
- 

@@ -29,6 +29,10 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
+import PropTypes from "prop-types";
+import uploadPhoto from "../settings/photos/upload.png";
+import { useNavigate } from "react-router-dom";
+import Branch from "./branch";
 
 // Define the default icon for markers
 const defaultIcon = L.icon({
@@ -53,9 +57,6 @@ const geocodeZipCode = async (zipCode) => {
     return null;
   }
 };
-
-// LocationMarker component handles marker placement on map
-// eslint-disable-next-line react/prop-types
 const LocationMarker = ({
   setPosition,
   setNewBranchLocationLat,
@@ -79,6 +80,12 @@ const LocationMarker = ({
     </Marker>
   ) : null;
 };
+// Add PropTypes validation
+LocationMarker.propTypes = {
+  setPosition: PropTypes.func.isRequired,
+  setNewBranchLocationLat: PropTypes.func.isRequired,
+  setNewBranchLocationLng: PropTypes.func.isRequired,
+};
 
 // AddBranch component
 // eslint-disable-next-line react/prop-types
@@ -97,7 +104,9 @@ const AddBranch = ({ visible, setVisible }) => {
   const [subBranchPosition, setSubBranchPosition] = useState([51.505, -0.09]); // Default position
   const [showMapModal, setShowMapModal] = useState(false);
   const [zipCode, setZipCode] = useState("");
-  const [photoUpload, setphotoUpload] = useState("");
+  const [photoPreview, setPhotoPreview] = useState("");
+  const [newLogo,setNewLogo]=useState("");
+  const navigate = useNavigate(); 
 
   const userId = localStorage.getItem("userId");
   // Fetch branch data from API
@@ -188,9 +197,9 @@ const AddBranch = ({ visible, setVisible }) => {
       locationLng: String(newBranchLocationLng),
       phone: newBranchContact,
       address: newBranchAddress,
-      logoSmall: "dasdsadasasdasdasddas",
+      logoSmall: newLogo,
       createUserId: userId,
-      newBranch: true, // Assuming newBranch is a boolean flag
+      newBranch: true,
     };
 
     try {
@@ -207,12 +216,20 @@ const AddBranch = ({ visible, setVisible }) => {
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorDetails = await response.text(); // Get details from the response
+        console.error("Error creating branch service:", errorDetails);
+        alert(`Алдаа: ${errorDetails}`);
+        return;
       }
 
       const data = await response.json();
       console.log("Branch Service Created:", data);
-      return data;
+
+      // Show success alert message
+      alert("Салбар амжилттай үүслээ!"); // "Branch created successfully!"
+
+      // Navigate to the branch page (you can adjust the route as necessary)
+      navigate("./branch"); // Change this to the actual path of your branches page
     } catch (error) {
       console.error("Error creating branch service:", error);
     }
@@ -224,8 +241,14 @@ const AddBranch = ({ visible, setVisible }) => {
   const handleModalClose = () => {
     setShowMapModal(false);
   };
-  const handlePhotoUpload = () => {
-    setphotoUpload();
+  const handlePhotoUpload = (file) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result); // Set the image preview URL
+      };
+      reader.readAsDataURL(file); // Read the file as a data URL
+    }
   };
 
   if (!visible) return null;
@@ -277,15 +300,44 @@ const AddBranch = ({ visible, setVisible }) => {
                 </CRow>
               </CCol>
               <CCol md={6}>
-                <CRow className="d-flex justify-content-center align-items-center">
-                  <CFormLabel htmlFor="branchPhoto">Зураг оруулах</CFormLabel>
-                  <CFormInput
-                    type="file"
-                    id="branchPhoto"
-                    onChange={(e) => handlePhotoUpload(e.target.files[0])}
-                  />
-                </CRow>
-              </CCol>
+    <CRow className="d-flex justify-content-center align-items-center">
+      <CFormLabel htmlFor="branchPhoto"></CFormLabel>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100%" }} // Ensure the container takes up available height
+      >
+        {/* Display the selected or default image */}
+        <img
+          src={photoPreview || uploadPhoto} // Use the preview or default image
+          alt="Branch preview"
+          className="rounded"
+          style={{
+            width: "150px",
+            height: "150px",
+            objectFit: "cover",
+            cursor: "pointer",
+          }}
+          onClick={() => document.getElementById("branchPhoto").click()} // Trigger file input on click
+        />
+      </div>
+      {/* Hidden file input */}
+      <CFormInput
+        type="file"
+        id="branchPhoto"
+        style={{ display: "none" }} // Hide the input
+        onChange={(e) => handlePhotoUpload(e.target.files[0])} // Handle file upload
+      />
+      {/* Button to upload a new photo */}
+      <CButton
+        color="primary" variant="ghost"
+        onClick={() => document.getElementById("branchPhoto").click()}
+        className="mt-2"
+      >
+        Зураг оруулах
+      </CButton>
+    </CRow>
+  </CCol>
+
             </CRow>
 
             <CRow md={4}>
