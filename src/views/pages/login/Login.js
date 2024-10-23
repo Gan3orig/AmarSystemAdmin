@@ -74,7 +74,7 @@ const Login = () => {
           localStorage.setItem("user-info", data.userId);
           localStorage.setItem("expiryDate", expiryDate);
           localStorage.setItem("isAuthenticated", true);
-          localStorage.setItem("role", "s");
+          localStorage.setItem("role", "admin");
 
           navigate('/dashboard'); 
         } else {
@@ -93,8 +93,7 @@ const Login = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-
+  
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>

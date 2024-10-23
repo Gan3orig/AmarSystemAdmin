@@ -96,7 +96,7 @@ const AppHeader = () => {
             <CDropdownToggle caret={false} className="d-flex align-items-center">
               <CIcon icon={cilGlobeAlt} size="lg" />
               <span className="ms-2">
-                {i18n.language === 'mn' ? 'Монгол' : 'English'}
+                {i18n.language === 'mn' ? 'Мон' : 'Eng'}
               </span>
             </CDropdownToggle>
             <CDropdownMenu>
