@@ -16,13 +16,19 @@ import {
 import branchImage from '../settings/photos/subbranch.png'; 
 import AddBranch from './addBranch'; 
 import EditBranch from './editBranch';
-
 const Branch = () => {
     const [showAddBranch, setShowAddBranch] = useState(false);
     const [showEditBranch, setShowEditBranch] = useState(false);
     const [branches, setBranches] = useState([]);
     const [selectedBranch, setSelectedBranch] = useState(null);
-
+    const businessTypeMap = {
+        0: 'Дэлгүүр',
+        1: 'Ресторан',
+        2: 'Түргэн хоол',
+        3: 'Салон',
+        4: 'Эмийн сан',
+        5: 'Зочид Буудал'
+    };
     const handleToggleAddBranch = () => {
         setShowAddBranch(prevState => !prevState);
     };
@@ -35,6 +41,7 @@ const Branch = () => {
     const handleCloseEditBranch = () => {
         setShowEditBranch(false);
         setSelectedBranch(null); // Reset selected branch
+        
     };
 
     const handleDeleteBranch = (branchId) => {
@@ -70,7 +77,9 @@ const Branch = () => {
     useEffect(() => {
         const token = localStorage.getItem('token'); // Assuming token is stored in local storage
         const merchantId = localStorage.getItem("merchantId");
-
+        const handleBranchAdded = (newBranch) => {
+            setBranches((prevBranches) => [...prevBranches, newBranch]);
+        };
         const requestOptions = {
             method: "GET",
             headers: {
@@ -109,8 +118,7 @@ const Branch = () => {
                                     <CTableRow>
                                         <CTableHeaderCell>Салбарын нэр</CTableHeaderCell>
                                         <CTableHeaderCell>Салбарын төрөл</CTableHeaderCell>
-                                        <CTableHeaderCell>Хаяг</CTableHeaderCell>
-                                        <CTableHeaderCell>Холбогдох утас</CTableHeaderCell>
+                                       
                                         <CTableHeaderCell>Салбар</CTableHeaderCell>
                                     </CTableRow>
                                 </CTableHead>
@@ -118,9 +126,8 @@ const Branch = () => {
                                     {branches.map((branch) => (
                                         <CTableRow key={branch.branchId || branch.branchName}>
                                             <CTableDataCell>{branch.branchName}</CTableDataCell>
-                                            <CTableDataCell>{branch.businessTypeId}</CTableDataCell>
-                                            <CTableDataCell>{branch.address}</CTableDataCell>
-                                            <CTableDataCell>{branch.phone}</CTableDataCell>
+                                            <CTableDataCell>{businessTypeMap[branch.businessTypeId] || 'Тодорхойгүй'}</CTableDataCell>
+                                           
                                             <CTableDataCell> 
                                                 <CButton color="light" onClick={() => handleEditBranch(branch)}>Засах</CButton>
                                                 <CButton color="secondary" onClick={() => handleDeleteBranch(branch.branchId)}>Устгах</CButton>
