@@ -173,7 +173,6 @@ const EditBranch = ({ branch, onClose }) => {
                     value={branchData.locationlng}
                     onChange={handleInputChange}
                 />
-
                 <div className="d-flex justify-content-between mt-3">
                     <CButton color="secondary" onClick={onClose} type="button">
                         Болих
