@@ -72,12 +72,7 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#/product/productlist">
-              {i18n.t("products_services")}
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#/settings">{i18n.t("settings")}</CNavLink>
+            <CNavLink to="/terminalMap" as={NavLink}>{i18n.t("nav.terminalMaps")}</CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
