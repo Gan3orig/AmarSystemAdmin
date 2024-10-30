@@ -38,9 +38,10 @@ const EditBranch = ({ branch, onClose }) => {
                 address: branch.address,
                 phone: branch.phone,
                 branchCode: branch.branchCode,
+                subBranchCode: branch.subBranchCode,
                 locationLat: branch.locationLat,
                 locationlng: branch.locationlng,
-                subBranchCode: branch.subBranchCode,
+               
             });
             setNewBranchType(branch.businessTypeId); // Initialize branch type
         }

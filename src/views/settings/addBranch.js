@@ -219,11 +219,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
   };
 
   const handleAddBranch = async () => {
-    if (edit) {
-      if (!editData.branchName || !editData.phone) {
-        alert("Please fill in all required fields.");
-        return;
-      }
+   
 
       const token = localStorage.getItem("token");
       const branchData = {
@@ -240,6 +236,11 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
         logoSmall: filepath || String(editData.logoSmall),
         createUserId: userId,
       };
+      if (edit) {
+        if (!editData.branchName || !editData.phone) {
+          alert("Please fill in all required fields.");
+          return;
+        }
       const formData = new FormData();
       Object.keys(branchData).forEach((key) => {
         formData.append(key, branchData[key]);
