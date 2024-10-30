@@ -72,12 +72,7 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#/product/productlist">
-              {i18n.t("products_services")}
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#/settings">{i18n.t("settings")}</CNavLink>
+            <CNavLink to="/terminalMap" as={NavLink}>{i18n.t("nav.terminalMaps")}</CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
@@ -104,12 +99,6 @@ const AppHeader = () => {
               className="d-flex align-items-center"
             >
               <CIcon icon={cilGlobeAlt} size="lg" />
-<<<<<<< HEAD
-              <span className="ms-2">
-                {i18n.language === 'mn' ? 'Мон' : 'Eng'}
-              </span>
-=======
->>>>>>> a51648dbcc9fa998fc9520646817cb009188b977
             </CDropdownToggle>
             <CDropdownMenu>
               <CDropdownItem onClick={() => handleLanguageChange("mn")}>
