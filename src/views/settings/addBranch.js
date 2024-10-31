@@ -88,7 +88,7 @@ LocationMarker.propTypes = {
 };
 
 // eslint-disable-next-line react/prop-types
-const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
+const AddBranch = ({ visible, setVisible, edit, editBranch,refresh }) => {
   const [branches, setBranches] = useState([]);
   const [subBranches, setSubBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState("");
@@ -102,21 +102,32 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
   const [branchPosition, setBranchPosition] = useState([51.505, -0.09]);
   const [subBranchPosition, setSubBranchPosition] = useState([51.505, -0.09]);
   const [showMapModal, setShowMapModal] = useState(false);
-  const [zipCode, setZipCode] = useState("");
-  const [photoPreview, setPhotoPreview] = useState("");
-  const [uploadPhotoUrl, setUploadedPhotoUrl] = useState("");
-  const [newLogo, setNewLogo] = useState("");
   const navigate = useNavigate();
   const [filepath, setFilePath] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
   const [editData, setEditData] = useState([]);
 
-  console.log(editBranch);
   const userId = localStorage.getItem("userId");
+  const getImages = async (logoSmallUrl) => {
+    const url = `https://api.majorsoft.mn/api/branchService/download/${logoSmallUrl}`;
+    const options = {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const data = await response.json();
+    } catch (error) {
+      console.error("Error fetching branch data:", error);
+    }
+  };
   // Fetch branch data from API
   useEffect(() => {
     if (editBranch) {
       setEditData(editBranch);
     }
+
     //brunch uusgeh
     const fetchBranches = async () => {
       const url = "https://api.ebarimt.mn/api/info/check/getBranchInfo";
@@ -166,10 +177,15 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
       } catch (error) {
         console.error("Error fetching branch data:", error);
       }
-    };
+        };
 
     fetchBranches();
   }, []);
+  useEffect (()=>{
+    if (editData){
+     
+    }
+  },[editData]);
 
   const handleBranchChange = (event) => {
     const branchId = event.target.value;
@@ -236,6 +252,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
         logoSmall: filepath || String(editData.logoSmall),
         createUserId: userId,
       };
+
       if (edit) {
         if (!editData.branchName || !editData.phone) {
           alert("Please fill in all required fields.");
@@ -264,6 +281,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
 
         if (result.success) {
           setVisible()
+          refresh()
         } 
       } catch (error) {
         console.error("Error updating branch data:", error);
@@ -278,7 +296,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
         alert("Please fill in all required fields.");
         return;
       }
-//EDIT
+//Nemeh
       try {
         const response = await fetch(
           "https://api.majorsoft.mn/api/branchService",
@@ -304,7 +322,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
         console.log("Branch Service Created:", data);
 
         setVisible();
-        alert("Салбар амжилттай үүслээ!");
+        refresh()
       } catch (error) {
         console.error("Error creating branch service:", error);
       }
@@ -319,6 +337,8 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
   };
   const handleFileChange = (event) => {
     const file = event.target.files[0]; 
+    const imageUrl = URL.createObjectURL(file);
+    setSelectedImage(imageUrl)
     handlePhotoUpload(file);
   };
   if (!visible) return null;
@@ -373,7 +393,8 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
                   >
                     <img
                       src={
-                        uploadsPhoto || "defaultPhoto.jpg" || editData.filePath
+                        selectedImage ? ( selectedImage  || editData.filePath) : uploadsPhoto
+                       
                       }
                       alt="Branch preview"
                       className="rounded"
@@ -461,7 +482,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
                 <CFormInput
                   type="text"
                   id="branchLocation"
-                  value={`${newBranchLocationLat || editData.locationLat} ${newBranchLocationLng || editData.locationLng}`}
+                  value={ `${newBranchLocationLat || editData.locationLat} ${newBranchLocationLng || editData.locationlng}`}
                 />
                 <span className="input-group-text">
                   <CIcon icon={cilLocationPin} onClick={handleIconClick} />

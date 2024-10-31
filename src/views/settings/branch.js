@@ -72,7 +72,7 @@ const Branch = () => {
             });
     };
 
-    useEffect(() => {
+    const  getDatas = () => {
         const token = localStorage.getItem('token');
         const merchantId = localStorage.getItem("merchantId");
 
@@ -100,6 +100,9 @@ const Branch = () => {
             .catch((error) => {
                 console.error("Error fetching branch data:", error);
             });
+    } 
+    useEffect(() => {
+       getDatas()
     }, []);
 
     return (
@@ -163,6 +166,7 @@ const Branch = () => {
                     setVisible={setShowAddBranch}
                     edit={edit}
                     editBranch={selectedBranch}
+                    refresh = {getDatas}
                 />
             )}
         </main>
