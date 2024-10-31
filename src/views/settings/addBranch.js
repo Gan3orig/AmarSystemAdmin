@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { useState, useEffect } from "react";
 import {
   CButton,
@@ -30,11 +31,10 @@ import L from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
 import PropTypes from "prop-types";
-import uploadPhoto from "../settings/photos/upload.png";
+import uploadsPhoto from "../settings/photos/upload.png";
 import { useNavigate } from "react-router-dom";
-import Branch from "./branch";
-
-// Define the default icon for markers
+import "./branch";
+import { logo } from "src/assets/brand/logo";
 const defaultIcon = L.icon({
   iconUrl: markerIconPng,
   shadowUrl: markerShadowPng,
@@ -87,9 +87,8 @@ LocationMarker.propTypes = {
   setNewBranchLocationLng: PropTypes.func.isRequired,
 };
 
-// AddBranch component
 // eslint-disable-next-line react/prop-types
-const AddBranch = ({ visible, setVisible }) => {
+const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
   const [branches, setBranches] = useState([]);
   const [subBranches, setSubBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState("");
@@ -100,17 +99,25 @@ const AddBranch = ({ visible, setVisible }) => {
   const [newBranchContact, setNewBranchContact] = useState("");
   const [newBranchAddress, setNewBranchAddress] = useState("");
   const [newBranchType, setNewBranchType] = useState("");
-  const [branchPosition, setBranchPosition] = useState([51.505, -0.09]); // Default position
-  const [subBranchPosition, setSubBranchPosition] = useState([51.505, -0.09]); // Default position
+  const [branchPosition, setBranchPosition] = useState([51.505, -0.09]);
+  const [subBranchPosition, setSubBranchPosition] = useState([51.505, -0.09]);
   const [showMapModal, setShowMapModal] = useState(false);
   const [zipCode, setZipCode] = useState("");
   const [photoPreview, setPhotoPreview] = useState("");
-  const [newLogo,setNewLogo]=useState("");
-  const navigate = useNavigate(); 
+  const [uploadPhotoUrl, setUploadedPhotoUrl] = useState("");
+  const [newLogo, setNewLogo] = useState("");
+  const navigate = useNavigate();
+  const [filepath, setFilePath] = useState("");
+  const [editData, setEditData] = useState([]);
 
+  console.log(editBranch);
   const userId = localStorage.getItem("userId");
   // Fetch branch data from API
   useEffect(() => {
+    if (editBranch) {
+      setEditData(editBranch);
+    }
+    //brunch uusgeh
     const fetchBranches = async () => {
       const url = "https://api.ebarimt.mn/api/info/check/getBranchInfo";
       const options = {
@@ -126,8 +133,8 @@ const AddBranch = ({ visible, setVisible }) => {
         if (Array.isArray(dataArray)) {
           const groupedBranches = dataArray.reduce((acc, curr) => {
             const {
-              branchCode,
               branchName,
+              branchCode,
               subBranchCode,
               subBranchName,
               latitude,
@@ -138,6 +145,7 @@ const AddBranch = ({ visible, setVisible }) => {
               acc[branchCode] = {
                 branchCode,
                 branchName,
+                subBranchCode,
                 location: { latitude, longitude },
                 zipCode,
                 subBranches: [],
@@ -163,7 +171,6 @@ const AddBranch = ({ visible, setVisible }) => {
     fetchBranches();
   }, []);
 
-  // Handle branch selection
   const handleBranchChange = (event) => {
     const branchId = event.target.value;
     setSelectedBranch(branchId);
@@ -178,58 +185,129 @@ const AddBranch = ({ visible, setVisible }) => {
     const subBranchId = e.target.value;
     setSelectedSubBranch(subBranchId);
   };
-  const handleAddBranch = async () => {
-    if (
-      !newBranchName ||
-      !newBranchLocationLat ||
-      !newBranchContact ||
-      !newBranchType
-    ) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-    const branchData = {
-      branchName: newBranchName,
-      businessTypeId: newBranchType,
-      branchCode: selectedBranch,
-      subBranchCode: selectedSubBranch,
-      locationLat: String(newBranchLocationLat),
-      locationLng: String(newBranchLocationLng),
-      phone: newBranchContact,
-      address: newBranchAddress,
-      logoSmall: newLogo,
-      createUserId: userId,
-      newBranch: true,
-    };
-
-    try {
-      const response = await fetch(
-        "https://api.majorsoft.mn/api/branchService",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+  const handlePhotoUpload = async (file) => {
+    if (file) {
+      const formData = new FormData();
+      formData.append("imageFile", file);
+//zurag
+      try {
+        const response = await fetch(
+          `https://api.majorsoft.mn/api/branchService/uploadImage`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: formData,
           },
-          body: JSON.stringify(branchData),
-        },
-      );
+        );
 
-      if (!response.ok) {
-        const errorDetails = await response.text(); // Get details from the response
-        console.error("Error creating branch service:", errorDetails);
-        alert(`Алдаа: ${errorDetails}`);
+        if (!response.ok) {
+          const errorDetails = await response.text();
+          console.error("Error uploading photo:", errorDetails);
+        }
+
+        const data = await response.json();
+        setFilePath(data.filePath);
+        return null;
+      } catch (error) {
+        console.error("Error uploading photo:", error);
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const handleAddBranch = async () => {
+   
+
+      const token = localStorage.getItem("token");
+      const branchData = {
+        branchId:editData.branchId,
+        merchantId:editData.merchantId,
+        branchName: newBranchName || editData.branchName,
+        businessTypeId: newBranchType || editData.businessTypeId,
+        branchCode: selectedBranch || editData.branchCode,
+        subBranchCode: selectedSubBranch || editData.subBranchCode,
+        locationLat: String(newBranchLocationLat) || editData.locationLat,
+        locationLng: String(newBranchLocationLng) || editData.locationlng,
+        phone: newBranchContact || editData.phone,
+        address: newBranchAddress || editData.address,
+        logoSmall: filepath || String(editData.logoSmall),
+        createUserId: userId,
+      };
+      if (edit) {
+        if (!editData.branchName || !editData.phone) {
+          alert("Please fill in all required fields.");
+          return;
+        }
+      const formData = new FormData();
+      Object.keys(branchData).forEach((key) => {
+        formData.append(key, branchData[key]);
+      });
+
+      const requestOptions = {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(branchData),
+      };
+
+      try {
+        const response = await fetch(
+          `https://api.majorsoft.mn/api/branchService`,
+          requestOptions,
+        );
+        const result = await response.json();
+
+        if (result.success) {
+          setVisible()
+        } 
+      } catch (error) {
+        console.error("Error updating branch data:", error);
+      }
+    } else {
+      if (
+        !newBranchName ||
+        !newBranchLocationLat ||
+        !newBranchContact ||
+        !newBranchType
+      ) {
+        alert("Please fill in all required fields.");
         return;
       }
+//EDIT
+      try {
+        const response = await fetch(
+          "https://api.majorsoft.mn/api/branchService",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify(branchData),
+          },
+        );
 
-      const data = await response.json();
-      console.log("Branch Service Created:", data);
+        if (!response.ok) {
+          const errorDetails = await response.text();
+          console.error("Error creating branch service:", errorDetails);
+          alert(`Алдаа: ${errorDetails}`);
 
-      alert("Салбар амжилттай үүслээ!");
-      setVisible()
-      
-    } catch (error) {
-      console.error("Error creating branch service:", error);
+          return;
+        }
+
+        const data = await response.json();
+        console.log("Branch Service Created:", data);
+
+        setVisible();
+        alert("Салбар амжилттай үүслээ!");
+      } catch (error) {
+        console.error("Error creating branch service:", error);
+      }
     }
   };
   const handleIconClick = () => {
@@ -239,32 +317,20 @@ const AddBranch = ({ visible, setVisible }) => {
   const handleModalClose = () => {
     setShowMapModal(false);
   };
-  const handlePhotoUpload = (file) => {
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result); // Set the image preview URL
-      };
-      reader.readAsDataURL(file); // Read the file as a data URL
-    }
+  const handleFileChange = (event) => {
+    const file = event.target.files[0]; 
+    handlePhotoUpload(file);
   };
-
   if (!visible) return null;
 
-  // Define positions to display multiple markers
   const positions = [branchPosition, subBranchPosition].filter(
     (pos) => pos[0] !== 51.505 && pos[1] !== -0.09,
   );
-  
-
   return (
     <>
       <CCard className="w-60">
         <CCardHeader>
-          <h4>
-            {/* If you have editing functionality, toggle title here */}Салбар
-            нэмэх
-          </h4>
+          {edit ? <h4>Салбар засах</h4> : <h4>Салбар нэмэх</h4>}
         </CCardHeader>
         <CCardBody>
           <CForm className="row g-3">
@@ -275,7 +341,7 @@ const AddBranch = ({ visible, setVisible }) => {
                   <CFormInput
                     type="text"
                     id="branchName"
-                    value={newBranchName}
+                    value={newBranchName || editData.branchName}
                     onChange={(e) => setNewBranchName(e.target.value)}
                   />
                 </CRow>
@@ -283,7 +349,7 @@ const AddBranch = ({ visible, setVisible }) => {
                   <CFormSelect
                     id="branchType"
                     label="Салбарын төрөл"
-                    value={newBranchType}
+                    value={newBranchType || editData.businessTypeId}
                     onChange={(e) => setNewBranchType(e.target.value)}
                   >
                     <option value="" disabled>
@@ -299,51 +365,55 @@ const AddBranch = ({ visible, setVisible }) => {
                 </CRow>
               </CCol>
               <CCol md={6}>
-    <CRow className="d-flex justify-content-center align-items-center">
-      <CFormLabel htmlFor="branchPhoto"></CFormLabel>
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "100%" }} // Ensure the container takes up available height
-      >
-        {/* Display the selected or default image */}
-        <img
-          src={photoPreview || uploadPhoto} // Use the preview or default image
-          alt="Branch preview"
-          className="rounded"
-          style={{
-            width: "150px",
-            height: "150px",
-            objectFit: "cover",
-            cursor: "pointer",
-          }}
-          onClick={() => document.getElementById("branchPhoto").click()} // Trigger file input on click
-        />
-      </div>
-      {/* Hidden file input */}
-      <CFormInput
-        type="file"
-        id="branchPhoto"
-        style={{ display: "none" }} // Hide the input
-        onChange={(e) => handlePhotoUpload(e.target.files[0])} // Handle file upload
-      />
-      {/* Button to upload a new photo */}
-      <CButton
-        color="primary" variant="ghost"
-        onClick={() => document.getElementById("branchPhoto").click()}
-        className="mt-2"
-      >
-        Зураг оруулах
-      </CButton>
-    </CRow>
-  </CCol>
+                <CRow className="d-flex justify-content-center align-items-center">
+                  <CFormLabel htmlFor="branchPhoto">Лого</CFormLabel>
+                  <div
+                    className="d-flex justify-content-center align-items-center"
+                    style={{ height: "100%" }}
+                  >
+                    <img
+                      src={
+                        uploadsPhoto || "defaultPhoto.jpg" || editData.filePath
+                      }
+                      alt="Branch preview"
+                      className="rounded"
+                      style={{
+                        width: "150px",
+                        height: "150px",
+                        objectFit: "cover",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        document.getElementById("branchPhoto").click()
+                      }
+                    />
+                  </div>
+                  <CFormInput
+                    type="file"
+                    id="branchPhoto"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
 
+                  <CButton
+                    color="primary"
+                    variant="ghost"
+                    onClick={() =>
+                      document.getElementById("branchPhoto").click()
+                    }
+                    className="mt-2"
+                  >
+                    Зураг оруулах
+                  </CButton>
+                </CRow>
+              </CCol>
             </CRow>
 
             <CRow md={4}>
               <CFormSelect
                 id="branchSelect"
                 label="Аймаг/Хот"
-                value={selectedBranch}
+                value={selectedBranch || editData.branchCode}
                 onChange={handleBranchChange}
               >
                 <option value="" disabled>
@@ -360,7 +430,7 @@ const AddBranch = ({ visible, setVisible }) => {
               <CFormSelect
                 id="subBranchSelect"
                 label="Дүүрэг/Сум"
-                value={selectedSubBranch}
+                value={selectedSubBranch || editData.subBranchCode}
                 onChange={handleSubBranchChange}
               >
                 <option value="" disabled>
@@ -381,7 +451,7 @@ const AddBranch = ({ visible, setVisible }) => {
               <CFormInput
                 type="text"
                 id="branchAddress"
-                value={newBranchAddress}
+                value={newBranchAddress || editData.address}
                 onChange={(e) => setNewBranchAddress(e.target.value)}
               />
             </CRow>
@@ -391,7 +461,7 @@ const AddBranch = ({ visible, setVisible }) => {
                 <CFormInput
                   type="text"
                   id="branchLocation"
-                  value={`${newBranchLocationLat} ${newBranchLocationLng}`}
+                  value={`${newBranchLocationLat || editData.locationLat} ${newBranchLocationLng || editData.locationLng}`}
                 />
                 <span className="input-group-text">
                   <CIcon icon={cilLocationPin} onClick={handleIconClick} />
@@ -403,14 +473,18 @@ const AddBranch = ({ visible, setVisible }) => {
               <CFormInput
                 type="text"
                 id="branchPhoneNumber"
-                value={newBranchContact}
+                pattern="^\d{8}$"
+                maxLength="8"
+                required
+                value={newBranchContact || editData.phone}
                 onChange={(e) => setNewBranchContact(e.target.value)}
               />
             </CRow>
             <div className="d-grid gap-2">
-              <CButton color="primary" type="button" onClick={handleAddBranch}>
-                Хадгалах
+            <CButton color="primary" onClick={handleAddBranch}>
+            {edit ? "Засах" : "Нэмэх"}
               </CButton>
+
               <CButton color="secondary" onClick={() => setVisible(false)}>
                 Хаах
               </CButton>
