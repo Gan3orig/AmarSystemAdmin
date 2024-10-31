@@ -38,6 +38,7 @@ const Branch = () => {
     };
 
     const handleDeleteBranch = (branchId) => {
+        console.log(branchId)
         const token = localStorage.getItem('token'); // Assuming token is stored in local storage
         const userId = localStorage.getItem('userId'); // Assuming userId is stored in local storage
 

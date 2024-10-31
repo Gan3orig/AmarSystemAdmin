@@ -225,11 +225,9 @@ const AddBranch = ({ visible, setVisible }) => {
       const data = await response.json();
       console.log("Branch Service Created:", data);
 
-      // Show success alert message
-      alert("Салбар амжилттай үүслээ!"); // "Branch created successfully!"
-
-      // Navigate to the branch page (you can adjust the route as necessary)
-      navigate("./branch"); // Change this to the actual path of your branches page
+      alert("Салбар амжилттай үүслээ!");
+      setVisible()
+      
     } catch (error) {
       console.error("Error creating branch service:", error);
     }
@@ -257,6 +255,7 @@ const AddBranch = ({ visible, setVisible }) => {
   const positions = [branchPosition, subBranchPosition].filter(
     (pos) => pos[0] !== 51.505 && pos[1] !== -0.09,
   );
+  
 
   return (
     <>

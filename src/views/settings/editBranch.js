@@ -29,6 +29,7 @@ const EditBranch = ({ branch, onClose }) => {
         if (branch) {
             setBranchData({
                 branchId: branch.branchId,
+                merchantId: branch.merchantId,
                 branchName: branch.branchName,
                 businessTypeId: branch.businessTypeId,
                 logoSmall: branch.logoSmall,
@@ -52,7 +53,6 @@ const EditBranch = ({ branch, onClose }) => {
 
     const handleSubmit = async () => {
         const token = localStorage.getItem('token');
-        const merchantId = localStorage.getItem('merchantId');
 
         const requestOptions = {
             method: 'PUT', // Use PUT to update the branch
@@ -61,13 +61,12 @@ const EditBranch = ({ branch, onClose }) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                ...branchData,
-                merchantId, // Include merchantId if necessary
+                branchData
             }),
         };
 
         try {
-            const response = await fetch(`https://api.majorsoft.mn/api/branchService/${branchData.branchId}`, requestOptions);
+            const response = await fetch(`https://api.majorsoft.mn/api/branchService`, requestOptions);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
