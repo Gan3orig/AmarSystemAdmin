@@ -171,14 +171,17 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
     fetchBranches();
   }, []);
 
-  const handleBranchChange = (event) => {
-    const branchId = event.target.value;
-    setSelectedBranch(branchId);
-    const selectedBranchData = branches.find(
-      (branch) => branch.branchCode === branchId,
-    );
-    setSubBranches(selectedBranchData ? selectedBranchData.subBranches : []);
+  const handleBranchChange = (e) => {
+    const selectedBranchCode = e.target.value;
+    const branch = branches.find(b => b.branchCode === selectedBranchCode);
+    if (branch && branch.subBranches) {
+      setSubBranches(branch.subBranches);
+      setSelectedBranch(selectedBranchCode);
+    } else {
+      setSubBranches([]); // Clear if no sub-branches
+    }
   };
+  
 
   // Handle sub-branch selection
   const handleSubBranchChange = (e) => {
@@ -438,9 +441,9 @@ const AddBranch = ({ visible, setVisible, edit, editBranch }) => {
                 </option>
                 {subBranches.map((subBranch) => (
                   <option
-                    key={subBranch.subBranchCode}
-                    value={subBranch.subBranchCode}
-                  >
+                   key={subBranch.subBranchCode || editData.selectedSubBranch} value={subBranch.subBranchCode || editData.selectedSubBranch}>
+                    
+                  
                     {subBranch.subBranchName}
                   </option>
                 ))}
