@@ -1,0 +1,19 @@
+/* mina.css */
+.CFormInput {
+  border: none; /* Remove default border */
+  border-bottom: 2px solid transparent; /* Set a transparent bottom border */
+  outline: none; /* Remove outline */
+  transition: border-color 0.3s; /* Smooth transition for the border color */
+}
+
+.CFormInput.active {
+  border-bottom: 2px solid rgb(181, 71, 214); /* Change color when active */
+}
+
+.CFormLabel {
+  cursor: pointer; 
+}
+
+.CFormLabel:hover {
+  color: rgb(178, 58, 194);
+}
