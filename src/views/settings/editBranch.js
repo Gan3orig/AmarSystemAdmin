@@ -32,6 +32,7 @@ const EditBranch = ({ branch, onClose }) => {
             setBranchData({
                 // eslint-disable-next-line react/prop-types
                 branchId: branch.branchId,
+                merchantId: branch.merchantId,
                 branchName: branch.branchName,
                 businessTypeId: branch.businessTypeId,
                 logoSmall: branch.logoSmall,

@@ -50,7 +50,7 @@ const WidgetsDropdown = (props) => {
               </span>
             </>
           }
-          title="Users"
+          title="Зарлага"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
@@ -70,7 +70,7 @@ const WidgetsDropdown = (props) => {
               className="mt-3 mx-3"
               style={{ height: '70px' }}
               data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: ['1-сар', '2-сар', '3-сар', '4-сар', '5-сар', '6-сар', '7-сар'],
                 datasets: [
                   {
                     label: 'My First dataset',
@@ -134,13 +134,13 @@ const WidgetsDropdown = (props) => {
           color="info"
           value={
             <>
-              $6.200{' '}
+              6,200,000 ₮{' '}
               <span className="fs-6 fw-normal">
                 (40.9% <CIcon icon={cilArrowTop} />)
               </span>
             </>
           }
-          title="Income"
+          title="Худалдан авалт"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
@@ -160,7 +160,8 @@ const WidgetsDropdown = (props) => {
               className="mt-3 mx-3"
               style={{ height: '70px' }}
               data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: ['1-сар', '2-сар', '3-сар', '4-сар', '5-сар', '6-сар', '7-сар'],
+                //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                 datasets: [
                   {
                     label: 'My First dataset',
@@ -229,7 +230,7 @@ const WidgetsDropdown = (props) => {
               </span>
             </>
           }
-          title="Conversion Rate"
+          title="Валют хөрвөлт"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
@@ -248,7 +249,8 @@ const WidgetsDropdown = (props) => {
               className="mt-3"
               style={{ height: '70px' }}
               data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: ['1-сар', '2-сар', '3-сар', '4-сар', '5-сар', '6-сар', '7-сар'],
+                //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                 datasets: [
                   {
                     label: 'My First dataset',
@@ -301,7 +303,7 @@ const WidgetsDropdown = (props) => {
               </span>
             </>
           }
-          title="Sessions"
+          title="Алдагдал"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">

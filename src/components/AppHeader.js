@@ -17,6 +17,7 @@ import {
 import CIcon from "@coreui/icons-react";
 import {
   cilBell,
+  cilCompass,
   cilContrast,
   cilEnvelopeOpen,
   cilFlagAlt,
@@ -24,7 +25,9 @@ import {
   cilList,
   cilMenu,
   cilMoon,
+  cilSatelite,
   cilSun,
+  cilTranslate,
 } from "@coreui/icons";
 import { AppBreadcrumb } from "./index";
 import { AppHeaderDropdown } from "./header/index";
@@ -87,8 +90,8 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
+            <CNavLink to="/admin" as ={NavLink}>
+              <CIcon icon={cilCompass} size="lg" />
             </CNavLink>
           </CNavItem>
         </CHeaderNav>
@@ -98,7 +101,7 @@ const AppHeader = () => {
               caret={false}
               className="d-flex align-items-center"
             >
-              <CIcon icon={cilGlobeAlt} size="lg" />
+              <CIcon icon={cilTranslate} size="lg" />
 
               <span className="ms-2">
                 {i18n.language === 'mn' ? 'Мон' : 'Eng'}
