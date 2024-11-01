@@ -81,9 +81,10 @@ const routes = [
     { path: '/dashboard', name: 'Хянах самбар', element: Dashboard },
     {path: '/settings',name:'Тохиргоо' ,element:Settings},
     { path: '/terminalMap', name: 'Терминал', element: terminalMap },
+    { path: '/admin', name: 'Админ', element: Admin },
     ...(role === 'admin' ? [
     { path: '/theme', name: 'Theme', element: Colors, exact: true },
-    { path: '/admin', name: 'Админ', element: Admin },
+    //{ path: '/admin', name: 'Админ', element: Admin },
     { path:'/costumer' ,name:'Харилцагчид', element:Customer},
     { path: '/theme/colors', name: 'Colors', element: Colors },
     { path: '/theme/typography', name: 'Typography', element: Typography },

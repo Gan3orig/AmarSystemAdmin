@@ -56,30 +56,30 @@ import MainChart from './MainChart'
 const Dashboard = () => {
 
   const progressExample = [
-    { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
-    { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
-    { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
-    { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
-    { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
+    { title: 'Зочилсон', value: '29.703 Users', percent: 40, color: 'success' },
+    { title: 'Давхардаагүй', value: '24.093 Users', percent: 20, color: 'info' },
+    { title: 'Хуудас үзэлт', value: '78.706 Views', percent: 60, color: 'warning' },
+    { title: 'Шинэ хэрэглэгч', value: '22.123 Users', percent: 80, color: 'danger' },
+    { title: 'Хэмжүүр', value: 'Average Rate', percent: 40.15, color: 'primary' },
   ]
 
   const progressGroupExample1 = [
-    { title: 'Monday', value1: 34, value2: 78 },
-    { title: 'Tuesday', value1: 56, value2: 94 },
-    { title: 'Wednesday', value1: 12, value2: 67 },
-    { title: 'Thursday', value1: 43, value2: 91 },
-    { title: 'Friday', value1: 22, value2: 73 },
-    { title: 'Saturday', value1: 53, value2: 82 },
-    { title: 'Sunday', value1: 9, value2: 69 },
+    { title: 'Даваа', value1: 34, value2: 78 },
+    { title: 'Мягмар', value1: 56, value2: 94 },
+    { title: 'Лхагва', value1: 12, value2: 67 },
+    { title: 'Пүрэв', value1: 43, value2: 91 },
+    { title: 'Баасан', value1: 22, value2: 73 },
+    { title: 'Бямба', value1: 53, value2: 82 },
+    { title: 'Ням', value1: 9, value2: 69 },
   ]
 
   const progressGroupExample2 = [
-    { title: 'Male', icon: cilUser, value: 53 },
-    { title: 'Female', icon: cilUserFemale, value: 43 },
+    { title: 'Эр', icon: cilUser, value: 53 },
+    { title: 'Эм', icon: cilUserFemale, value: 43 },
   ]
 
   const progressGroupExample3 = [
-    { title: 'Organic Search', icon: cibGoogle, percent: 56, value: '191,235' },
+    { title: 'Google хайлт', icon: cibGoogle, percent: 56, value: '191,235' },
     { title: 'Facebook', icon: cibFacebook, percent: 15, value: '51,223' },
     { title: 'Twitter', icon: cibTwitter, percent: 11, value: '37,564' },
     { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
@@ -184,16 +184,16 @@ const Dashboard = () => {
           <CRow>
             <CCol sm={5}>
               <h4 id="traffic" className="card-title mb-0">
-                Traffic
+                Борлуулалт
               </h4>
-              <div className="small text-body-secondary">January - July 2023</div>
+              <div className="small text-body-secondary">1 сар - 7 сар 2024</div>
             </CCol>
             <CCol sm={7} className="d-none d-md-block">
               <CButton color="primary" className="float-end">
                 <CIcon icon={cilCloudDownload} />
               </CButton>
               <CButtonGroup className="float-end me-3">
-                {['Day', 'Month', 'Year'].map((value) => (
+                {['Өдөр', 'Сар', 'Жил'].map((value) => (
                   <CButton
                     color="outline-secondary"
                     key={value}
@@ -225,7 +225,7 @@ const Dashboard = () => {
               >
                 <div className="text-body-secondary">{item.title}</div>
                 <div className="fw-semibold text-truncate">
-                  {item.value} ({item.percent}%)
+                  {item.value} ({item.percent})
                 </div>
                 <CProgress thin className="mt-2" color={item.color} value={item.percent} />
               </CCol>
@@ -234,6 +234,7 @@ const Dashboard = () => {
         </CCardFooter>
       </CCard>
       <WidgetsBrand className="mb-4" withCharts />
+      {/*}
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
@@ -380,6 +381,7 @@ const Dashboard = () => {
           </CCard>
         </CCol>
       </CRow>
+      */}
     </>
   )
 }
