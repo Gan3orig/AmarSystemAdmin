@@ -32,15 +32,17 @@ const EditBranch = ({ branch, onClose }) => {
             setBranchData({
                 // eslint-disable-next-line react/prop-types
                 branchId: branch.branchId,
+                merchantId: branch.merchantId,
                 branchName: branch.branchName,
                 businessTypeId: branch.businessTypeId,
                 logoSmall: branch.logoSmall,
                 address: branch.address,
                 phone: branch.phone,
                 branchCode: branch.branchCode,
+                subBranchCode: branch.subBranchCode,
                 locationLat: branch.locationLat,
                 locationlng: branch.locationlng,
-                subBranchCode: branch.subBranchCode,
+               
             });
             setNewBranchType(branch.businessTypeId); // Initialize branch type
         }
