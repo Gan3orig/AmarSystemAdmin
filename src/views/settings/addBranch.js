@@ -280,16 +280,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
       }
     }
      else {
-      // if (
-      //   !newBranchName ||
-      //   !newBranchLocationLat ||
-      //   !newBranchContact ||
-      //   !newBranchType
-      // ) {
-      //   alert("Please fill in all required fields.");
-      //   return;
-      // }
-      //Nemeh
+
       try {
         const response = await fetch(
           "https://api.majorsoft.mn/api/branchService",
@@ -392,8 +383,8 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                       editData.logoSmall
                         ? editData.logoSmall // If the logo is already present (edit mode)
                         : filepath
-                        ? filepath // If a new file is selected and uploaded
-                        : uploadPhoto // Fallback image
+                        ? filepath 
+                        : uploadPhoto 
                     }
                       alt="Branch preview"
                       className="rounded"
@@ -479,9 +470,10 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
               <CFormLabel htmlFor="branchLocation">Байршил</CFormLabel>
               <CInputGroup>
                 <CFormInput
+                  placeholder=" "
                   type="text"
                   id="branchLocation"
-                  value={`${newBranchLocationLat || editData.locationLat} ${newBranchLocationLng || editData.locationlng}`}
+                  value={`${newBranchLocationLat || editData.locationLat || " "} ${newBranchLocationLng || editData.locationlng || " "}`}
                 />
                 <span className="input-group-text">
                   <CIcon icon={cilLocationPin} onClick={handleIconClick} />
