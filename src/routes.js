@@ -24,6 +24,7 @@ const Customer=React.lazy(()=>import('./views/registration/customer'))
 //Settings
 const Settings=React.lazy(()=> import('./views/settings/setting'))
 const Branch=React.lazy(()=>import('./views/settings/branch'))
+const Terminal=React.lazy(()=>import('./views/settings/terminal'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -132,6 +133,8 @@ const routes = [
     //settings
     {path: '/settings',name:'Тохиргоо' ,element:Settings},
     {path:'/settings/branch',name:'Салбарууд',element:Branch},
+    {path:'/settings/Terminal',name:'Төхөөрөмжүүд',element:Terminal},
+   
   
   
     //registration
@@ -185,6 +188,8 @@ const routes = [
     //settings
     {path: '/settings',name:'Тохиргоо' ,element:Settings},
     {path:'/settings/branch',name:'Салбарууд',element:Branch},
+    {path:'/settings/terminal',name:'Төхөөрөмжүүд',element:Terminal},
+
   
   
     //registration
