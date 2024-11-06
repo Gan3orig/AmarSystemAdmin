@@ -22,6 +22,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { validateToken } from 'src/validateToken'; // Validation
 import { useTranslation } from 'react-i18next';
 
+
 const Login = () => {
   const { t } = useTranslation();
   const [username, setUsername] = useState('');

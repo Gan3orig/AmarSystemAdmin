@@ -31,9 +31,9 @@ import L from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
 import PropTypes from "prop-types";
-import uploadsPhoto from "../settings/photos/upload.png";
+import uploadPhoto from "../settings/photos/upload.png";
 import { useNavigate } from "react-router-dom";
-import './main.css'
+import "./main.css";
 import "./branch";
 import { logo } from "src/assets/brand/logo";
 const defaultIcon = L.icon({
@@ -103,26 +103,14 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
   const [branchPosition, setBranchPosition] = useState([51.505, -0.09]);
   const [subBranchPosition, setSubBranchPosition] = useState([51.505, -0.09]);
   const [showMapModal, setShowMapModal] = useState(false);
+  const [uploadsPhoto, setUploadsPhoto] = useState();
   const navigate = useNavigate();
   const [filepath, setFilePath] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [editData, setEditData] = useState([]);
-
+  const [logoSmall, setLogoSmall]=useState("")
   const userId = localStorage.getItem("userId");
-  const getImages = async (logoSmallUrl) => {
-    const url = `https://api.majorsoft.mn/api/branchService/download/${logoSmallUrl}`;
-    const options = {
-      method: "GET",
-      headers: { Accept: "application/json" },
-    };
 
-    try {
-      const response = await fetch(url, options);
-      const data = await response.json();
-    } catch (error) {
-      console.error("Error fetching branch data:", error);
-    }
-  };
   // Fetch branch data from API
   useEffect(() => {
     if (editBranch) {
@@ -202,41 +190,45 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
     }
   };
 
-  // Handle sub-branch selection
   const handleSubBranchChange = (e) => {
     const subBranchId = e.target.value;
     setSelectedSubBranch(subBranchId);
   };
-  const handlePhotoUpload = async (file) => {
+  const handlePhotoUpload = async (e) => {
+    const file = e.target.files[0]; 
+  
     if (file) {
       const formData = new FormData();
-      formData.append("imageFile", file);
-
+      formData.append('file', file); 
+      const token = localStorage.getItem('token'); 
+  
       try {
-        const response = await fetch(
-          "https://api.majorsoft.mn/api/branchService/uploadImage",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: formData,
+        const response = await fetch('https://api.majorsoft.mn/api/branchService/uploadLogo', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`, 
           },
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          setFilePath(data.filePath); // Save the file path for future use
-        } else {
-          const errorDetails = await response.text();
-          console.error("Error uploading photo:", errorDetails);
+          body: formData, 
+        });
+  
+        if (!response.ok) {
+          throw new Error('Error uploading photo');
         }
-      } catch (error) {
-        console.error("Error uploading photo:", error);
+  
+        const data = await response.json();
+        
+        console.log('Upload success', data);
+        const filePath = data.imageUrl;
+       setFilePath(filePath); 
+       
+    } catch (error) {
+        console.error('Error uploading photo:', error);
       }
     }
   };
-
+  
+  
+  
   const handleAddBranch = async () => {
     const token = localStorage.getItem("token");
     const branchData = {
@@ -250,10 +242,9 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
       locationLng: String(newBranchLocationLng) || editData.locationlng,
       phone: newBranchContact || editData.phone,
       address: newBranchAddress || editData.address,
-      logoSmall: filepath || String(editData.logoSmall),
+      logoSmall: filepath || editData.logoSmall ,
       createUserId: userId,
     };
-
     if (edit) {
       if (!editData.phone) {
         alert("Please fill in all required fields.");
@@ -287,16 +278,17 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
       } catch (error) {
         console.error("Error updating branch data:", error);
       }
-    } else {
-      if (
-        !newBranchName ||
-        !newBranchLocationLat ||
-        !newBranchContact ||
-        !newBranchType
-      ) {
-        alert("Please fill in all required fields.");
-        return;
-      }
+    }
+     else {
+      // if (
+      //   !newBranchName ||
+      //   !newBranchLocationLat ||
+      //   !newBranchContact ||
+      //   !newBranchType
+      // ) {
+      //   alert("Please fill in all required fields.");
+      //   return;
+      // }
       //Nemeh
       try {
         const response = await fetch(
@@ -332,9 +324,6 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
   const handleIconClick = () => {
     setShowMapModal(true);
   };
-  const MyComponent = ({ newBranchName, editData, setNewBranchName }) => {
-    const [isFocused, setIsFocused] = useState(false);
-  };
   const handleModalClose = () => {
     setShowMapModal(false);
   };
@@ -346,9 +335,6 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
         setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
-
-      // Call your upload image function here
-      uploadImage(file); // Implement this function to handle the image upload
     }
   };
   if (!visible) return null;
@@ -356,10 +342,10 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
   const positions = [branchPosition, subBranchPosition].filter(
     (pos) => pos[0] !== 51.505 && pos[1] !== -0.09,
   );
-  
+
   return (
     <>
-      <CCard className="w-50">
+      <CCard className="w-4">
         <CCardHeader>
           {edit ? <h4>Салбар засах</h4> : <h4>Салбар нэмэх</h4>}
         </CCardHeader>
@@ -368,15 +354,14 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
             <CRow>
               <CCol md={6}>
                 <CRow md={4}>
-                      <CFormLabel htmlFor="branchName">Салбарын нэр</CFormLabel>
-                      <CFormInput
-                        type="text"
-                        id="branchName"
-                        value={newBranchName || editData.branchName}
-                        onChange={(e) => setNewBranchName(e.target.value)}
-                      
-                      />
-                 </CRow>
+                  <CFormLabel htmlFor="branchName">Салбарын нэр</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="branchName"
+                    value={newBranchName || editData.branchName}
+                    onChange={(e) => setNewBranchName(e.target.value)}
+                  />
+                </CRow>
                 <CRow md={4}>
                   <CFormSelect
                     id="branchType"
@@ -398,19 +383,18 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
               </CCol>
               <CCol md={6}>
                 <CRow className="d-flex justify-content-center align-items-center">
-                  <CFormLabel htmlFor="branchPhoto"></CFormLabel>
                   <div
                     className="d-flex justify-content-center align-items-center"
                     style={{ height: "100%" }}
                   >
                     <img
-                      src={
-                        selectedImage
-                          ? selectedImage
-                          : editData.filePath
-                            ? editData.filePath
-                            : uploadsPhoto
-                      }
+                    src={
+                      editData.logoSmall
+                        ? editData.logoSmall // If the logo is already present (edit mode)
+                        : filepath
+                        ? filepath // If a new file is selected and uploaded
+                        : uploadPhoto // Fallback image
+                    }
                       alt="Branch preview"
                       className="rounded"
                       style={{
@@ -420,15 +404,16 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                         cursor: "pointer",
                       }}
                       onClick={() =>
-                        document.getElementById("branchPhoto").click()
-                      }
+                        document.getElementById(handleFileChange).click()
+                      } // Trigger file input click
                     />
                   </div>
+
                   <CFormInput
                     type="file"
                     id="branchPhoto"
                     style={{ display: "none" }}
-                    onChange={handleFileChange}
+                    onChange={handlePhotoUpload} // Handle file input change
                   />
 
                   <CButton

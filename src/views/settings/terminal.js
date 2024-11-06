@@ -12,33 +12,25 @@ import {
     CTableRow,
     CTableDataCell,
     CTableHead,
+    CFormSelect,
 } from '@coreui/react';
 import TerminalImage from '../settings/photos/terminal.png'; 
-import AddBranch from './addBranch'; 
-import EditBranch from './editBranch';
+import AddTerminal from './addTerminal'; 
 
 const Terminal = () => {
     const [showAddBranch, setShowAddBranch] = useState(false);
     const [branches, setBranches] = useState([]);
-    const [selectedBranch, setSelectedBranch] = useState([]);
-    const [edit, setEdit] = useState(false); // Renamed to setEdit for clarity
-
-    const businessTypeMap = {
-        0: 'Дэлгүүр',
-        1: 'Ресторан',
-        2: 'Түргэн хоол',
-        3: 'Салон',
-        4: 'Эмийн сан',
-        5: 'Зочид Буудал'
-    };
+    const [selectedBranch, setSelectedBranch] = useState(null);
+    const [edit, setEdit] = useState(false);
+    const [selectedBranchName, setSelectedBranchName] = useState(''); // New state for selected branch name
 
     const handleToggleAddBranch = (branch) => {
         if (branch) {
             setSelectedBranch(branch);
-            setEdit(true); // Set edit mode
+            setEdit(true);
         } else {
             setSelectedBranch(null);
-            setEdit(false); // Add new branch mode
+            setEdit(false);
         }
         setShowAddBranch(!showAddBranch);
     };
@@ -72,7 +64,7 @@ const Terminal = () => {
             });
     };
 
-    const  getDatas = () => {
+    const getDatas = () => {
         const token = localStorage.getItem('token');
         const merchantId = localStorage.getItem("merchantId");
 
@@ -100,39 +92,55 @@ const Terminal = () => {
             .catch((error) => {
                 console.error("Error fetching branch data:", error);
             });
-    } 
+    };
+
     useEffect(() => {
-       getDatas()
+        getDatas();
     }, []);
 
     return (
         <main className='mx-2 mt-1'>
             {!showAddBranch ? (
                 <CCard>
-                    <CCardHeader>Төхөөрөмжүүд</CCardHeader>
+                    <CCardHeader>Төхөөрөмжүүд
+                       
+                    </CCardHeader>
                     <CCardBody className='text-center'>
+                    <CFormSelect
+                     style={{ minWidth: '200px' }}
+                            id="branchType"
+                            value={selectedBranchName} 
+                            onChange={(e) => setSelectedBranchName(e.target.value)} 
+                        >
+                            <option value="" disabled>Салбарыг сонгох</option>
+                            {branches.map((branch) => (
+                                <option key={branch.branchId} value={branch.branchName}>
+                                    {branch.branchName}
+                                </option>
+                            ))}
+                        </CFormSelect>
                         {branches.length > 0 ? (
                             <CTable striped bordered hover responsive>
                                 <CTableHead>
                                     <CTableRow>
                                         <CTableHeaderCell>Салбарын нэр</CTableHeaderCell>
-                                        <CTableHeaderCell>Салбарын төрөл</CTableHeaderCell>
-                                        <CTableHeaderCell>Салбар</CTableHeaderCell>
+                                        <CTableHeaderCell>Бүртгэлтэй төхөөрөмж</CTableHeaderCell>
+                                        <CTableHeaderCell>Үйлдэл</CTableHeaderCell>
                                     </CTableRow>
                                 </CTableHead>
                                 <CTableBody>
                                     {branches.map((branch) => (
                                         <CTableRow key={branch.branchId || branch.branchName}>
                                             <CTableDataCell>{branch.branchName}</CTableDataCell>
-                                            <CTableDataCell>{businessTypeMap[branch.businessTypeId] || 'Тодорхойгүй'}</CTableDataCell>
-                                            <CTableDataCell> 
+                                            <CTableDataCell>{branch.branchType}</CTableDataCell>
+                                            <CTableDataCell>
                                                 <CButton color="light" onClick={() => handleToggleAddBranch(branch)}>Засах</CButton>
                                                 <CButton color="secondary" onClick={() => handleDeleteBranch(branch.branchId)}>Устгах</CButton>
                                             </CTableDataCell>
                                         </CTableRow>
                                     ))}
                                     <CButton color='primary' className='my-2' onClick={() => handleToggleAddBranch()}>
-                                       Төхөөрөмж нэмэх
+                                        Төхөөрөмж нэмэх
                                     </CButton>
                                 </CTableBody>
                             </CTable>
@@ -161,12 +169,12 @@ const Terminal = () => {
                     </CCardBody>
                 </CCard>
             ) : (
-                <AddBranch
+                <AddTerminal
                     visible={showAddBranch}
                     setVisible={setShowAddBranch}
                     edit={edit}
                     editBranch={selectedBranch}
-                    refresh = {getDatas}
+                    refresh={getDatas}
                 />
             )}
         </main>
