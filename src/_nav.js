@@ -49,7 +49,7 @@ const userRole = localStorage.getItem('role');
       component: CNavItem,
       name: <Translation>{(t) => <>{t('nav.terminalMaps')}</>}</Translation>,
       to: '/terminalMap',
-      icon: <CIcon icon={cilMap} customClassName="nav-icon" />, // Ensure you have the icon imported
+      icon: <CIcon icon={cilMap} customClassName="nav-icon" />, //Ensure you have the icon imported
     },
       //Burtgel
   {
@@ -66,7 +66,6 @@ const userRole = localStorage.getItem('role');
         component: CNavItem,
         name: <Translation>{(t) => <>{t('nav.product')}</>}</Translation>,
         to: '/registration/productlist',
-       
       },
       {
         component: CNavItem,

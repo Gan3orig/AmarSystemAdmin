@@ -104,16 +104,16 @@ const AppHeader = () => {
               <CIcon icon={cilTranslate} size="lg" />
 
               <span className="ms-2">
-                {i18n.language === 'mn' ? 'Мон' : 'Eng'}
+                {i18n.language === 'en' ? '' : ''}
               </span>
 
             </CDropdownToggle>
             <CDropdownMenu>
               <CDropdownItem onClick={() => handleLanguageChange("mn")}>
-               <CIcon icon={cilFlagAlt}/> Монгол
+              Монгол
               </CDropdownItem>
               <CDropdownItem onClick={() => handleLanguageChange("en")}>
-                English
+               English
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
