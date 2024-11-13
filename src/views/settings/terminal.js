@@ -4,7 +4,7 @@ import {
     CCard,
     CCardBody,
     CCardHeader,
-    CFormLabel,
+    CFormSelect,
     CImage,
     CTable,
     CTableBody,
@@ -12,19 +12,15 @@ import {
     CTableRow,
     CTableDataCell,
     CTableHead,
-    CFormSelect,
 } from '@coreui/react';
-import TerminalImage from '../settings/photos/terminal.png'; 
-import AddTerminal from './addTerminal'; 
+import TerminalImage from '../settings/photos/terminal.png';
 
 const Terminal = () => {
     const [branches, setBranches] = useState([]);
-    const [selectedBranchName, setSelectedBranchName] = useState('');
-    const [showAddBranch, setShowAddBranch] = useState(false);
-    const [selectedBranch, setSelectedBranch] = useState(null);
+    const [selectedBranch, setSelectedBranch] = useState(null); // Stores selected branch object
     const [terminals, setTerminals] = useState([]);
 
-    const getDatas = () => {
+    const getBranches = () => {
         const token = localStorage.getItem('token');
         const merchantId = localStorage.getItem('merchantId');
 
@@ -32,10 +28,11 @@ const Terminal = () => {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            redirect: 'follow'
+            redirect: 'follow',
         };
+
 
         fetch(`https://api.majorsoft.mn/api/branchService?merchantId=${merchantId}`, requestOptions)
             .then((response) => {
@@ -46,54 +43,55 @@ const Terminal = () => {
             })
             .then((result) => {
                 setBranches(result.data);
+                console(result.data);
             })
             .catch((error) => {
                 console.error('Error fetching branch data:', error);
             });
     };
 
-    const handleDeleteBranch = (branchId) => {
+    const getTerminals = (branchId) => {
         const token = localStorage.getItem('token');
 
-        const requestOptions = {
-            method: 'DELETE',
+        fetch(`https://api.majorsoft.mn/api/terminal/branchTerminals?branchId=${branchId}`, {
+            method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        };
-
-        fetch(`https://api.majorsoft.mn/api/branchService?branchId=${branchId}`, requestOptions)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                setBranches((prevBranches) => prevBranches.filter((branch) => branch.branchId !== branchId));
-                console.log(`Branch with id ${branchId} deleted successfully.`);
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                setTerminals(result.data);  
             })
             .catch((error) => {
-                console.error('Error deleting branch:', error);
+                console.error('Error fetching terminals:', error);
             });
     };
 
-
     const addTerminal = () => {
         const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId'); 
-      
+        const userId = localStorage.getItem('userId');
+
+        if (!selectedBranch) {
+            console.error('No branch selected');
+            return;
+        }
+
         const requestOptions = {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                branchId: selectedBranch?.branchId,  
-                userId: userId,  
-                terminalName: 'New Terminal'  
-            })
+                branchId: selectedBranch.branchId, 
+                userId: userId,                     
+                isConnect: true,                  
+                confirmDate: new Date().toISOString(), 
+            }),
         };
-    
+
         fetch('https://api.majorsoft.mn/api/terminal', requestOptions)
             .then((response) => {
                 if (!response.ok) {
@@ -102,91 +100,85 @@ const Terminal = () => {
                 return response.json();
             })
             .then((result) => {
-                console.log("Terminal added successfully:", result);
-                getDatas();  // Refresh branch data after adding terminal
+                console.log('Terminal added successfully:', result);
+                getTerminals(selectedBranch.branchId); 
             })
             .catch((error) => {
                 console.error('Error adding terminal:', error);
             });
     };
-    
 
     useEffect(() => {
-        getDatas();
+        getBranches();
     }, []);
 
     return (
         <main className="mx-2 mt-1">
-            {!showAddBranch ? (
-                <CCard>
-                    <CCardHeader>Төхөөрөмжүүд</CCardHeader>
-                    <CCardBody className="text-center">
-                        <CFormSelect
-                            style={{ minWidth: 'w-5' }}
-                            id="branchType"
-                            value={selectedBranchName}
-                            onChange={(e) => setSelectedBranchName(e.target.value)}
-                        >
-                            <option value="" disabled>Салбарыг сонгох</option>
-                            {branches.map((branch) => (
-                                <option key={branch.branchId} value={branch.branchName}>
-                                    {branch.branchName}
-                                </option>
-                            ))}
-                        </CFormSelect>
-                        {terminals.length > 0 ? (
-                            <CTable striped bordered hover responsive>
-                                <CTableHead>
-                                    <CTableRow>
-                                        <CTableHeaderCell>Салбарын нэр</CTableHeaderCell>
-                                        <CTableHeaderCell>Бүртгэлтэй төхөөрөмж</CTableHeaderCell>
-                                        <CTableHeaderCell>Үйлдэл</CTableHeaderCell>
+            <CCard>
+                <CCardHeader>Төхөөрөмжүүд</CCardHeader>
+                <CCardBody className="text-center">
+                    <CFormSelect
+                        style={{ minWidth: 'w-5' }}
+                        id="branchType"
+                        value={selectedBranch?.branchId || ''}  
+                        onChange={(e) => {
+                            const selected = branches.find((branch) => branch.branchId === parseInt(e.target.value));
+                            setSelectedBranch(selected);
+                            getTerminals(selected.branchId); 
+                        }}
+                    >
+                        <option value="" disabled>Салбарыг сонгох</option>
+                        {branches.map((branch) => (
+                            <option key={branch.branchId} value={branch.branchId}>
+                                {branch.branchName}
+                            </option>
+                        ))}
+                    </CFormSelect>
+
+                    {/* Check if terminals exist */}
+                    {terminals.length > 0 ? (
+                        <CTable striped bordered hover responsive>
+                            <CTableHead>
+                                <CTableRow>
+                                    <CTableHeaderCell>Төхөөрөмжийн нэр</CTableHeaderCell>
+                                    <CTableHeaderCell>Үйлдэл</CTableHeaderCell>
+                                </CTableRow>
+                            </CTableHead>
+                            <CTableBody>
+                                {terminals.map((terminal) => (
+                                    <CTableRow key={terminal.terminalId}>
+                                        <CTableDataCell>{terminal.terminalName}</CTableDataCell>
+                                        <CTableDataCell>
+                                            {/* Add more actions here if needed */}
+                                        </CTableDataCell>
                                     </CTableRow>
-                                </CTableHead>
-                                <CTableBody>
-                                    {branches.map((branch) => (
-                                        <CTableRow key={branch.branchId}>
-                                            {/* <CTableDataCell>{branch.branchName}</CTableDataCell>
-                                            <CTableDataCell>{branch.branchType}</CTableDataCell>
-                                            <CTableDataCell>
-                                                <CButton color="light" onClick={() => handleToggleAddBranch(branch)}>Засах</CButton>
-                                                <CButton color="secondary" onClick={() => handleDeleteBranch(branch.branchId)}>Устгах</CButton>
-                                            </CTableDataCell> */}
-                                        </CTableRow>
-                                    ))}
-                                </CTableBody>
-                            </CTable>
-                        ) : (
-                            <>
-                                <CImage
-                                    src={TerminalImage}
-                                    rounded
-                                    thumbnail
-                                    width={200}
-                                    height={200}
-                                    className="mb-2"
-                                    style={{ border: 'none' }}
-                                />
-                                <div className="d-flex flex-column align-items-center">
-                                    <CFormLabel className="fs-2">Төхөөрөмжүүд</CFormLabel>
-                                    <CFormLabel>Эндээс та салбараа удирдах боломжтой</CFormLabel>
-                                </div>
+                                    
+                                ))}
+                                   <CButton color="primary" className="my-2" onClick={addTerminal}>
+                                    Төхөөрөмж нэмэх
+                                </CButton>
+                            </CTableBody>
+                        </CTable>
+                    ) : (
+                        <div>
+                            <CImage
+                                src={TerminalImage}
+                                rounded
+                                thumbnail
+                                width={200}
+                                height={200}
+                                className="mb-2"
+                                style={{ border: 'none' }}
+                            />
+                            <div className="d-flex flex-column align-items-center">
                                 <CButton color="primary" className="my-2" onClick={addTerminal}>
                                     Төхөөрөмж нэмэх
                                 </CButton>
-                            </>
-                        )}
-                    </CCardBody>
-                </CCard>
-            ) : (
-                <AddTerminal
-                    visible={showAddBranch}
-                    setVisible={setShowAddBranch}
-                    edit={!!selectedBranch}
-                    editBranch={selectedBranch}
-                    refresh={getDatas}
-                />
-            )}
+                            </div>
+                        </div>
+                    )}
+                </CCardBody>
+            </CCard>
         </main>
     );
 };
