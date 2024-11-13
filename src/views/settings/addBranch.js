@@ -372,7 +372,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                   <CFormSelect
                     id="branchType"
                     label="Бизнес төрөл"
-                    value={newBranchType || editData.businessTypeId || ''}
+                    value={newBranchType || editData.businessTypeId }
                     onChange={(e) => setNewBranchType(e.target.value)}
                     feedbackValid="Looks good!"
                     required
