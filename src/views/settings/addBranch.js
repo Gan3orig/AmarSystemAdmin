@@ -255,7 +255,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
       locationLng: String(newBranchLocationLng) || editData.locationlng,
       phone: newBranchContact || editData.phone,
       address: newBranchAddress || editData.address,
-      logoSmall: filepath || editData.logoSmall,
+      logoSmall: filepath || editData.logoSmall || '',
       createUserId: userId,
     };
     if (edit) {
