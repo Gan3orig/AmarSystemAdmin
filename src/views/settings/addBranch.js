@@ -16,6 +16,7 @@ import {
   CModalHeader,
   CModalTitle,
   CInputGroup,
+  CFormFeedback,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilAirplay, cilLocationPin } from "@coreui/icons";
@@ -103,13 +104,13 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
   const [branchPosition, setBranchPosition] = useState([51.505, -0.09]);
   const [subBranchPosition, setSubBranchPosition] = useState([51.505, -0.09]);
   const [showMapModal, setShowMapModal] = useState(false);
-  const [uploadsPhoto, setUploadsPhoto] = useState();
   const navigate = useNavigate();
   const [filepath, setFilePath] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [editData, setEditData] = useState([]);
-  const [logoSmall, setLogoSmall]=useState("")
   const userId = localStorage.getItem("userId");
+  const [validated, setValidated] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
 
   // Fetch branch data from API
   useEffect(() => {
@@ -195,41 +196,53 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
     setSelectedSubBranch(subBranchId);
   };
   const handlePhotoUpload = async (e) => {
-    const file = e.target.files[0]; 
-  
+    const file = e.target.files[0];
+
     if (file) {
       const formData = new FormData();
-      formData.append('file', file); 
-      const token = localStorage.getItem('token'); 
-  
+      formData.append("file", file);
+      const token = localStorage.getItem("token");
+
       try {
-        const response = await fetch('https://api.majorsoft.mn/api/branchService/uploadLogo', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`, 
+        const response = await fetch(
+          "https://api.majorsoft.mn/api/branchService/uploadLogo",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
           },
-          body: formData, 
-        });
-  
+        );
+
         if (!response.ok) {
-          throw new Error('Error uploading photo');
+          throw new Error("Error uploading photo");
         }
-  
+
         const data = await response.json();
-        
-        console.log('Upload success', data);
+
+        console.log("Upload success", data);
         const filePath = data.imageUrl;
-       setFilePath(filePath); 
-       
-    } catch (error) {
-        console.error('Error uploading photo:', error);
+        setFilePath(filePath);
+      } catch (error) {
+        console.error("Error uploading photo:", error);
       }
     }
   };
+
+  const handleAddBranch = async (event) => {
+    event.preventDefault();
+
+
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      setValidated(true);
+      return; 
+    }
   
-  
-  
-  const handleAddBranch = async () => {
+
+    setValidated(true);
     const token = localStorage.getItem("token");
     const branchData = {
       branchId: editData.branchId,
@@ -242,14 +255,10 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
       locationLng: String(newBranchLocationLng) || editData.locationlng,
       phone: newBranchContact || editData.phone,
       address: newBranchAddress || editData.address,
-      logoSmall: filepath || editData.logoSmall ,
+      logoSmall: filepath || editData.logoSmall,
       createUserId: userId,
     };
     if (edit) {
-      if (!editData.phone) {
-        alert("Please fill in all required fields.");
-        return;
-      }
       const formData = new FormData();
       Object.keys(branchData).forEach((key) => {
         formData.append(key, branchData[key]);
@@ -278,9 +287,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
       } catch (error) {
         console.error("Error updating branch data:", error);
       }
-    }
-     else {
-
+    } else {
       try {
         const response = await fetch(
           "https://api.majorsoft.mn/api/branchService",
@@ -297,7 +304,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
         if (!response.ok) {
           const errorDetails = await response.text();
           console.error("Error creating branch service:", errorDetails);
-          alert(`Алдаа: ${errorDetails}`);
+          
 
           return;
         }
@@ -341,7 +348,12 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
           {edit ? <h4>Салбар засах</h4> : <h4>Салбар нэмэх</h4>}
         </CCardHeader>
         <CCardBody>
-          <CForm className="row g-3">
+          <CForm
+            className="row g-3 needs-validation"
+            noValidate
+            validated={validated}
+            onSubmit={handleAddBranch}
+          >
             <CRow>
               <CCol md={6}>
                 <CRow md={4}>
@@ -349,19 +361,24 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                   <CFormInput
                     type="text"
                     id="branchName"
+                    feedbackValid="Looks good!"
                     value={newBranchName || editData.branchName}
                     onChange={(e) => setNewBranchName(e.target.value)}
+                    required
                   />
+                  <CFormFeedback invalid>Салбарын нэрийг оруулна уу.</CFormFeedback> 
                 </CRow>
                 <CRow md={4}>
                   <CFormSelect
                     id="branchType"
                     label="Бизнес төрөл"
-                    value={newBranchType || editData.businessTypeId}
+                    value={newBranchType || editData.businessTypeId || ''}
                     onChange={(e) => setNewBranchType(e.target.value)}
+                    feedbackValid="Looks good!"
+                    required
                   >
-                    <option value="" disabled>
-                      Сонгох
+                    <option selected="" value="" disabled="" >
+                      Сонгох..
                     </option>
                     <option value="0">Дэлгүүр</option>
                     <option value="1">Ресторан</option>
@@ -370,6 +387,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                     <option value="4">Эмийн сан</option>
                     <option value="5">Зочид Буудал</option>
                   </CFormSelect>
+                  <CFormFeedback invalid>Салбарын төрлийг сонгоно уу.</CFormFeedback> 
                 </CRow>
               </CCol>
               <CCol md={6}>
@@ -379,13 +397,13 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                     style={{ height: "100%" }}
                   >
                     <img
-                    src={
-                      editData.logoSmall
-                        ? editData.logoSmall // If the logo is already present (edit mode)
-                        : filepath
-                        ? filepath 
-                        : uploadPhoto 
-                    }
+                      src={
+                        editData.logoSmall
+                          ? editData.logoSmall // If the logo is already present (edit mode)
+                          : filepath
+                            ? filepath
+                            : uploadPhoto
+                      }
                       alt="Branch preview"
                       className="rounded"
                       style={{
@@ -427,6 +445,8 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                 label="Аймаг/Хот"
                 value={selectedBranch || editData?.branchCode || ""}
                 onChange={handleBranchChange}
+                feedbackValid="Looks good!"
+                    required
               >
                 <option value="" disabled>
                   Салбарын байршил сонгох
@@ -437,12 +457,14 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                   </option>
                 ))}
               </CFormSelect>
-
+              <CFormFeedback invalid>Аймаг хотыг сонгоно уу.</CFormFeedback> 
               <CFormSelect
                 id="subBranchSelect"
                 label="Дүүрэг/Сум"
                 value={selectedSubBranch || editData?.subBranchCode || ""}
                 onChange={handleSubBranchChange}
+                feedbackValid="Looks good!"
+                required
               >
                 <option value="" disabled>
                   Дүүрэг/Сум сонгох
@@ -456,6 +478,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                   </option>
                 ))}
               </CFormSelect>
+              <CFormFeedback invalid>Сум дүүргийг сонгоно уу.</CFormFeedback> 
             </CRow>
             <CRow md={4}>
               <CFormLabel htmlFor="branchAddress">Хаяг</CFormLabel>
@@ -464,7 +487,10 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                 id="branchAddress"
                 value={newBranchAddress || editData.address}
                 onChange={(e) => setNewBranchAddress(e.target.value)}
+                 feedbackValid="Looks good!"
+                 required
               />
+              <CFormFeedback invalid>Салбарын хаягыг оруулна уу.</CFormFeedback> 
             </CRow>
             <CRow md={4}>
               <CFormLabel htmlFor="branchLocation">Байршил</CFormLabel>
@@ -473,12 +499,15 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                   placeholder=" "
                   type="text"
                   id="branchLocation"
+                  required
                   value={`${newBranchLocationLat || editData.locationLat || " "} ${newBranchLocationLng || editData.locationlng || " "}`}
                 />
                 <span className="input-group-text">
                   <CIcon icon={cilLocationPin} onClick={handleIconClick} />
                 </span>
               </CInputGroup>
+              <CFormFeedback invalid>Салбарын байршлыг оруулна уу.</CFormFeedback> 
+              
             </CRow>
             <CRow md={4}>
               <CFormLabel htmlFor="branchPhoneNumber">Утасны дугаар</CFormLabel>
@@ -487,10 +516,13 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                 id="branchPhoneNumber"
                 pattern="^\d{8}$"
                 maxLength="8"
-                required
+                feedbackValid="Looks good!"
                 value={newBranchContact || editData.phone}
                 onChange={(e) => setNewBranchContact(e.target.value)}
+                
+                required
               />
+              <CFormFeedback invalid>Утасны дугаар 8 оронтой тоо байх ёстой.</CFormFeedback>
             </CRow>
             <div className="d-grid gap-2">
               <CButton color="primary" onClick={handleAddBranch}>
