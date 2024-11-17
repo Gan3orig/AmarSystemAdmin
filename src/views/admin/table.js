@@ -29,21 +29,16 @@ const Table = () => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(
-          "https://api.majorsoft.mn/api/terminalMap",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+        const response = await fetch("https://api.majorsoft.mn/api/terminalMap", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
-        );
-
+        });
+  
         if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          const result = await response.json();
+          const result = await response.json(); // Only call response.json() once
           setData(result); // Assume API returns an array of data
         } else {
           console.error("Failed to fetch data");
@@ -54,9 +49,10 @@ const Table = () => {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
   // Filtered data based on the search term
   const filteredData = data.filter(
