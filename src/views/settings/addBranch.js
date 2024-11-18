@@ -17,6 +17,7 @@ import {
   CModalTitle,
   CInputGroup,
   CFormFeedback,
+  CFooter,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilAirplay, cilLocationPin } from "@coreui/icons";
@@ -110,7 +111,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
   const [editData, setEditData] = useState([]);
   const userId = localStorage.getItem("userId");
   const [validated, setValidated] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState("");
 
   // Fetch branch data from API
   useEffect(() => {
@@ -218,7 +219,6 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
         if (!response.ok) {
           throw new Error("Error uploading photo");
         }
-
         const data = await response.json();
 
         console.log("Upload success", data);
@@ -232,15 +232,12 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
 
   const handleAddBranch = async (event) => {
     event.preventDefault();
-
-
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.stopPropagation();
       setValidated(true);
-      return; 
+      return;
     }
-  
 
     setValidated(true);
     const token = localStorage.getItem("token");
@@ -255,7 +252,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
       locationLng: String(newBranchLocationLng) || editData.locationlng,
       phone: newBranchContact || editData.phone,
       address: newBranchAddress || editData.address,
-      logoSmall: filepath || editData.logoSmall || '',
+      logoSmall: filepath || editData.logoSmall || "",
       createUserId: userId,
     };
     if (edit) {
@@ -304,8 +301,6 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
         if (!response.ok) {
           const errorDetails = await response.text();
           console.error("Error creating branch service:", errorDetails);
-          
-
           return;
         }
 
@@ -366,18 +361,20 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                     onChange={(e) => setNewBranchName(e.target.value)}
                     required
                   />
-                  <CFormFeedback invalid>Салбарын нэрийг оруулна уу.</CFormFeedback> 
+                  <CFormFeedback invalid>
+                    Салбарын нэрийг оруулна уу.
+                  </CFormFeedback>
                 </CRow>
                 <CRow md={4}>
                   <CFormSelect
                     id="branchType"
                     label="Бизнес төрөл"
-                    value={newBranchType || editData.businessTypeId }
+                    value={newBranchType || editData.businessTypeId}
                     onChange={(e) => setNewBranchType(e.target.value)}
                     feedbackValid="Looks good!"
                     required
                   >
-                    <option selected="" value="" disabled="" >
+                    <option selected="" value="" disabled="">
                       Сонгох..
                     </option>
                     <option value="0">Дэлгүүр</option>
@@ -387,7 +384,9 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                     <option value="4">Эмийн сан</option>
                     <option value="5">Зочид Буудал</option>
                   </CFormSelect>
-                  <CFormFeedback invalid>Салбарын төрлийг сонгоно уу.</CFormFeedback> 
+                  <CFormFeedback invalid>
+                    Салбарын төрлийг сонгоно уу.
+                  </CFormFeedback>
                 </CRow>
               </CCol>
               <CCol md={6}>
@@ -446,7 +445,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                 value={selectedBranch || editData?.branchCode || ""}
                 onChange={handleBranchChange}
                 feedbackValid="Looks good!"
-                    required
+                required
               >
                 <option value="" disabled>
                   Салбарын байршил сонгох
@@ -457,7 +456,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                   </option>
                 ))}
               </CFormSelect>
-              <CFormFeedback invalid>Аймаг хотыг сонгоно уу.</CFormFeedback> 
+              <CFormFeedback invalid>Аймаг хотыг сонгоно уу.</CFormFeedback>
               <CFormSelect
                 id="subBranchSelect"
                 label="Дүүрэг/Сум"
@@ -478,7 +477,7 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                   </option>
                 ))}
               </CFormSelect>
-              <CFormFeedback invalid>Сум дүүргийг сонгоно уу.</CFormFeedback> 
+              <CFormFeedback invalid>Сум дүүргийг сонгоно уу.</CFormFeedback>
             </CRow>
             <CRow md={4}>
               <CFormLabel htmlFor="branchAddress">Хаяг</CFormLabel>
@@ -487,10 +486,10 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                 id="branchAddress"
                 value={newBranchAddress || editData.address}
                 onChange={(e) => setNewBranchAddress(e.target.value)}
-                 feedbackValid="Looks good!"
-                 required
+                feedbackValid="Looks good!"
+                required
               />
-              <CFormFeedback invalid>Салбарын хаягыг оруулна уу.</CFormFeedback> 
+              <CFormFeedback invalid>Салбарын хаягыг оруулна уу.</CFormFeedback>
             </CRow>
             <CRow md={4}>
               <CFormLabel htmlFor="branchLocation">Байршил</CFormLabel>
@@ -506,8 +505,9 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                   <CIcon icon={cilLocationPin} onClick={handleIconClick} />
                 </span>
               </CInputGroup>
-              <CFormFeedback invalid>Салбарын байршлыг оруулна уу.</CFormFeedback> 
-              
+              <CFormFeedback invalid>
+                Салбарын байршлыг оруулна уу.
+              </CFormFeedback>
             </CRow>
             <CRow md={4}>
               <CFormLabel htmlFor="branchPhoneNumber">Утасны дугаар</CFormLabel>
@@ -519,24 +519,29 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
                 feedbackValid="Looks good!"
                 value={newBranchContact || editData.phone}
                 onChange={(e) => setNewBranchContact(e.target.value)}
-                
                 required
               />
-              <CFormFeedback invalid>Утасны дугаар 8 оронтой тоо байх ёстой.</CFormFeedback>
+              <CFormFeedback invalid>
+                Утасны дугаар 8 оронтой тоо байх ёстой.
+              </CFormFeedback>
             </CRow>
-            <div className="d-grid gap-2">
-              <CButton color="primary" onClick={handleAddBranch}>
-                {edit ? "Засах" : "Нэмэх"}
-              </CButton>
-
-              <CButton color="secondary" onClick={() => setVisible(false)}>
-                Хаах
-              </CButton>
-            </div>
           </CForm>
         </CCardBody>
+        <CFooter>
+          <CRow className="d-flex justify-content-end">
+            <CCol xs="auto">
+              <CButton color="primary" onClick={handleAddBranch}>
+                {edit ? "Хадгалах" : "Хадгалах"}
+              </CButton>
+            </CCol>
+            <CCol xs="auto">
+              <CButton color="secondary" onClick={() => setVisible(false)}>
+                Буцах
+              </CButton>
+            </CCol>
+          </CRow>
+        </CFooter>
       </CCard>
-
       {/* Map Modal */}
       <CModal size="lg" visible={showMapModal} onClose={handleModalClose}>
         <CModalHeader onClose={handleModalClose}>
@@ -580,5 +585,4 @@ const AddBranch = ({ visible, setVisible, edit, editBranch, refresh }) => {
     </>
   );
 };
-
 export default AddBranch;
