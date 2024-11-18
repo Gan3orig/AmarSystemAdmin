@@ -5,7 +5,7 @@ import L from 'leaflet';
 import markerIcon from 'src/assets/images/marker.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { CAlert, CContainer, CAccordion, CAccordionItem, CAccordionHeader, CAccordionBody } from '@coreui/react';
-import Table from './table'
+import TerminalTable from './terminalTable'
 // Fix for default marker icons in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -60,7 +60,7 @@ const TerminalMap = () => {
       <CAlert color="warning" visible={visible} closeButton onShowChange={setVisible}>
         <strong>Анхааруулга!</strong> Хэрэглэгчээр нэвтрээгүй байна. <a href="/login" className="alert-link">Нэвтрэх</a>.
       </CAlert>
-      <CAccordion activeItemKey={1} alwaysOpen>
+      <CAccordion activeItemKey={1}>
         <CAccordionItem itemKey={1}>
           <CAccordionHeader>
             Терминал байршил (Terminal Map)
@@ -85,12 +85,12 @@ const TerminalMap = () => {
             </MapContainer>
           </CAccordionBody>
         </CAccordionItem>
-        <CAccordionItem itemKey={2}>
+        <CAccordionItem itemKey={2} alwaysopen={true}>
           <CAccordionHeader>
-            Салбарын мэдээлэл (Terminal Information)
+            Салбарын мэдээлэл (Terminal table)
           </CAccordionHeader>
           <CAccordionBody>
-           <Table/>
+           <TerminalTable/>
           </CAccordionBody>
         </CAccordionItem>
       </CAccordion>

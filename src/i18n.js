@@ -5,8 +5,8 @@ import HttpBackend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 // Import your translation files
-import en from './translate/en.json';
 import mn from './translate/mn.json';
+import en from './translate/en.json';
 
 // Initialize i18next
 i18n
@@ -15,14 +15,15 @@ i18n
   .use(initReactI18next) 
   .init({
     resources: {
-      en: {
-        translation: en,
-      },
       mn: {
         translation: mn,
       },
+      en: {
+        translation: en,
+      },
     },
     fallbackLng: 'mn',
+    supportedLngs: ['mn', 'en'],
     debug: true, 
     interpolation: {
       escapeValue: false, 

@@ -29,12 +29,10 @@ const Table = () => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await fetch(
-          "https://api.majorsoft.mn/api/terminalMap",
-          {
+        const response = await fetch("https://api.majorsoft.mn/api/terminalMap",{
             method: "GET",
             headers: {
-              Authorization: `Bearer ${token}`,
+              'Authorization': 'Bearer ${token}',
               "Content-Type": "application/json",
             },
           },
@@ -54,7 +52,6 @@ const Table = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 

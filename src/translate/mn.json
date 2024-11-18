@@ -24,8 +24,8 @@
   "save": "Хадгалах",
   "single": "Ширхэг",
   "crushed": "Бутархай",
-  "products": "Бараа бүтэгдэхүүн",
-  "manage_products": "Барааг хянах",
+  "products": "Бараа бүтээгдэхүүн",
+  "manage_products": "Бараа менежмент",
   "r.addItem": "Бараа нэмэх",
   "r.quantity": "тоо хэмжээ",
   "r.barcode": "Баркод",
@@ -52,7 +52,6 @@
   "username": "Хэрэглэгчийн нэр",
   "password": "Нууц үг",
   "forgotPassword": "Нууц үг мартсан",
-  "register": "Бүртгүүлэх",
   "registerBusiness": "Бизнесээ ухаалгаар хяна",
   "nowRegister": "Одоо бүртгүүлэх",
   "language": {
@@ -62,6 +61,7 @@
   "fillCredentials": "Бүртгэлээ бөглөж өгнө үү.",
 
   "register": {
+    "title": "Бүртгүүлэх",
     "subtitle": "Шинэ хаяг нээх",
     "namePlaceholder": "Нэр",
     "emailPlaceholder": "Email",
