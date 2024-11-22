@@ -47,10 +47,12 @@ const Register = () => {
 
     setError('');
     const data = {
+      name:name,
       email: email,
-      userName: name,
+      
       phone: phone,
       password: password,
+      deviceIdentityInfo: "string",
       userAgent: navigator.userAgent,
     };
     const myHeaders = new Headers();
@@ -66,14 +68,15 @@ const Register = () => {
     };
 
     try {
-      const response = await fetch('https://api.majorsoft.mn/api/userAccount', requestOptions);
+      const response = await fetch('https://api.majorsoft.mn/api/login/createUser', requestOptions);
       const result = await response.json();
-      if (result.isOK) {
-        setSuccess(result.message);
+      if (result.Success) {
+        setSuccess("Амжилттай бүртгэгдлээ");
         resetForm();
+        console.log("Navigating to login page");
         setTimeout(() => {
           navigate('/login');
-        }, 2000);
+        }, 1000);
       } else {
         setError(result.message);
       }
@@ -98,6 +101,11 @@ const Register = () => {
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
+      {/* {success && (
+        <CAlert color="success">
+          {success}
+        </CAlert>
+      )} */}
         <CRow className="justify-content-center">
           <CCol md={9} lg={7} xl={6}>
             <CCard className="mx-4">

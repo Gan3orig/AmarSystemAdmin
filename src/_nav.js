@@ -70,7 +70,7 @@ const userRole = localStorage.getItem('role');
       {
         component: CNavItem,
         name: <Translation>{(t) => <>{t('nav.costumer')}</>}</Translation>,
-        to: '/interlocutor',
+        to: '/registration/customer',
        
       },
     
@@ -438,7 +438,7 @@ const userRole = localStorage.getItem('role');
       {
         component: CNavItem,
         name: <Translation>{(t) => <>{t('nav.costumer')}</>}</Translation>,
-        to: '/interlocutor',
+        to: '/registration/customer',
        
       },
     

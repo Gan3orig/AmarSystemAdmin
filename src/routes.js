@@ -11,8 +11,8 @@ const terminalMap = React.lazy(()=>import('./views/admin/terminalMap'))
 
  //regastration
 
- const productList = React.lazy(() => import('./views/registration/productlist.js'));
-const Customer=React.lazy(()=>import('./views/registration/customer'))
+ const productList = React.lazy(() => import('./views/registration/productlist'));
+const customer=React.lazy(()=>import('./views/registration/customer'))
 
 //flow
 // const cashFlow = React.lazy(() => import('./views/flow/cashFlow'));
@@ -84,8 +84,9 @@ const routes = [
     { path: '/admin', name: 'Админ', element: Admin },
     ...(role === 'admin' ? [
     { path: '/theme', name: 'Theme', element: Colors, exact: true },
-    //{ path: '/admin', name: 'Админ', element: Admin },
-    { path:'/costumer' ,name:'Харилцагчид', element:Customer},
+
+   
+
     { path: '/theme/colors', name: 'Colors', element: Colors },
     { path: '/theme/typography', name: 'Typography', element: Typography },
     { path: '/base', name: 'Base', element: Cards, exact: true },
@@ -137,10 +138,9 @@ const routes = [
    
   
   
-    //registration
-    {path:'/registration/productList',name:"Бүртгэл" ,element:productList}
+
   ] : [
-    { path:'/costumer' ,name:'Харилцагчид', element:Customer},
+   
     { path: '/theme/colors', name: 'Colors', element: Colors },
     { path: '/theme/typography', name: 'Typography', element: Typography },
     { path: '/base', name: 'Base', element: Cards, exact: true },
@@ -192,8 +192,9 @@ const routes = [
 
   
   
-    //registration
-    {path:'/registration/productList',name:"Бүртгэл" ,element:productList}
+       //registration
+       {path:'/registration/productList',name:"Бүртгэл" ,element:productList},
+       { path:'/registration/customer' ,name:'Харилцагч', element:customer},
   ]),
  
 
