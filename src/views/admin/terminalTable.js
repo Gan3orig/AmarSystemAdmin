@@ -103,6 +103,7 @@ const Table = () => {
                 <CTableHeaderCell>Байгууллагын нэр</CTableHeaderCell>
                 <CTableHeaderCell>Утасны дугаар</CTableHeaderCell>
                 <CTableHeaderCell>Регисртийн дугаар</CTableHeaderCell>
+                <CTableHeaderCell>Эхэлсэн огноо</CTableHeaderCell>
                 <CTableHeaderCell>Дуусах огноо</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -118,8 +119,9 @@ const Table = () => {
                     {location.phone1}, {location.phone2}
                   </CTableDataCell>
                   <CTableDataCell>{location.registerNo}</CTableDataCell>
+                  <CTableDataCell>{location.createDate}</CTableDataCell>
                   <CTableDataCell>
-                    {new Date(location.licenseExpireDate).toLocaleDateString()}
+                  {location.licenseExpireDate}
                   </CTableDataCell>
                 </CTableRow>
               ))}

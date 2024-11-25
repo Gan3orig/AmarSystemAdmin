@@ -79,5 +79,14 @@
     "fieldsRequired": "Please fill in all fields",
     "passwordMismatch": "Passwords do not match",
     "general": "An error occurred"
-  }
+  },
+  
+    "customerImageAlt":"Costumer photo",
+    "customer":"Costumer",
+    "manage_costumer":"Manage Costumer",
+    "addCostumer":"Add costumer",
+   "r.customerGroup":"Add customer group",
+   "r.customerName":"Customer Name",
+   "r.customerAddress":"Customer Address",
+    "r.customerPhone":"Customer phone"
 }

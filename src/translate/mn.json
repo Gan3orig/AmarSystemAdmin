@@ -74,5 +74,16 @@
     "fieldsRequired": "Бүх талбаруудыг бөглөнө үү",
     "passwordMismatch": "Нууц үг тохирохгүй байна",
     "general": "Алдаа гарлаа"
-  }
+  },
+
+      "customerImageAlt":"Харилцагчийн зураг",
+      "customer":"Харилцагч",
+      "manage_costumer":"Харилцийг хянах",
+      "addCostumer":"Харилцагч нэмэх",
+      "r.customerGroup":"Харилцагчийн багц",
+      "r.customerName":"Харилцагчийн нэр",
+      "r.customerAddress":"Харилцагчийн хаяг",
+       "r.customerPhone":"Харилцагчийн дугаар"
+
+  
 }
