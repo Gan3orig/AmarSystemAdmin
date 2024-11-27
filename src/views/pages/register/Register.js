@@ -34,57 +34,63 @@ const Register = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
+  
     if (!name || !email || !password || !confirmPassword) {
-      setError(t('error.fieldsRequired')); // Use translation key
+      setError(t('error.fieldsRequired'));
       return;
     }
-
+  
     if (password !== confirmPassword) {
-      setError(t('error.passwordMismatch')); // Use translation key
+      setError(t('error.passwordMismatch'));
       return;
     }
-
+  
     setError('');
     const data = {
-      name:name,
-      email: email,
-      
-      phone: phone,
-      password: password,
+      name,
+      email,
+      phone,
+      password,
       deviceIdentityInfo: "string",
       userAgent: navigator.userAgent,
     };
-    const myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-
-    const raw = JSON.stringify(data);
-
+  
     const requestOptions = {
       method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     };
-
+  
     try {
       const response = await fetch('https://api.majorsoft.mn/api/login/createUser', requestOptions);
+  
+      // If the response is not successful (4xx or 5xx errors)
+      if (!response.ok) {
+        // Parse the response body for an error message
+        const errorData = await response.json();
+        const backendMessage = errorData.message || t('error.general'); // Use backend message or fallback
+        throw new Error(backendMessage); // Throw to be caught below
+      }
+  
       const result = await response.json();
+  
       if (result.Success) {
-        setSuccess("Амжилттай бүртгэгдлээ");
+        setSuccess(result.message || "Амжилттай бүртгэгдлээ"); // Use backend success message or default
         resetForm();
-        console.log("Navigating to login page");
         setTimeout(() => {
           navigate('/login');
         }, 1000);
       } else {
-        setError(result.message);
+        setError(result.message || t('error.general')); // Display backend message on failure
       }
     } catch (error) {
       console.error('Error:', error);
-      setError(t('error.general')); // Use translation key
+      setError(error.message || t('error.general')); // Display error message from backend or a general one
     }
   };
+  
 
   const resetForm = () => {
     setName('');

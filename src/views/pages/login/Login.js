@@ -1,4 +1,4 @@
-import { cilLockLocked, cilUser, cilGlobeAlt } from '@coreui/icons';
+import { cilLockLocked, cilUser } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import {
   CAlert,
@@ -22,7 +22,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { validateToken } from 'src/validateToken'; // Validation
 import { useTranslation } from 'react-i18next';
 
-
 const Login = () => {
   const { t } = useTranslation();
   const [username, setUsername] = useState('');
@@ -32,10 +31,22 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(); // Use navigate for redirection
 
+  // Helper function to check if token is expired
+  const isTokenExpired = () => {
+    const expiryDate = localStorage.getItem('expiryDate');
+    if (!expiryDate) return true; // If there's no expiry date, consider it expired
+    const currentTime = new Date().getTime(); // Current time in milliseconds
+    return currentTime > expiryDate; // Token is expired if current time is greater than expiry time
+  };
+
   useEffect(() => {
     const isValid = validateToken(); // Validate the token on mount
-    if (isValid) {
-      navigate('/dashboard'); 
+    if (isValid && !isTokenExpired()) {
+      navigate('/dashboard');
+    } else {
+      // If token is invalid or expired, clear localStorage and navigate to login
+      localStorage.clear();
+      navigate('/login');
     }
   }, [navigate]);
 
@@ -69,16 +80,16 @@ const Login = () => {
       if (response.ok) {
         if (result.isOK) {
           const data = JSON.parse(result.json);
-          const expiryDate = data.expiresIn;
-            console.log(data)
+          const expiryDate = new Date().getTime() + data.expiresIn * 1000; // Calculate expiry time
+          
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("user-info", data.userId);
-          localStorage.setItem("expiryDate", expiryDate);
+          localStorage.setItem("expiryDate", expiryDate); // Save expiry date in milliseconds
           localStorage.setItem("isAuthenticated", true);
-          //localStorage.setItem("role", "admin");
           localStorage.setItem("role", data.role);
-          localStorage.setItem("userId",data.userId);
-          navigate('/dashboard'); 
+          localStorage.setItem("userId", data.userId);
+          
+          navigate('/dashboard');
         } else {
           setAlertMessage(result.message);
         }
@@ -147,7 +158,6 @@ const Login = () => {
                             {t('forgotPassword')}
                           </CButton>
                         </Link>
-                    
                       </CCol>
                     </CRow>
                   </CForm>
@@ -173,6 +183,5 @@ const Login = () => {
     </div>
   );
 };
-
 
 export default Login;
