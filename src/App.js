@@ -55,7 +55,7 @@ const App = () => {
 
           <Route
             path="/"
-            element={<Navigate to={isValid ? "/dashboard" : "/login"} />}
+            element={<Navigate to= {isValid ? "/dashboard" : "/login"} />}
           />
 
          <Route path="*" element={<DefaultLayout />} />

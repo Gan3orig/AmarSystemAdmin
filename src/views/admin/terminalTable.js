@@ -32,7 +32,7 @@ const Table = () => {
         const response = await fetch("https://api.majorsoft.mn/api/terminalMap",{
             method: "GET",
             headers: {
-              'Authorization': 'Bearer ${token}',
+              'Authorization': `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           },
@@ -40,9 +40,9 @@ const Table = () => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
-          const result = await response.json();
-          setData(result); // Assume API returns an array of data
+          // console.log(data);
+          // const result = await response.json();
+          setData(data); // Assume API returns an array of data
         } else {
           console.error("Failed to fetch data");
         }
@@ -116,7 +116,7 @@ const Table = () => {
                   <CTableDataCell>{location.businessName}</CTableDataCell>
                   <CTableDataCell>{location.entityName}</CTableDataCell>
                   <CTableDataCell>
-                    {location.phone1}, {location.phone2}
+                    {location.phone1}  {location.phone2}
                   </CTableDataCell>
                   <CTableDataCell>{location.registerNo}</CTableDataCell>
                   <CTableDataCell>{location.createDate}</CTableDataCell>
