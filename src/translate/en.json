@@ -56,7 +56,7 @@
   "username": "Username",
   "password": "Password",
   "forgotPassword": "Forgot password",
-
+  "backToLogin": "Back to login",
   "registerBusiness": "Manage your business wisely",
   "nowRegister": "Register now",
   "language": {
@@ -80,7 +80,7 @@
     "passwordMismatch": "Passwords do not match",
     "general": "An error occurred"
   },
-  
+
     "customerImageAlt":"Costumer photo",
     "customer":"Costumer",
     "manage_costumer":"Manage Costumer",

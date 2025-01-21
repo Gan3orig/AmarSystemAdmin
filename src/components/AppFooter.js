@@ -11,7 +11,7 @@ const AppFooter = () => {
         <span className="ms-1">&copy; 2024 majorsoft.</span>
       </div> */}
       <div className="ms-auto">
-        <span className="me-1">Powered by</span>
+        <span className="me-1">Developed</span>
         <a href="https://majorsoft.mn" target="_blank" rel="noopener noreferrer">
           MajorSoft
         </a>

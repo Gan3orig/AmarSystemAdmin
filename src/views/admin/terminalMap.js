@@ -4,8 +4,9 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import markerIcon from 'src/assets/images/marker.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import { CAlert, CContainer, CAccordion, CAccordionItem, CAccordionHeader, CAccordionBody } from '@coreui/react';
+import { CAlert, CContainer, CAccordion, CAccordionItem, CAccordionHeader, CAccordionBody, CLink } from '@coreui/react';
 import TerminalTable from './terminalTable'
+import { Link } from 'react-router-dom';
 // Fix for default marker icons in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -58,9 +59,12 @@ const TerminalMap = () => {
   return (
     <CContainer>
       <CAlert color="warning" visible={visible} closeButton onShowChange={setVisible}>
-        <strong>Анхааруулга!</strong> Хэрэглэгчээр нэвтрээгүй байна. <a href="/login" className="alert-link">Нэвтрэх</a>.
+        <strong>Анхааруулга!</strong> Хэрэглэгчээр нэвтрээгүй байна үү?{' '}
+        <CLink href="#/login">
+          Нэвтрэх
+        </CLink>
       </CAlert>
-      <CAccordion activeItemKey={1}>
+      <CAccordion activeItemKey={1} alwaysOpen={true}>
         <CAccordionItem itemKey={1}>
           <CAccordionHeader>
             Терминал байршил (Terminal Map)
@@ -85,6 +89,7 @@ const TerminalMap = () => {
             </MapContainer>
           </CAccordionBody>
         </CAccordionItem>
+        <br></br>
         <CAccordionItem itemKey={2} alwaysopen={true}>
           <CAccordionHeader>
             Салбарын мэдээлэл (Terminal table)
@@ -93,6 +98,16 @@ const TerminalMap = () => {
            <TerminalTable/>
           </CAccordionBody>
         </CAccordionItem>
+
+        <CAccordionItem itemKey={3} alwaysopen={true}>
+          <CAccordionHeader>
+            TinCode & MerchantName
+          </CAccordionHeader>
+          <CAccordionBody>
+            <Link to="/admin/merchantTinCode">TinCode & MerchantName</Link>
+          </CAccordionBody>
+        </CAccordionItem>
+
       </CAccordion>
     </CContainer>
   );

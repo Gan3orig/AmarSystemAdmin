@@ -1,4 +1,4 @@
-import { cilLockLocked, cilUser } from '@coreui/icons';
+import { cilArrowThickRight, cilLockLocked, cilUser } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import {
   CAlert,
@@ -6,6 +6,7 @@ import {
   CCard,
   CCardBody,
   CCardGroup,
+  CCardImage,
   CCol,
   CContainer,
   CForm,
@@ -33,10 +34,10 @@ const Login = () => {
 
   // Helper function to check if token is expired
   const isTokenExpired = () => {
-    const expiryDate = localStorage.getItem('expiryDate');
-    if (!expiryDate) return true; // If there's no expiry date, consider it expired
+    const expiresIn = localStorage.getItem('expiresIn');
+    if (!expiresIn) return true; // If there's no expiry date, consider it expired
     const currentTime = new Date().getTime(); // Current time in milliseconds
-    return currentTime > expiryDate; // Token is expired if current time is greater than expiry time
+    return currentTime > expiresIn; // Token is expired if current time is greater than expiry time
   };
 
   useEffect(() => {
@@ -57,11 +58,11 @@ const Login = () => {
       setAlertMessage(t('fillCredentials'));
       return;
     }
-    
+
     setIsLoading(true); // Start loading
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    
+
     const raw = JSON.stringify({
       username,
       password,
@@ -80,15 +81,18 @@ const Login = () => {
       if (response.ok) {
         if (result.isOK) {
           const data = JSON.parse(result.json);
-          const expiryDate = new Date().getTime() + data.expiresIn * 1000; // Calculate expiry time
-          
+          //const expiryDate = new Date().getTime() + data.expiresIn * 1000; // Calculate expiry time
+
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("user-info", data.userId);
-          localStorage.setItem("expiryDate", expiryDate); // Save expiry date in milliseconds
+          localStorage.setItem("expiresIn", data.expiresIn); // Save expiry date in milliseconds
           localStorage.setItem("isAuthenticated", true);
           localStorage.setItem("role", data.role);
           localStorage.setItem("userId", data.userId);
-          
+          sessionStorage.setItem("token", data.accessToken);
+          sessionStorage.setItem("expiresIn", data.expiresIn);
+          sessionStorage.setItem("userId", data.userId);
+
           navigate('/dashboard');
         } else {
           setAlertMessage(result.message);
@@ -97,21 +101,21 @@ const Login = () => {
         setAlertMessage(result.message);
       }
     } catch (error) {
-      setAlertMessage(error.message);
+      setAlertMessage("Хэрэглэгчийн нэр эсвэл нууц үг буруу байна.");
+      console.log(error.message)
     } finally {
       setIsLoading(false);
     }
   };
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  
+
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={8}>
+          <CCol md={4}>
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
@@ -160,10 +164,19 @@ const Login = () => {
                         </Link>
                       </CCol>
                     </CRow>
+                    <CRow>
+                    <CCol xs={6}>
+                      <Link to="/register">
+                        <CButton color="link" className="px-0">
+                          {t('nowRegister')}
+                        </CButton>
+                      </Link>
+                      </CCol>
+                    </CRow>
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5">
+              {/* <CCard className="text-white bg-primary py-5">
                 <CCardBody className="text-center">
                   <div>
                     <h2>{t('register.title')}</h2>
@@ -175,7 +188,7 @@ const Login = () => {
                     </Link>
                   </div>
                 </CCardBody>
-              </CCard>
+              </CCard> */}
             </CCardGroup>
           </CCol>
         </CRow>

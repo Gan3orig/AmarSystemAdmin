@@ -61,6 +61,7 @@ const AppHeaderDropdown = () => {
           localStorage.setItem("merchantId", merchantData.data[0].merchantId); // Ensure this line is executed correctly
         }
       } catch (error) {
+        handleLogout();
         console.error("Error fetching merchant data:", error.message);
       }
     };
@@ -101,7 +102,7 @@ const AppHeaderDropdown = () => {
           className="py-0 pe-0"
           caret={false}
         >
-          <CAvatar src={avatar} size="md" />
+        <CIcon icon={cilUser} size="lg"/>
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
           <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">

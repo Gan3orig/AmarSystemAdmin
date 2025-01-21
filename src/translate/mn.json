@@ -54,6 +54,8 @@
   "forgotPassword": "Нууц үг мартсан",
   "registerBusiness": "Бизнесээ ухаалгаар хяна",
   "nowRegister": "Одоо бүртгүүлэх",
+  "backToLogin": "Нэвтрэх буцах",
+  "fillAllFields":"Бүх талбаруудыг бөглөнө үү",
   "language": {
     "mongolian": "Монгол",
     "english": "English"

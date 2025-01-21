@@ -16,6 +16,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import {
+  cilAirplaneMode,
   cilBell,
   cilCompass,
   cilContrast,
@@ -27,6 +28,7 @@ import {
   cilMoon,
   cilSatelite,
   cilSun,
+  cilTerminal,
   cilTranslate,
 } from "@coreui/icons";
 import { AppBreadcrumb } from "./index";
@@ -85,13 +87,13 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilList} size="lg" />
+            <CNavLink to="/terminalMap" as ={NavLink}>
+              <CIcon icon={cilTerminal} size="lg" />
             </CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink to="/admin" as ={NavLink}>
-              <CIcon icon={cilCompass} size="lg" />
+              <CIcon icon={cilAirplaneMode} size="lg" />
             </CNavLink>
           </CNavItem>
         </CHeaderNav>

@@ -11,12 +11,12 @@ import {
   CFormInput,
   CInputGroup,
   CInputGroupText,
-  CRow,
+  CRow
 } from '@coreui/react';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'; // Import i18n hook
 
 const Register = () => {
@@ -34,17 +34,17 @@ const Register = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-  
+
     if (!name || !email || !password || !confirmPassword) {
       setError(t('error.fieldsRequired'));
       return;
     }
-  
+
     if (password !== confirmPassword) {
       setError(t('error.passwordMismatch'));
       return;
     }
-  
+
     setError('');
     const data = {
       name,
@@ -54,7 +54,7 @@ const Register = () => {
       deviceIdentityInfo: "string",
       userAgent: navigator.userAgent,
     };
-  
+
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -62,10 +62,10 @@ const Register = () => {
       },
       body: JSON.stringify(data),
     };
-  
+
     try {
       const response = await fetch('https://api.majorsoft.mn/api/login/createUser', requestOptions);
-  
+
       // If the response is not successful (4xx or 5xx errors)
       if (!response.ok) {
         // Parse the response body for an error message
@@ -73,11 +73,11 @@ const Register = () => {
         const backendMessage = errorData.message || t('error.general'); // Use backend message or fallback
         throw new Error(backendMessage); // Throw to be caught below
       }
-  
+
       const result = await response.json();
-  
+
       if (result.Success) {
-        setSuccess(result.message || "Амжилттай бүртгэгдлээ"); // Use backend success message or default
+        setSuccess(result.message || "Бүртгэгдлээ, E-Mail хаягаа баталгаажуулаарай"); // Use backend success message or default
         resetForm();
         setTimeout(() => {
           navigate('/login');
@@ -90,7 +90,7 @@ const Register = () => {
       setError(error.message || t('error.general')); // Display error message from backend or a general one
     }
   };
-  
+
 
   const resetForm = () => {
     setName('');
@@ -117,8 +117,8 @@ const Register = () => {
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <CForm onSubmit={handleSignUp}>
-                  <h1>{t('register.title')}</h1> 
-                  <p className="text-body-secondary">{t('register.subtitle')}</p> 
+                  <h1>{t('register.title')}</h1>
+                  <p className="text-body-secondary">{t('register.subtitle')}</p>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilUser} />
@@ -189,8 +189,15 @@ const Register = () => {
                   )}
                   <div className="d-grid">
                     <CButton color="primary" type="submit">
-                      {t('register.submitButton')} 
+                      {t('register.submitButton')}
                     </CButton>
+                  </div>
+                  <div className="d-grid">
+                    <Link to="/login">
+                        <CButton color="link" className="px-0">
+                          {t('backToLogin')}
+                        </CButton>
+                    </Link>
                   </div>
                 </CForm>
               </CCardBody>

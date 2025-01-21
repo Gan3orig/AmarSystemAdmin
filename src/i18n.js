@@ -11,7 +11,7 @@ import en from './translate/en.json';
 // Initialize i18next
 i18n
   .use(HttpBackend) 
-  .use(LanguageDetector) 
+  //.use(LanguageDetector) 
   .use(initReactI18next) 
   .init({
     resources: {
