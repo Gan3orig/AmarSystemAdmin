@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell } from '@coreui/react'
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { IoIosLink } from "react-icons/io";
+
 
 const DeveloperHistory = () => {
     const [isLoading, setIsLoading] = React.useState(true);
@@ -35,13 +37,23 @@ const DeveloperHistory = () => {
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                    {historyData.map((item, index) => (
+                    {historyData.filter((e) => e.repository.includes('amar')).map((item, index) => (
                         <CTableRow key={item._id}>
                             <CTableDataCell>{index + 1}</CTableDataCell>
                             <CTableDataCell>{item.author}</CTableDataCell>
                             <CTableDataCell>{item.repository}</CTableDataCell>
-                            <CTableDataCell>{item.commitMessage}</CTableDataCell>
-                            <CTableDataCell><a href={item.compareUrl}>Өөрчлөлтийг харах</a></CTableDataCell>
+                            <CTableDataCell style={{
+                                borderLeft: `solid ${index % 2 === 0 ? ' orange' : 'green'} 2px`,
+                                borderRight: `solid ${index % 2 === 0 ? ' orange' : 'green'} 2px`,
+                            }}>{item.commitMessage}</CTableDataCell>
+                            <CTableDataCell><a href={item.compareUrl}>
+                                <div style={{ color: '#55AAFF', fontSize: '14px', display: 'flex', alignItems: 'center' }}>
+                                    <IoIosLink size={25} color='#55AAFF' />
+                                    <p>
+                                        Өөрчлөлтийг харах
+                                    </p>
+                                </div>
+                            </a></CTableDataCell>
                             <CTableDataCell>{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</CTableDataCell>
                         </CTableRow>
                     ))}
