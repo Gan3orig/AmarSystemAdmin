@@ -3,16 +3,17 @@ import React from 'react'
 
 
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard')) 
+const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const DeveloperHistory = React.lazy(() => import('./views/pages/DeveloperHistory/DeveloperHistory'))
 //adminPanel
-const Admin = React.lazy(()=>import('./views/admin/admin'))
-const terminalMap = React.lazy(()=>import('./views/admin/terminalMap'))
+const Admin = React.lazy(() => import('./views/admin/admin'))
+const terminalMap = React.lazy(() => import('./views/admin/terminalMap'))
 
 
- //regastration
+//regastration
 
- const productList = React.lazy(() => import('./views/registration/productlist'));
-const customer=React.lazy(()=>import('./views/registration/customer'))
+const productList = React.lazy(() => import('./views/registration/productlist'));
+const customer = React.lazy(() => import('./views/registration/customer'))
 
 //flow
 // const cashFlow = React.lazy(() => import('./views/flow/cashFlow'));
@@ -22,9 +23,9 @@ const customer=React.lazy(()=>import('./views/registration/customer'))
 // const cardTransaction = React.lazy(() => import('./views/flow/cardTransaction'));
 
 //Settings
-const Settings=React.lazy(()=> import('./views/settings/setting'))
-const Branch=React.lazy(()=>import('./views/settings/branch'))
-const Terminal=React.lazy(()=>import('./views/settings/terminal'))
+const Settings = React.lazy(() => import('./views/settings/setting'))
+const Branch = React.lazy(() => import('./views/settings/branch'))
+const Terminal = React.lazy(() => import('./views/settings/terminal'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -72,20 +73,21 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
-const Employee =React.lazy(()=>import('./views/employee/employee'))
+const Employee = React.lazy(() => import('./views/employee/employee'))
 
-const role=localStorage.getItem('role')
+const role = localStorage.getItem('role')
 
 const routes = [
-    { path: '/', exact: true, name: 'Нүүр' },
-    { path: '/dashboard', name: 'Хянах самбар', element: Dashboard },
-    {path: '/settings',name:'Тохиргоо' ,element:Settings},
-    { path: '/terminalMap', name: 'Терминал', element: terminalMap },
-    { path: '/admin', name: 'Админ', element: Admin },
-    ...(role === 'admin' ? [
+  { path: '/', exact: true, name: 'Нүүр' },
+  { path: '/dashboard', name: 'Хянах самбар', element: Dashboard },
+  { path: '/developer-history', name: 'Хөгжүүлэгчийн түүх', element: DeveloperHistory },
+  { path: '/settings', name: 'Тохиргоо', element: Settings },
+  { path: '/terminalMap', name: 'Терминал', element: terminalMap },
+  { path: '/admin', name: 'Админ', element: Admin },
+  ...(role === 'admin' ? [
     { path: '/theme', name: 'Theme', element: Colors, exact: true },
 
-   
+
 
     { path: '/theme/colors', name: 'Colors', element: Colors },
     { path: '/theme/typography', name: 'Typography', element: Typography },
@@ -99,7 +101,7 @@ const routes = [
     { path: '/base/navs', name: 'Navs', element: Navs },
     { path: '/base/paginations', name: 'Paginations', element: Paginations },
     // { path: '/base/placeholders', name: 'Placeholders', element: Placeholders },
-    {path: '/employee', name:'Ажилчин' ,element:Employee},
+    { path: '/employee', name: 'Ажилчин', element: Employee },
     { path: '/base/popovers', name: 'Popovers', element: Popovers },
     { path: '/base/progress', name: 'Progress', element: Progress },
     { path: '/base/spinners', name: 'Spinners', element: Spinners },
@@ -128,19 +130,19 @@ const routes = [
     { path: '/notifications/badges', name: 'Badges', element: Badges },
     { path: '/notifications/modals', name: 'Modals', element: Modals },
     { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
-    { path: '/widgets', name: 'Widgets', element: Widgets },   
-  
-   
+    { path: '/widgets', name: 'Widgets', element: Widgets },
+
+
     //settings
-    {path: '/settings',name:'Тохиргоо' ,element:Settings},
-    {path:'/settings/branch',name:'Салбарууд',element:Branch},
-    {path:'/settings/Terminal',name:'Төхөөрөмжүүд',element:Terminal},
-   
-  
-  
+    { path: '/settings', name: 'Тохиргоо', element: Settings },
+    { path: '/settings/branch', name: 'Салбарууд', element: Branch },
+    { path: '/settings/Terminal', name: 'Төхөөрөмжүүд', element: Terminal },
+
+
+
 
   ] : [
-   
+
     { path: '/theme/colors', name: 'Colors', element: Colors },
     { path: '/theme/typography', name: 'Typography', element: Typography },
     { path: '/base', name: 'Base', element: Cards, exact: true },
@@ -153,7 +155,7 @@ const routes = [
     { path: '/base/navs', name: 'Navs', element: Navs },
     { path: '/base/paginations', name: 'Paginations', element: Paginations },
     // { path: '/base/placeholders', name: 'Placeholders', element: Placeholders },
-    {path: '/employee', name:'Ажилчин' ,element:Employee},
+    { path: '/employee', name: 'Ажилчин', element: Employee },
     { path: '/base/popovers', name: 'Popovers', element: Popovers },
     { path: '/base/progress', name: 'Progress', element: Progress },
     { path: '/base/spinners', name: 'Spinners', element: Spinners },
@@ -182,21 +184,21 @@ const routes = [
     { path: '/notifications/badges', name: 'Badges', element: Badges },
     { path: '/notifications/modals', name: 'Modals', element: Modals },
     { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
-    { path: '/widgets', name: 'Widgets', element: Widgets },   
-  
-   
-    //settings
-    {path: '/settings',name:'Тохиргоо' ,element:Settings},
-    {path:'/settings/branch',name:'Салбарууд',element:Branch},
-    {path:'/settings/terminal',name:'Төхөөрөмжүүд',element:Terminal},
+    { path: '/widgets', name: 'Widgets', element: Widgets },
 
-  
-  
-       //registration
-       {path:'/registration/productList',name:"Бүртгэл" ,element:productList},
-       { path:'/registration/customer' ,name:'Харилцагч', element:customer},
+
+    //settings
+    { path: '/settings', name: 'Тохиргоо', element: Settings },
+    { path: '/settings/branch', name: 'Салбарууд', element: Branch },
+    { path: '/settings/terminal', name: 'Төхөөрөмжүүд', element: Terminal },
+
+
+
+    //registration
+    { path: '/registration/productList', name: "Бүртгэл", element: productList },
+    { path: '/registration/customer', name: 'Харилцагч', element: customer },
   ]),
- 
+
 
 
 ]

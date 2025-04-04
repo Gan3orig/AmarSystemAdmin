@@ -6,6 +6,7 @@ import './scss/style.scss';
 import { validateToken } from 'src/validateToken';
 import ProtectedRoute from './ProtectedRoute';
 import './i18n';
+import DeveloperHistory from './views/pages/DeveloperHistory/DeveloperHistory';
 
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
 const Login = React.lazy(() => import('./views/pages/login/Login'));
@@ -52,13 +53,12 @@ const App = () => {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/set-password" element={<SetNewPassword />} />
           <Route path="/login" element={<Login />} />
-
           <Route
             path="/"
-            element={<Navigate to= {isValid ? "/dashboard" : "/login"} />}
+            element={<Navigate to={isValid ? "/dashboard" : "/login"} />}
           />
 
-         <Route path="*" element={<DefaultLayout />} />
+          <Route path="*" element={<DefaultLayout />} />
         </Routes>
       </Suspense>
     </HashRouter>

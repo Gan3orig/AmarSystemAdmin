@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 import SimpleBar from 'simplebar-react'
 import 'simplebar-react/dist/simplebar.min.css'
+import { FaLaptopCode } from "react-icons/fa6";
 
 import { CBadge, CNavLink, CSidebarNav } from '@coreui/react'
 
@@ -14,10 +15,10 @@ export const AppSidebarNav = ({ items }) => {
         {icon
           ? icon
           : indent && (
-              <span className="nav-icon">
-                <span className="nav-icon-bullet"></span>
-              </span>
-            )}
+            <span className="nav-icon">
+              <span className="nav-icon-bullet"></span>
+            </span>
+          )}
         {name && name}
         {badge && (
           <CBadge color={badge.color} className="ms-auto">
@@ -56,10 +57,20 @@ export const AppSidebarNav = ({ items }) => {
     )
   }
 
+  const defaultItems = [
+    {
+      component: 'CNavItem',
+      name: ` Хөгжүүлэгчийн түүх`,
+      to: '/developer-history',
+      icon: <FaLaptopCode />
+    },
+  ]
+
   return (
     <CSidebarNav as={SimpleBar}>
       {items &&
         items.map((item, index) => (item.items ? navGroup(item, index) : navItem(item, index)))}
+      {defaultItems.map((item, index) => navItem(item, index))}
     </CSidebarNav>
   )
 }
