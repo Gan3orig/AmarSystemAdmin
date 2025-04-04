@@ -62,7 +62,7 @@ export const AppSidebarNav = ({ items }) => {
       component: 'CNavItem',
       name: ` Хөгжүүлэгчийн түүх`,
       to: '/developer-history',
-      icon: <FaLaptopCode />
+      icon: <FaLaptopCode style={{ opacity: '0.3', marginRight: '15px' }} />
     },
   ]
 

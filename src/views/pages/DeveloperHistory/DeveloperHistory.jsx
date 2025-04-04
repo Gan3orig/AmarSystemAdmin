@@ -46,7 +46,7 @@ const DeveloperHistory = () => {
                                 borderLeft: `solid ${index % 2 === 0 ? ' orange' : 'green'} 2px`,
                                 borderRight: `solid ${index % 2 === 0 ? ' orange' : 'green'} 2px`,
                             }}>{item.commitMessage}</CTableDataCell>
-                            <CTableDataCell><a href={item.compareUrl}>
+                            <CTableDataCell><a target='_blank' href={item.compareUrl} rel="noopener noreferrer">
                                 <div style={{ color: '#55AAFF', fontSize: '14px', display: 'flex', alignItems: 'center' }}>
                                     <IoIosLink size={25} color='#55AAFF' />
                                     <p>
