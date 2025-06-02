@@ -77,7 +77,9 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink to="/terminalMap" as={NavLink}>{i18n.t("nav.terminalMaps")}</CNavLink>
+            <CNavLink to="/terminalMap" as={NavLink}>
+              {i18n.t("nav.terminalMaps")}
+            </CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
@@ -87,12 +89,12 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink to="/terminalMap" as ={NavLink}>
+            <CNavLink to="/terminalMap" as={NavLink}>
               <CIcon icon={cilTerminal} size="lg" />
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink to="/admin" as ={NavLink}>
+            <CNavLink to="/admin" as={NavLink}>
               <CIcon icon={cilAirplaneMode} size="lg" />
             </CNavLink>
           </CNavItem>
@@ -105,17 +107,14 @@ const AppHeader = () => {
             >
               <CIcon icon={cilTranslate} size="lg" />
 
-              <span className="ms-2">
-                {i18n.language === 'en' ? '' : ''}
-              </span>
-
+              <span className="ms-2">{i18n.language === "en" ? "" : ""}</span>
             </CDropdownToggle>
             <CDropdownMenu>
               <CDropdownItem onClick={() => handleLanguageChange("mn")}>
-              Монгол
+                Монгол
               </CDropdownItem>
               <CDropdownItem onClick={() => handleLanguageChange("en")}>
-               English
+                English
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
