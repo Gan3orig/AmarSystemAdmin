@@ -4,9 +4,18 @@ import PropTypes from "prop-types";
 
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
-import { FaLaptopCode, FaQrcode, FaTerminal } from "react-icons/fa6";
+import {
+  Fa42Group,
+  FaComputer,
+  FaLaptopCode,
+  FaQrcode,
+  FaStore,
+  FaTerminal,
+  FaUser,
+  FaUserGroup,
+} from "react-icons/fa6";
 
-import { CBadge, CNavLink, CSidebarNav } from "@coreui/react";
+import { CBadge, CNavGroup, CNavLink, CSidebarNav } from "@coreui/react";
 
 export const AppSidebarNav = ({ items }) => {
   const navLink = (name, icon, badge, indent = false) => {
@@ -81,6 +90,30 @@ export const AppSidebarNav = ({ items }) => {
       name: `Терминал`,
       to: "/terminal-page",
       icon: <FaTerminal style={{ opacity: "0.3", marginRight: "15px" }} />,
+    },
+    {
+      component: "CNavItem",
+      name: `Хэрэглэгчид`,
+      to: "/user-accounts",
+      icon: <FaUser style={{ opacity: "0.3", marginRight: "15px" }} />,
+    },
+    {
+      component: "CNavItem",
+      name: `Байгууллагууд`,
+      to: "/get-merchants",
+      icon: <FaUserGroup style={{ opacity: "0.3", marginRight: "15px" }} />,
+    },
+    {
+      component: "CNavItem",
+      name: `Салбар`,
+      to: "/get-branches",
+      icon: <FaStore style={{ opacity: "0.3", marginRight: "15px" }} />,
+    },
+    {
+      component: "CNavItem",
+      name: `Терминал`,
+      to: "/get-terminals",
+      icon: <FaComputer style={{ opacity: "0.3", marginRight: "15px" }} />,
     },
   ];
 

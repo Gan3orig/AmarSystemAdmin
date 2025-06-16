@@ -2,6 +2,10 @@ import { element } from "prop-types";
 import React from "react";
 import QuickQRCode from "./views/pages/QuickQRCode/QuickQRCode";
 import TerminalPage from "./views/pages/Terminal/Terminal";
+import UserAccounts from "./views/pages/UserAccounts/UserAccounts";
+import GetMerchants from "./views/pages/GetMerchants/GetMerchants";
+import GetBranches from "./views/pages/GetBranches/GetBranches";
+import GetTerminals from "./views/pages/GetTerminals/GetTerminals";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 const DeveloperHistory = React.lazy(
@@ -121,6 +125,26 @@ const routes = [
     path: "/terminal-page",
     name: "Терминал",
     element: TerminalPage,
+  },
+  {
+    path: "/user-accounts",
+    name: "Хэрэглэгчид",
+    element: UserAccounts,
+  },
+  {
+    path: "/get-branches",
+    name: "Салбар",
+    element: GetBranches,
+  },
+  {
+    path: "/get-terminals",
+    name: "Терминал",
+    element: GetTerminals,
+  },
+  {
+    path: "/get-merchants",
+    name: "Хэрэглэгчид",
+    element: GetMerchants,
   },
   { path: "/settings", name: "Тохиргоо", element: Settings },
   { path: "/terminalMap", name: "Терминал", element: terminalMap },

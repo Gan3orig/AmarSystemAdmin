@@ -12,6 +12,7 @@ import {
   CAccordionHeader,
   CAccordionBody,
   CLink,
+  CSpinner,
 } from "@coreui/react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -45,6 +46,7 @@ const TerminalMap = () => {
     const fetchLocations = async () => {
       const token = localStorage.getItem("token");
       const userid = localStorage.getItem("userId");
+      console.log("userid:", userid);
       try {
         const response = await axios.get(
           `https://api.majorsoft.mn/api/terminalMap?userId=${userid}`,
@@ -70,6 +72,9 @@ const TerminalMap = () => {
     }
   }, [loading]);
 
+  if (loading) {
+    return <CSpinner color="primary" />;
+  }
   return (
     <CContainer>
       <CAlert

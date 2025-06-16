@@ -15,14 +15,16 @@ import axios from "axios";
 
 const QuickQRCode = () => {
   const [formType, setFormType] = useState("individual");
+  const [mccCodes, setMccCodes] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [cities, setCities] = useState([]);
   const [formData, setFormData] = useState({
-    owner_register_no: "",
     owner_first_name: "",
     owner_last_name: "",
-    location_lat: "",
-    location_lng: "",
     register_number: "",
+    company_name: "",
     name: "",
+    name_eng: "",
     mcc_code: "",
     city: "",
     district: "",
@@ -32,25 +34,19 @@ const QuickQRCode = () => {
   });
 
   useEffect(() => {
-    axios.post(
-      "https://sandbox-quickqr.qpay.mn/v2/auth/token",
-      {
-        terminal_id: "1234567890",
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Basic " + btoa("admin:admin"),
-        },
-      },
-    );
+    axios
+      .get("https://api.majorsoft.mn/api/QPay/mccCode")
+      .then((e) => setMccCodes(e.data));
+    axios
+      .get("https://api.majorsoft.mn/api/QPay/aimagHot")
+      .then((e) => setCities(e.data));
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://sandbox-quickqr.qpay.mn/v2/merchant/" +
+        "https://api.majorsoft.mn/api/QPay/" +
           (formType === "individual" ? "person" : "company"),
         formData,
       );
@@ -58,6 +54,19 @@ const QuickQRCode = () => {
     } catch (error) {
       console.error("Error:", error);
     }
+  };
+
+  const handleGetDistricts = async (e) => {
+    const cityValue = e.target.value;
+    setFormData({
+      ...formData,
+      city: cityValue,
+      district: "", // Reset district when city changes
+    });
+    const response = await axios.get(
+      `https://api.majorsoft.mn/api/QPay/sumDuureg?pAimagHot=${cityValue}`,
+    );
+    setDistricts(response.data);
   };
 
   const handleChange = (e) => {
@@ -94,12 +103,13 @@ const QuickQRCode = () => {
                 <>
                   <CRow>
                     <CCol md={6} className="mb-3">
-                      <CFormLabel>Регистрийн дугаар</CFormLabel>
+                      <CFormLabel>Регистрийн дугаар *</CFormLabel>
                       <CFormInput
                         type="text"
-                        name="owner_register_no"
-                        value={formData.owner_register_no}
+                        name="register_number"
+                        value={formData.register_number}
                         onChange={handleChange}
+                        required
                       />
                     </CCol>
                     <CCol md={6} className="mb-3">
@@ -123,23 +133,109 @@ const QuickQRCode = () => {
                       />
                     </CCol>
                     <CCol md={6} className="mb-3">
-                      <CFormLabel>Байршил (Өргөрөг)</CFormLabel>
+                      <CFormLabel>Байгууллагын нэр *</CFormLabel>
                       <CFormInput
                         type="text"
-                        name="location_lat"
-                        value={formData.location_lat}
+                        name="company_name"
+                        value={formData.company_name}
                         onChange={handleChange}
+                        required
                       />
                     </CCol>
                   </CRow>
                   <CRow>
                     <CCol md={6} className="mb-3">
-                      <CFormLabel>Байршил (Уртраг)</CFormLabel>
+                      <CFormLabel>Байгууллагын нэр (Англи)</CFormLabel>
                       <CFormInput
                         type="text"
-                        name="location_lng"
-                        value={formData.location_lng}
+                        name="name_eng"
+                        value={formData.name_eng}
                         onChange={handleChange}
+                      />
+                    </CCol>
+                    <CCol md={6} className="mb-3">
+                      <CFormLabel>MCC код *</CFormLabel>
+                      <CFormSelect
+                        name="mcc_code"
+                        value={formData.mcc_code}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Сонгоно уу</option>
+                        {mccCodes.map((code) => (
+                          <option key={code.mcc_code} value={code.mcc_code}>
+                            {code.name_mon}
+                          </option>
+                        ))}
+                      </CFormSelect>
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol md={6} className="mb-3">
+                      <CFormLabel>Хот *</CFormLabel>
+                      <CFormSelect
+                        name="city"
+                        value={formData.city}
+                        onChange={handleGetDistricts}
+                        required
+                      >
+                        <option value="">Сонгоно уу</option>
+                        {cities.map((city) => (
+                          <option key={city.code} value={city.code}>
+                            {city.name}
+                          </option>
+                        ))}
+                      </CFormSelect>
+                    </CCol>
+                    <CCol md={6} className="mb-3">
+                      <CFormLabel>Дүүрэг *</CFormLabel>
+                      <CFormSelect
+                        name="district"
+                        value={formData.district}
+                        onChange={handleChange}
+                        disabled={!formData.city}
+                        required
+                      >
+                        <option value="">Сонгоно уу</option>
+                        {districts.map((district) => (
+                          <option key={district.code} value={district.code}>
+                            {district.name}
+                          </option>
+                        ))}
+                      </CFormSelect>
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol md={6} className="mb-3">
+                      <CFormLabel>Хаяг *</CFormLabel>
+                      <CFormInput
+                        type="text"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleChange}
+                        required
+                      />
+                    </CCol>
+                    <CCol md={6} className="mb-3">
+                      <CFormLabel>Утас *</CFormLabel>
+                      <CFormInput
+                        type="text"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        required
+                      />
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol md={6} className="mb-3">
+                      <CFormLabel>И-мэйл *</CFormLabel>
+                      <CFormInput
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
                       />
                     </CCol>
                   </CRow>
@@ -148,53 +244,83 @@ const QuickQRCode = () => {
                 <>
                   <CRow>
                     <CCol md={6} className="mb-3">
-                      <CFormLabel>Байгууллагын нэр</CFormLabel>
+                      <CFormLabel>Байгууллагын нэр *</CFormLabel>
                       <CFormInput
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
+                        required
                       />
                     </CCol>
                     <CCol md={6} className="mb-3">
-                      <CFormLabel>Регистрийн дугаар</CFormLabel>
+                      <CFormLabel>Регистрийн дугаар *</CFormLabel>
                       <CFormInput
                         type="text"
                         name="register_number"
                         value={formData.register_number}
                         onChange={handleChange}
+                        required
                       />
                     </CCol>
                   </CRow>
                   <CRow>
                     <CCol md={6} className="mb-3">
-                      <CFormLabel>MCC код</CFormLabel>
+                      <CFormLabel>Байгууллагын нэр (Англи)</CFormLabel>
                       <CFormInput
                         type="text"
-                        name="mcc_code"
-                        value={formData.mcc_code}
+                        name="name_eng"
+                        value={formData.name_eng}
                         onChange={handleChange}
                       />
                     </CCol>
                     <CCol md={6} className="mb-3">
+                      <CFormLabel>MCC код *</CFormLabel>
+                      <CFormSelect
+                        name="mcc_code"
+                        value={formData.mcc_code}
+                        onChange={handleChange}
+                      >
+                        <option value="">Сонгоно уу</option>
+                        {mccCodes.map((code) => (
+                          <option key={code.mcc_code} value={code.mcc_code}>
+                            {code.name_mon}
+                          </option>
+                        ))}
+                      </CFormSelect>
+                    </CCol>
+                    <CCol md={6} className="mb-3">
                       <CFormLabel>Хот</CFormLabel>
-                      <CFormInput
-                        type="text"
+                      <CFormSelect
                         name="city"
                         value={formData.city}
-                        onChange={handleChange}
-                      />
+                        onChange={handleGetDistricts}
+                      >
+                        <option value="">Сонгоно уу</option>
+                        {cities.map((city) => (
+                          <option key={city.code} value={city.code}>
+                            {city.name}
+                          </option>
+                        ))}
+                      </CFormSelect>
                     </CCol>
                   </CRow>
                   <CRow>
                     <CCol md={6} className="mb-3">
                       <CFormLabel>Дүүрэг</CFormLabel>
-                      <CFormInput
-                        type="text"
+                      <CFormSelect
                         name="district"
                         value={formData.district}
                         onChange={handleChange}
-                      />
+                        disabled={!formData.city}
+                      >
+                        <option value="">Сонгоно уу</option>
+                        {districts.map((district) => (
+                          <option key={district.code} value={district.code}>
+                            {district.name}
+                          </option>
+                        ))}
+                      </CFormSelect>
                     </CCol>
                     <CCol md={6} className="mb-3">
                       <CFormLabel>Хаяг</CFormLabel>
