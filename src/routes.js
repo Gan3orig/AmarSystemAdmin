@@ -6,6 +6,7 @@ import UserAccounts from "./views/pages/UserAccounts/UserAccounts";
 import GetMerchants from "./views/pages/GetMerchants/GetMerchants";
 import GetBranches from "./views/pages/GetBranches/GetBranches";
 import GetTerminals from "./views/pages/GetTerminals/GetTerminals";
+import QpayMerchantsPage from "./views/pages/QpayMerchants/QpayMerchantsPage";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 const DeveloperHistory = React.lazy(
@@ -120,6 +121,11 @@ const routes = [
     path: "/quick-qr-code",
     name: "Quick QR Code",
     element: QuickQRCode,
+  },
+  {
+    path: "/qpay-merchants",
+    name: "Qpay merchants",
+    element: QpayMerchantsPage,
   },
   {
     path: "/terminal-page",

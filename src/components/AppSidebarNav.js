@@ -82,7 +82,7 @@ export const AppSidebarNav = ({ items }) => {
     {
       component: "CNavItem",
       name: `Quick QR Code`,
-      to: "/quick-qr-code",
+      to: "/qpay-merchants",
       icon: <FaQrcode style={{ opacity: "0.3", marginRight: "15px" }} />,
     },
     {
