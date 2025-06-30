@@ -153,7 +153,7 @@ const routes = [
     element: GetMerchants,
   },
   { path: "/settings", name: "Тохиргоо", element: Settings },
-  { path: "/terminalMap", name: "Терминал", element: terminalMap },
+  { path: "/terminalMap", name: "Терминал", element: TerminalPage },
   { path: "/admin", name: "Админ", element: Admin },
   ...(role === "admin"
     ? [
