@@ -13,6 +13,16 @@ import {
   CAccordionBody,
   CLink,
   CSpinner,
+  CButtonGroup,
+  CButton,
+  CFormInput,
+  CCol,
+  CCollapse,
+  CInputGroup,
+  CFormLabel,
+  CRow,
+  CCard,
+  CCardBody,
 } from "@coreui/react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -30,8 +40,13 @@ L.Icon.Default.mergeOptions({
 
 const TerminalMap = () => {
   const [locations, setLocations] = useState([]);
+  const [regNo, setRegNo] = useState("");
+  const [secondResponse, setSecondResponse] = useState(null);
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState(null);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [visibleA, setVisibleA] = useState(false);
 
   const customIcon = new L.Icon({
     iconUrl: markerIcon,
@@ -72,6 +87,56 @@ const TerminalMap = () => {
     }
   }, [loading]);
 
+  const handleInputChange = (event) => {
+    setRegNo(event.target.value);
+  };
+  const handleCheckUser = () => {
+    handleCheck(regNo);
+  };
+
+  const handleHideResults = () => {
+    setVisibleA(false);
+  };
+
+  const handleCheck = async (regValue) => {
+    const apiUrl = `https://api.ebarimt.mn/api/info/check/getTinInfo?regNo=${regValue}`;
+    const apiOptions = {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    };
+
+    try {
+      const apiResponse = await fetch(apiUrl, apiOptions);
+      const apiData = await apiResponse.json();
+      setResponse(apiData);
+      setError(null);
+
+      const tin = apiData?.data;
+
+      if (tin) {
+        const secondApiUrl = `https://api.ebarimt.mn/api/info/check/getInfo?tin=${tin}`;
+        const secondApiOptions = {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        };
+
+        const secondApiResponse = await fetch(secondApiUrl, secondApiOptions);
+        const secondApiData = await secondApiResponse.json();
+
+        setSecondResponse(secondApiData);
+      } else {
+        setSecondResponse(null);
+      }
+
+      setVisibleA(true);
+    } catch (error) {
+      setResponse(null);
+      setSecondResponse(null);
+      setError(error.toString());
+      // setVisibleA(false);
+    }
+  };
+
   if (loading) {
     return <CSpinner color="primary" />;
   }
@@ -87,6 +152,8 @@ const TerminalMap = () => {
         <CLink href="#/login">Нэвтрэх</CLink>
       </CAlert>
       <CAccordion activeItemKey={1} alwaysOpen={true}>
+        <TerminalTable data={locations} />
+
         <CAccordionItem itemKey={1}>
           <CAccordionHeader>Терминал байршил (Terminal Map)</CAccordionHeader>
           <CAccordionBody>
@@ -120,19 +187,104 @@ const TerminalMap = () => {
           </CAccordionBody>
         </CAccordionItem>
         <br />
-        <CAccordionItem itemKey={2} alwaysOpen={true}>
+        {/* <CAccordionItem itemKey={2} alwaysOpen={true}>
           <CAccordionHeader>
             Салбарын мэдээлэл (Terminal table)
           </CAccordionHeader>
           <CAccordionBody>
             <TerminalTable data={locations} />
           </CAccordionBody>
-        </CAccordionItem>
+        </CAccordionItem> */}
 
         <CAccordionItem itemKey={3} alwaysOpen={true}>
           <CAccordionHeader>TinCode & MerchantName</CAccordionHeader>
           <CAccordionBody>
-            <Link to="/admin/merchantTinCode">TinCode & MerchantName</Link>
+            <CAccordionItem itemKey={1}>
+              <CAccordionHeader>TinCode & Merchant names</CAccordionHeader>
+              <CAccordionBody>
+                <CCol xs="auto">
+                  <CFormLabel
+                    className="visually-hidden"
+                    htmlFor="autoSizingInput"
+                  >
+                    Цахим баримт 3.0 TIN code ба ТТД Нэр авах
+                  </CFormLabel>
+                </CCol>
+                <CCol xs={12}>
+                  <CInputGroup className="mb-3">
+                    <CFormInput
+                      className="reg"
+                      type="text"
+                      placeholder="Регистерийн дугаар"
+                      aria-describedby="button-addon2"
+                      value={regNo}
+                      onChange={handleInputChange}
+                    />
+                    <CButtonGroup role="group" aria-label="Basic example">
+                      <CButton
+                        type="button"
+                        color="primary"
+                        id="button-addon2"
+                        onClick={handleCheckUser}
+                      >
+                        Шалгах
+                      </CButton>
+                      <CButton color="primary" onClick={handleHideResults}>
+                        Хураах
+                      </CButton>
+                    </CButtonGroup>
+                  </CInputGroup>
+                </CCol>
+                <CCol xs={12}>
+                  <CCollapse visible={visibleA}>
+                    <CInputGroup className="mb-3">
+                      <CFormInput
+                        type="text"
+                        placeholder="Tin Code"
+                        aria-label="readonly input example"
+                        value={response?.data || ""}
+                        readOnly
+                      />
+                      <CFormInput
+                        type="text"
+                        placeholder="Merchant Name"
+                        aria-label="readonly input example"
+                        value={secondResponse?.data?.name || ""}
+                        readOnly
+                      />
+                    </CInputGroup>
+                  </CCollapse>
+                </CCol>
+                <CCol xs={12}>
+                  <CRow>
+                    <CCol>
+                      <CCollapse visible={visibleA}>
+                        <CCard className="mt-3">
+                          <CCardBody>
+                            <div className="result">Анхны API-ийн хариу:</div>
+                            <pre>
+                              {response
+                                ? JSON.stringify(response, null, 2)
+                                : "No data"}
+                            </pre>
+                          </CCardBody>
+                          <CCardBody>
+                            <div className="result">
+                              Хоёр дахь API-ийн хариу:
+                            </div>
+                            <pre>
+                              {secondResponse
+                                ? JSON.stringify(secondResponse, null, 2)
+                                : "No data"}
+                            </pre>
+                          </CCardBody>
+                        </CCard>
+                      </CCollapse>
+                    </CCol>
+                  </CRow>
+                </CCol>
+              </CAccordionBody>
+            </CAccordionItem>
           </CAccordionBody>
         </CAccordionItem>
       </CAccordion>
