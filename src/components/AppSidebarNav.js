@@ -16,6 +16,7 @@ import {
 } from "react-icons/fa6";
 
 import { CBadge, CNavGroup, CNavLink, CSidebarNav } from "@coreui/react";
+import { MdTask } from "react-icons/md";
 
 export const AppSidebarNav = ({ items }) => {
   const navLink = (name, icon, badge, indent = false) => {
@@ -114,6 +115,12 @@ export const AppSidebarNav = ({ items }) => {
       name: `Терминал`,
       to: "/get-terminals",
       icon: <FaComputer style={{ opacity: "0.3", marginRight: "15px" }} />,
+    },
+    {
+      component: "CNavItem",
+      name: `Хөгжүүлэлт`,
+      to: "/tasks",
+      icon: <MdTask style={{ opacity: "0.3", marginRight: "15px" }} />,
     },
   ];
 

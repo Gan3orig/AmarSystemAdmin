@@ -16,6 +16,7 @@ import {
 } from "@coreui/react";
 import axios from "axios";
 import dayjs from "dayjs";
+import BranchMobileTable from "./BranchMobileTable";
 
 const PAGE_SIZE = 10;
 
@@ -84,77 +85,84 @@ const GetBranches = () => {
   }
 
   return (
-    <CContainer>
-      <CRow className="mb-3">
-        <CCol xs={12} md={6} lg={4}>
-          <CFormInput
-            type="text"
-            placeholder="Хайх (ID, нэр, футер текст)"
-            value={search}
-            onChange={handleSearchChange}
-          />
-        </CCol>
-      </CRow>
-      <CTable>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell>ID</CTableHeaderCell>
-            <CTableHeaderCell>Байгууллагын нэр</CTableHeaderCell>
-            <CTableHeaderCell>Футер текст</CTableHeaderCell>
-            <CTableHeaderCell>Бүртгүүлсэн огноо</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          {paginatedBranches.length === 0 ? (
+    <>
+      <div style={{ display: window.innerWidth < 768 ? "block" : "none" }}>
+        <BranchMobileTable branches={paginatedBranches} />
+      </div>
+      <CContainer
+        style={{ display: window.innerWidth < 768 ? "none" : "block" }}
+      >
+        <CRow className="mb-3">
+          <CCol xs={12} md={6} lg={4}>
+            <CFormInput
+              type="text"
+              placeholder="Хайх (ID, нэр, футер текст)"
+              value={search}
+              onChange={handleSearchChange}
+            />
+          </CCol>
+        </CRow>
+        <CTable>
+          <CTableHead>
             <CTableRow>
-              <CTableDataCell colSpan={4} className="text-center">
-                Илэрц олдсонгүй
-              </CTableDataCell>
+              <CTableHeaderCell>ID</CTableHeaderCell>
+              <CTableHeaderCell>Байгууллагын нэр</CTableHeaderCell>
+              <CTableHeaderCell>Футер текст</CTableHeaderCell>
+              <CTableHeaderCell>Бүртгүүлсэн огноо</CTableHeaderCell>
             </CTableRow>
-          ) : (
-            paginatedBranches.map((branch, index) => (
-              <CTableRow key={index}>
-                <CTableDataCell>{branch.branchCode}</CTableDataCell>
-                <CTableDataCell>{branch.branchName}</CTableDataCell>
-                <CTableDataCell>
-                  {typeof branch.footerText === "object"
-                    ? JSON.stringify(branch.footerText)
-                    : branch.footerText}
-                </CTableDataCell>
-                <CTableDataCell>
-                  {dayjs(branch.createDate).format("YYYY-MM-DD")}
+          </CTableHead>
+          <CTableBody>
+            {paginatedBranches.length === 0 ? (
+              <CTableRow>
+                <CTableDataCell colSpan={4} className="text-center">
+                  Илэрц олдсонгүй
                 </CTableDataCell>
               </CTableRow>
-            ))
-          )}
-        </CTableBody>
-      </CTable>
-      {totalPages > 1 && (
-        <CPagination className="mt-3">
-          <CPaginationItem
-            disabled={currentPage === 1}
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            Өмнөх
-          </CPaginationItem>
-          {Array.from({ length: totalPages }, (_, idx) => (
+            ) : (
+              paginatedBranches.map((branch, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{branch.branchCode}</CTableDataCell>
+                  <CTableDataCell>{branch.branchName}</CTableDataCell>
+                  <CTableDataCell>
+                    {typeof branch.footerText === "object"
+                      ? JSON.stringify(branch.footerText)
+                      : branch.footerText}
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    {dayjs(branch.createDate).format("YYYY-MM-DD")}
+                  </CTableDataCell>
+                </CTableRow>
+              ))
+            )}
+          </CTableBody>
+        </CTable>
+        {totalPages > 1 && (
+          <CPagination className="mt-3">
             <CPaginationItem
-              key={idx + 1}
-              active={currentPage === idx + 1}
-              onClick={() => handlePageChange(idx + 1)}
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
             >
-              {idx + 1}
+              Өмнөх
             </CPaginationItem>
-          ))}
-          <CPaginationItem
-            disabled={currentPage === totalPages}
-            onClick={() => handlePageChange(currentPage + 1)}
-          >
-            Дараах
-          </CPaginationItem>
-        </CPagination>
-      )}
-    </CContainer>
+            {Array.from({ length: totalPages }, (_, idx) => (
+              <CPaginationItem
+                key={idx + 1}
+                active={currentPage === idx + 1}
+                onClick={() => handlePageChange(idx + 1)}
+              >
+                {idx + 1}
+              </CPaginationItem>
+            ))}
+            <CPaginationItem
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              Дараах
+            </CPaginationItem>
+          </CPagination>
+        )}
+      </CContainer>
+    </>
   );
 };
 

@@ -16,6 +16,7 @@ import {
 } from "@coreui/react";
 import axios from "axios";
 import dayjs from "dayjs";
+import MerchantsMobileTable from "./MerchantsMobileTable";
 
 const PAGE_SIZE = 10;
 
@@ -83,75 +84,82 @@ const GetMerchants = () => {
   }
 
   return (
-    <CContainer>
-      <CRow className="mb-3">
-        <CCol xs={12} md={6} lg={4}>
-          <CFormInput
-            type="text"
-            placeholder="Хайх (нэр, и-мэйл, утас, ID)"
-            value={search}
-            onChange={handleSearchChange}
-          />
-        </CCol>
-      </CRow>
-      <CTable>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell>ID</CTableHeaderCell>
-            <CTableHeaderCell>Байгууллагын нэр</CTableHeaderCell>
-            <CTableHeaderCell>И-мэйл</CTableHeaderCell>
-            <CTableHeaderCell>Утас</CTableHeaderCell>
-            <CTableHeaderCell>Бүртгүүлсэн огноо</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          {paginatedUsers.length === 0 ? (
+    <>
+      <div style={{ display: window.innerWidth < 768 ? "block" : "none" }}>
+        <MerchantsMobileTable users={paginatedUsers} />
+      </div>
+      <CContainer
+        style={{ display: window.innerWidth < 768 ? "none" : "block" }}
+      >
+        <CRow className="mb-3">
+          <CCol xs={12} md={6} lg={4}>
+            <CFormInput
+              type="text"
+              placeholder="Хайх (нэр, и-мэйл, утас, ID)"
+              value={search}
+              onChange={handleSearchChange}
+            />
+          </CCol>
+        </CRow>
+        <CTable>
+          <CTableHead>
             <CTableRow>
-              <CTableDataCell colSpan={5} className="text-center">
-                Илэрц олдсонгүй
-              </CTableDataCell>
+              <CTableHeaderCell>ID</CTableHeaderCell>
+              <CTableHeaderCell>Байгууллагын нэр</CTableHeaderCell>
+              <CTableHeaderCell>И-мэйл</CTableHeaderCell>
+              <CTableHeaderCell>Утас</CTableHeaderCell>
+              <CTableHeaderCell>Бүртгүүлсэн огноо</CTableHeaderCell>
             </CTableRow>
-          ) : (
-            paginatedUsers.map((user) => (
-              <CTableRow key={user.id}>
-                <CTableDataCell>{user.id}</CTableDataCell>
-                <CTableDataCell>{user.merchantName}</CTableDataCell>
-                <CTableDataCell>{user.email}</CTableDataCell>
-                <CTableDataCell>{user.phone}</CTableDataCell>
-                <CTableDataCell>
-                  {dayjs(user.createDate).format("YYYY-MM-DD")}
+          </CTableHead>
+          <CTableBody>
+            {paginatedUsers.length === 0 ? (
+              <CTableRow>
+                <CTableDataCell colSpan={5} className="text-center">
+                  Илэрц олдсонгүй
                 </CTableDataCell>
               </CTableRow>
-            ))
-          )}
-        </CTableBody>
-      </CTable>
-      {totalPages > 1 && (
-        <CPagination align="center" className="mt-3">
-          <CPaginationItem
-            disabled={currentPage === 1}
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            Өмнөх
-          </CPaginationItem>
-          {Array.from({ length: totalPages }, (_, idx) => (
+            ) : (
+              paginatedUsers.map((user) => (
+                <CTableRow key={user.id}>
+                  <CTableDataCell>{user.id}</CTableDataCell>
+                  <CTableDataCell>{user.merchantName}</CTableDataCell>
+                  <CTableDataCell>{user.email}</CTableDataCell>
+                  <CTableDataCell>{user.phone}</CTableDataCell>
+                  <CTableDataCell>
+                    {dayjs(user.createDate).format("YYYY-MM-DD")}
+                  </CTableDataCell>
+                </CTableRow>
+              ))
+            )}
+          </CTableBody>
+        </CTable>
+        {totalPages > 1 && (
+          <CPagination align="center" className="mt-3">
             <CPaginationItem
-              key={idx + 1}
-              active={currentPage === idx + 1}
-              onClick={() => handlePageChange(idx + 1)}
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
             >
-              {idx + 1}
+              Өмнөх
             </CPaginationItem>
-          ))}
-          <CPaginationItem
-            disabled={currentPage === totalPages}
-            onClick={() => handlePageChange(currentPage + 1)}
-          >
-            Дараах
-          </CPaginationItem>
-        </CPagination>
-      )}
-    </CContainer>
+            {Array.from({ length: totalPages }, (_, idx) => (
+              <CPaginationItem
+                key={idx + 1}
+                active={currentPage === idx + 1}
+                onClick={() => handlePageChange(idx + 1)}
+              >
+                {idx + 1}
+              </CPaginationItem>
+            ))}
+            <CPaginationItem
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              Дараах
+            </CPaginationItem>
+          </CPagination>
+        )}
+      </CContainer>
+    </>
   );
 };
 

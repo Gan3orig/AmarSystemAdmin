@@ -7,6 +7,7 @@ import GetMerchants from "./views/pages/GetMerchants/GetMerchants";
 import GetBranches from "./views/pages/GetBranches/GetBranches";
 import GetTerminals from "./views/pages/GetTerminals/GetTerminals";
 import QpayMerchantsPage from "./views/pages/QpayMerchants/QpayMerchantsPage";
+import TasksBoard from "./views/pages/Tasks/TasksBoard";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 const DeveloperHistory = React.lazy(
@@ -153,8 +154,10 @@ const routes = [
     element: GetMerchants,
   },
   { path: "/settings", name: "Тохиргоо", element: Settings },
+  // terminalMap -> terminal-page
   { path: "/terminalMap", name: "Терминал", element: TerminalPage },
   { path: "/admin", name: "Админ", element: Admin },
+  { path: "/tasks", name: "Ажил", element: TasksBoard },
   ...(role === "admin"
     ? [
         { path: "/theme", name: "Theme", element: Colors, exact: true },

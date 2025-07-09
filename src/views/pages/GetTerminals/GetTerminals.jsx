@@ -11,6 +11,7 @@ import {
 } from "@coreui/react";
 import axios from "axios";
 import dayjs from "dayjs";
+import TerminalsMobileTable from "./TerminalsMobileTable";
 
 const GetTerminals = () => {
   const [terminals, setTerminals] = useState([]);
@@ -47,30 +48,35 @@ const GetTerminals = () => {
 
   return (
     <CContainer>
-      <CTable>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell>ID</CTableHeaderCell>
-            <CTableHeaderCell>Байгууллагын нэр</CTableHeaderCell>
-            <CTableHeaderCell>Холбогдсон эсэх</CTableHeaderCell>
-            <CTableHeaderCell>Бүртгүүлсэн огноо</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          {terminals.map((terminal, index) => (
-            <CTableRow key={index}>
-              <CTableDataCell>{terminal.terminalCode}</CTableDataCell>
-              <CTableDataCell>{terminal.terminalName}</CTableDataCell>
-              <CTableDataCell>
-                {terminal.isConnected ? "Холбогдсон" : "Холбогдоогүй"}
-              </CTableDataCell>
-              <CTableDataCell>
-                {dayjs(terminal.createDate).format("YYYY-MM-DD")}
-              </CTableDataCell>
+      <div style={{ display: window.innerWidth < 768 ? "block" : "none" }}>
+        <TerminalsMobileTable terminals={terminals} />
+      </div>
+      <div style={{ display: window.innerWidth < 768 ? "none" : "block" }}>
+        <CTable>
+          <CTableHead>
+            <CTableRow>
+              <CTableHeaderCell>ID</CTableHeaderCell>
+              <CTableHeaderCell>Байгууллагын нэр</CTableHeaderCell>
+              <CTableHeaderCell>Холбогдсон эсэх</CTableHeaderCell>
+              <CTableHeaderCell>Бүртгүүлсэн огноо</CTableHeaderCell>
             </CTableRow>
-          ))}
-        </CTableBody>
-      </CTable>
+          </CTableHead>
+          <CTableBody>
+            {terminals.map((terminal, index) => (
+              <CTableRow key={index}>
+                <CTableDataCell>{terminal.terminalCode}</CTableDataCell>
+                <CTableDataCell>{terminal.terminalName}</CTableDataCell>
+                <CTableDataCell>
+                  {terminal.isConnected ? "Холбогдсон" : "Холбогдоогүй"}
+                </CTableDataCell>
+                <CTableDataCell>
+                  {dayjs(terminal.createDate).format("YYYY-MM-DD")}
+                </CTableDataCell>
+              </CTableRow>
+            ))}
+          </CTableBody>
+        </CTable>
+      </div>
     </CContainer>
   );
 };
