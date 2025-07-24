@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
   CRow,
@@ -37,32 +37,45 @@ import {
 } from "react-icons/io5";
 import { MdEdit, MdDelete, MdAccessTime } from "react-icons/md";
 import { FaPlus, FaCalendarAlt, FaFilter, FaSearch } from "react-icons/fa";
+import axios from "axios";
 
 const columnTitles = [
   {
-    key: "todo",
+    key: "pending",
+    backendStatus: 0,
     title: "Хийх",
     bg: "#E3F2FD",
     color: "#1976D2",
     icon: <IoList />,
   },
   {
-    key: "doing",
+    key: "inProgress",
+    backendStatus: 1,
     title: "Хийж байгаа",
     bg: "#FFF3E0",
     color: "#F57C00",
     icon: <IoSync />,
   },
   {
-    key: "done",
+    key: "completed",
+    backendStatus: 2,
     title: "Хийсэн",
     bg: "#E8F5E9",
     color: "#388E3C",
     icon: <IoCheckmarkDone />,
   },
   {
-    key: "error",
-    title: "Алдаа",
+    key: "dueClose",
+    backendStatus: 3,
+    title: "Хугацаа дуусах дөхсөн",
+    bg: "#FFEBEE",
+    color: "#D32F2F",
+    icon: <IoWarning />,
+  },
+  {
+    key: "overdue",
+    backendStatus: 4,
+    title: "Хугацаа дууссан",
     bg: "#FFEBEE",
     color: "#D32F2F",
     icon: <IoWarning />,
@@ -76,13 +89,16 @@ const priorityColors = {
 };
 
 const TasksBoard = () => {
-  const defaultColumns = { todo: [], doing: [], done: [], error: [] };
+  const defaultColumns = {
+    pending: [],
+    inProgress: [],
+    completed: [],
+    dueClose: [],
+    overdue: [],
+  };
 
-  const [projects, setProjects] = useState([
-    { id: "project-1", name: "Төсөл 1", description: "Төслийн тайлбар" },
-  ]);
-
-  const [selectedProject, setSelectedProject] = useState("project-1");
+  const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPriority, setFilterPriority] = useState("all");
@@ -91,27 +107,31 @@ const TasksBoard = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  const [tasks, setTasks] = useState({
-    "project-1": { ...defaultColumns },
-  });
+  const [tasks, setTasks] = useState({});
 
   const [inputs, setInputs] = useState({
-    todo: "",
-    doing: "",
-    done: "",
-    error: "",
+    pending: "",
+    inProgress: "",
+    completed: "",
+    dueClose: "",
+    overdue: "",
   });
 
   const [dueDates, setDueDates] = useState({
-    todo: "",
-    doing: "",
-    done: "",
-    error: "",
+    pending: "",
+    inProgress: "",
+    completed: "",
+    dueClose: "",
+    overdue: "",
   });
 
   const [projectModalVisible, setProjectModalVisible] = useState(false);
+  const [editProjectModalVisible, setEditProjectModalVisible] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDescription, setNewProjectDescription] = useState("");
+  const [newProjectStartDate, setNewProjectStartDate] = useState("");
+  const [newProjectEndDate, setNewProjectEndDate] = useState("");
 
   const [visible, setVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
@@ -133,23 +153,78 @@ const TasksBoard = () => {
 
   const handleAddTask = async (columnKey) => {
     const value = inputs[columnKey].trim();
-    if (value === "") {
-      showNotificationMessage("Даалгаврын нэр оруулна уу!");
-      return;
-    }
+    // if (value === "") {
+    //   showNotificationMessage("Даалгаврын нэр оруулна уу!");
+    //   return;
+    // }
+
+    // if (!dueDates[columnKey]) {
+    //   showNotificationMessage("Дуусах хугацаа оруулна уу!");
+    //   return;
+    // }
 
     setLoading(true);
     try {
+      const token = localStorage.getItem("token");
+
+      // Төлөвийг тодорхойлох (string статус)
+      let taskStatus = "pending";
+      switch (columnKey) {
+        case "pending":
+          taskStatus = "pending";
+          break;
+        case "inProgress":
+          taskStatus = "inProgress";
+          break;
+        case "completed":
+          taskStatus = "completed";
+          break;
+        case "dueClose":
+          taskStatus = "dueClose";
+          break;
+        case "overdue":
+          taskStatus = "overdue";
+          break;
+        default:
+          taskStatus = "pending";
+      }
+
+      const payload = {
+        taskId: 0,
+        projectId: selectedProject,
+        orderId: 0,
+        taskName: value,
+        // taskStatus: "pending",
+        endDate: "2025-07-29T07:55:16.350Z",
+        // endDate: (() => {
+        //   let dt = dueDates[columnKey];
+        //   if (dt.length === 16) {
+        //     // yyyy-MM-ddTHH:mm форматад секунд алга → :00 нэмж ISO болгоно
+        //     dt += ":00";
+        //   }
+        //   return new Date(dt).toISOString();
+        // })(),
+        userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      };
+
+      const response = await axios({
+        method: "POST",
+        url: "https://api.majorsoft.mn/api/task",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        data: payload,
+      });
+
+      if (!response.data) {
+        throw new Error("Даалгавар нэмэхэд алдаа гарлаа");
+      }
+
       const newTask = {
-        id: `${Date.now()}-${Math.random()}`,
+        id: String(response.data.taskId),
         content: value,
-        createdAt: new Date().toISOString(),
-        dueDate: dueDates[columnKey] || null,
-        priority: "medium",
-        assignee: null,
-        description: "",
-        attachments: [],
-        comments: [],
+        dueDate: dueDates[columnKey],
         progress: 0,
       };
 
@@ -169,7 +244,7 @@ const TasksBoard = () => {
       showNotificationMessage("Даалгавар амжилттай нэмэгдлээ!");
     } catch (error) {
       console.error("Failed to add task:", error);
-      showNotificationMessage("Алдаа гарлаа!");
+      showNotificationMessage(error.message || "Алдаа гарлаа!");
     } finally {
       setLoading(false);
     }
@@ -223,15 +298,250 @@ const TasksBoard = () => {
         destTasks.splice(destination.index, 0, movedTask);
         projectTasks[source.droppableId] = sourceTasks;
         projectTasks[destination.droppableId] = destTasks;
+
+        // Backend update only when column changes
+        const newStatus = statusCodeMap[destination.droppableId] ?? 0;
+        updateTaskStatusBackend(movedTask, newStatus, destination.index);
       }
 
       return { ...prev, [selectedProject]: projectTasks };
     });
   };
 
-  const handleOpenModal = (task) => {
-    setSelectedTask(task);
-    setVisible(true);
+  const updateTaskStatusBackend = async (task, statusCode, orderIdx) => {
+    try {
+      const token = localStorage.getItem("token");
+      const payload = {
+        taskId: Number(task.id),
+        projectId: selectedProject,
+        orderId: orderIdx,
+        taskName: task.content,
+        taskStatus: statusCode,
+        endDate: task.dueDate || new Date().toISOString(),
+        userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      };
+
+      await axios({
+        method: "PUT",
+        url: "https://api.majorsoft.mn/api/task",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        data: payload,
+      });
+    } catch (err) {
+      console.error("Error updating task status:", err);
+      showNotificationMessage("Даалгаврын статус шинэчлэхэд алдаа гарлаа!");
+    }
+  };
+
+  const handleOpenModal = async (task) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        `https://api.majorsoft.mn/api/task/getTask?taskId=${task.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (!res.ok) throw new Error("Таалагдсан өгөгдөл татаж чадсангүй");
+
+      const detail = await res.json();
+      const full =
+        Array.isArray(detail.data) && detail.data.length
+          ? detail.data[0]
+          : null;
+
+      const merged = {
+        ...task,
+        description: full?.description ?? "",
+        progress: full?.progress ?? 0,
+        createdAt: full?.createDate ?? task.createdAt,
+        dueDate: full?.endDate ?? task.dueDate,
+        priority: full?.priority ?? task.priority ?? "medium",
+      };
+      setSelectedTask(merged);
+      setVisible(true);
+    } catch (err) {
+      console.error("Error fetching task detail:", err);
+      showNotificationMessage("Даалгаврын дэлгэрэнгүй ачаалахад алдаа гарлаа!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Төслүүдийг API-аас дуудах
+  const fetchProjects = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "https://api.majorsoft.mn/api/task/listProject",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch projects");
+      }
+
+      const dataObj = await response.json();
+      const projectList = Array.isArray(dataObj.data) ? dataObj.data : [];
+      setProjects(projectList);
+
+      // Анхны төслийг сонгох
+      if (projectList.length > 0 && !selectedProject) {
+        const firstId = projectList[0].projectId;
+        setSelectedProject(firstId);
+        // Анхны төслийн tasks-ийг хоосон array-аар эхлүүлэх
+        setTasks((prev) => ({
+          ...prev,
+          [firstId]: { ...defaultColumns },
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+      showNotificationMessage("Төслийн жагсаалт ачаалахад алдаа гарлаа!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Component mount хийхэд төслүүдийг дуудах
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  // Даалгаврын жагсаалтыг API-аас дуудах
+  const fetchTasks = async (projectId) => {
+    if (!projectId) return;
+
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `https://api.majorsoft.mn/api/task?projectId=${projectId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch tasks");
+      }
+
+      const resJson = await response.json();
+      const data = Array.isArray(resJson.data) ? resJson.data : [];
+
+      // Даалгавруудыг төлөв бүрээр ангилах
+      const groupedTasks = {
+        pending: [],
+        inProgress: [],
+        completed: [],
+        dueClose: [],
+        overdue: [],
+      };
+
+      data.forEach((task) => {
+        const taskItem = {
+          id: String(task.taskId),
+          content: task.taskName,
+          dueDate: task.endDate,
+          progress: 0,
+        };
+
+        const status = task.taskStatus;
+
+        if (status === 0 || status === "pending") {
+          groupedTasks.pending.push(taskItem);
+        } else if (
+          status === 1 ||
+          status === "inProgress" ||
+          status === "doing"
+        ) {
+          groupedTasks.inProgress.push(taskItem);
+        } else if (
+          status === 2 ||
+          status === "completed" ||
+          status === "done"
+        ) {
+          groupedTasks.completed.push(taskItem);
+        } else if (status === 3 || status === "dueClose") {
+          groupedTasks.dueClose.push(taskItem);
+        } else if (status === 4 || status === "overdue" || status === "error") {
+          groupedTasks.overdue.push(taskItem);
+        } else {
+          groupedTasks.pending.push(taskItem);
+        }
+      });
+
+      setTasks((prev) => ({
+        ...prev,
+        [projectId]: groupedTasks,
+      }));
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      showNotificationMessage("Даалгаврын жагсаалт ачаалахад алдаа гарлаа!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Төсөл сонгогдох үед даалгавруудыг дуудах
+  useEffect(() => {
+    if (selectedProject) {
+      fetchTasks(selectedProject);
+    }
+  }, [selectedProject]);
+
+  const ProjectStatus = {
+    DOING: "Doing",
+    PENDING: "pending",
+    DONE: "Done",
+    CANCELLED: "Cancelled",
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case ProjectStatus.DOING:
+        return "primary";
+      case ProjectStatus.PENDING:
+        return "warning";
+      case ProjectStatus.DONE:
+        return "success";
+      case ProjectStatus.CANCELLED:
+        return "danger";
+      default:
+        return "secondary";
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case ProjectStatus.DOING:
+        return "Хийгдэж байгаа";
+      case ProjectStatus.PENDING:
+        return "Хүлээгдэж байгаа";
+      case ProjectStatus.DONE:
+        return "Дууссан";
+      case ProjectStatus.CANCELLED:
+        return "Цуцлагдсан";
+      default:
+        return "Тодорхойгүй";
+    }
   };
 
   const handleCreateProject = async () => {
@@ -241,27 +551,118 @@ const TasksBoard = () => {
       return;
     }
 
+    if (!newProjectStartDate) {
+      showNotificationMessage("Эхлэх огноо оруулна уу!");
+      return;
+    }
+
+    if (!newProjectEndDate) {
+      showNotificationMessage("Дуусах огноо оруулна уу!");
+      return;
+    }
+
     setLoading(true);
+    const token = localStorage.getItem("token");
+
     try {
-      const newId = `project-${Date.now()}`;
-      setProjects((prev) => [
-        ...prev,
+      const payload = {
+        projectName: name,
+        projectStatus: ProjectStatus.PENDING,
+        begDate: new Date(newProjectStartDate).toISOString(),
+        endDate: new Date(newProjectEndDate).toISOString(),
+        userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      };
+
+      const response = await fetch(
+        "https://api.majorsoft.mn/api/task/addProject",
         {
-          id: newId,
-          name,
-          description: newProjectDescription,
-          createdAt: new Date().toISOString(),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
         },
-      ]);
-      setTasks((prev) => ({ ...prev, [newId]: { ...defaultColumns } }));
-      setSelectedProject(newId);
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        if (errorData.errors?.projectName) {
+          throw new Error("Төслийн нэр оруулна уу!");
+        }
+        throw new Error(errorData.title || "Failed to create project");
+      }
+
+      await fetchProjects();
       setNewProjectName("");
       setNewProjectDescription("");
+      setNewProjectStartDate("");
+      setNewProjectEndDate("");
       setProjectModalVisible(false);
       showNotificationMessage("Төсөл амжилттай үүслээ!");
     } catch (error) {
       console.error("Failed to create project:", error);
-      showNotificationMessage("Алдаа гарлаа!");
+      showNotificationMessage(error.message || "Алдаа гарлаа!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditProject = (project) => {
+    setEditingProject(project);
+    setEditProjectModalVisible(true);
+  };
+
+  const handleUpdateProject = async (event) => {
+    event.preventDefault();
+    if (!editingProject) return;
+
+    if (!editingProject.projectName?.trim()) {
+      showNotificationMessage("Төслийн нэр оруулна уу!");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const payload = {
+        projectId: editingProject.projectId,
+        projectName: editingProject.projectName.trim(),
+        projectStatus: 1,
+        begDate: new Date(editingProject.begDate).toISOString(),
+        endDate: new Date(editingProject.endDate).toISOString(),
+        userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      };
+
+      const response = await fetch(
+        "https://api.majorsoft.mn/api/task/updateProject",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        if (errorData.errors?.projectName) {
+          throw new Error("Төслийн нэр оруулна уу!");
+        }
+        throw new Error(errorData.title || "Failed to update project");
+      }
+
+      await fetchProjects();
+      setEditProjectModalVisible(false);
+      setEditingProject(null);
+      showNotificationMessage("Төсөл амжилттай шинэчлэгдлээ!");
+    } catch (error) {
+      console.error("Error updating project:", error);
+      showNotificationMessage(
+        error.message || "Төсөл шинэчлэхэд алдаа гарлаа!",
+      );
     } finally {
       setLoading(false);
     }
@@ -271,13 +672,15 @@ const TasksBoard = () => {
 
   const now = new Date();
   const twoDaysMs = 1000 * 60 * 60 * 24 * 2;
-  const pendingCount = currentTasks.todo.length;
-  const inProgressCount = currentTasks.doing.length;
-  const doneCount = currentTasks.done.length;
+  const pendingCount = currentTasks.pending.length;
+  const inProgressCount = currentTasks.inProgress.length;
+  const doneCount = currentTasks.completed.length;
+  const dueCloseCount = currentTasks.dueClose.length;
+  const overdueCountB = currentTasks.overdue.length;
 
   let dueSoonCount = 2;
   let overdueCount = 10;
-  ["todo", "doing"].forEach((col) => {
+  ["pending", "inProgress"].forEach((col) => {
     currentTasks[col].forEach((task) => {
       if (!task.dueDate) return;
       const due = new Date(task.dueDate);
@@ -308,6 +711,51 @@ const TasksBoard = () => {
     });
   };
 
+  const handleDeleteProject = async (projectId) => {
+    if (!window.confirm("Энэ төслийг устгахдаа итгэлтэй байна уу?")) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "https://api.majorsoft.mn/api/task/removeProject",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            projectId: projectId,
+            userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete project");
+      }
+
+      await fetchProjects();
+      showNotificationMessage("Төсөл амжилттай устгагдлаа!");
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      showNotificationMessage("Төсөл устгахад алдаа гарлаа!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const statusCodeMap = {
+    pending: 0,
+    inProgress: 1,
+    completed: 2,
+    dueClose: 3,
+    overdue: 4,
+  };
+
   return (
     <div className="p-4">
       {loading && (
@@ -331,8 +779,8 @@ const TasksBoard = () => {
             className="shadow-sm"
           >
             {projects.map((p) => (
-              <option value={p.id} key={p.id}>
-                {p.name}
+              <option value={p.projectId} key={p.projectId}>
+                {p.projectName}
               </option>
             ))}
           </CFormSelect>
@@ -358,7 +806,7 @@ const TasksBoard = () => {
               className="shadow-sm ps-4"
             >
               <option value="all">Төлөв сонгох</option>
-              <option value="todo">Хүлээгдэж байгаа</option>
+              <option value="pending">Хүлээгдэж байгаа</option>
               <option value="doing">Хийгдэж байгаа</option>
               <option value="done">Дууссан</option>
               <option value="error">Дуусах хугацаа дөхсөн</option>
@@ -430,14 +878,14 @@ const TasksBoard = () => {
           },
           {
             label: "Дуусах хугацаа дөхсөн",
-            count: dueSoonCount,
+            count: dueCloseCount,
             value: "dueClose",
             color: "info",
             icon: <IoTime />,
           },
           {
             label: "Хугацаа хэтэрсэн",
-            count: overdueCount,
+            count: overdueCountB,
             value: "overdue",
             color: "danger",
             icon: <IoWarning />,
@@ -496,7 +944,7 @@ const TasksBoard = () => {
                       >
                         {filteredTasks(key).map((task, idx) => (
                           <Draggable
-                            draggableId={task.id}
+                            draggableId={task.id.toString()}
                             index={idx}
                             key={task.id}
                           >
@@ -597,7 +1045,7 @@ const TasksBoard = () => {
                     </div>
                     <div className="position-relative mb-2">
                       <CFormInput
-                        type="date"
+                        type="datetime-local"
                         value={dueDates[key]}
                         onChange={(e) =>
                           handleDueDateChange(key, e.target.value)
@@ -622,6 +1070,100 @@ const TasksBoard = () => {
           ))}
         </CRow>
       </DragDropContext>
+
+      {/* Projects Table */}
+      <CCard className="mt-4 shadow-sm border-0">
+        <CCardHeader className="bg-light border-0">
+          <h5 className="mb-0 text-black">Төслийн жагсаалт</h5>
+        </CCardHeader>
+        <CCardBody className="p-0">
+          <div className="table-responsive">
+            <table className="table table-hover align-middle mb-0">
+              <thead className="bg-light">
+                <tr>
+                  <th className="border-0">№</th>
+                  <th className="border-0">Нэр</th>
+                  <th className="border-0">Эхлэх огноо</th>
+                  <th className="border-0">Дуусах огноо</th>
+                  <th className="border-0">Төлөв</th>
+                  <th className="border-0">Үйлдэл</th>
+                </tr>
+              </thead>
+              <tbody>
+                {projects.map((project, index) => (
+                  <tr key={project.projectId}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <div>
+                          <h6 className="mb-0">{project.projectName}</h6>
+                          {project.description && (
+                            <small className="text-muted">
+                              {project.description}
+                            </small>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      {new Date(project.begDate).toLocaleDateString("mn-MN", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </td>
+                    <td>
+                      {new Date(project.endDate).toLocaleDateString("mn-MN", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </td>
+                    <td>
+                      <CBadge
+                        color={getStatusColor(project.projectStatus)}
+                        className="px-2 py-1"
+                      >
+                        {getStatusText(project.projectStatus)}
+                      </CBadge>
+                    </td>
+                    <td>
+                      <div className="d-flex gap-2">
+                        <CTooltip content="Засах">
+                          <CButton
+                            color="warning"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditProject(project)}
+                          >
+                            <MdEdit />
+                          </CButton>
+                        </CTooltip>
+                        <CTooltip content="Устгах">
+                          <CButton
+                            color="danger"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              handleDeleteProject(project.projectId)
+                            }
+                          >
+                            <MdDelete />
+                          </CButton>
+                        </CTooltip>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CCardBody>
+      </CCard>
 
       <CModal
         visible={visible}
@@ -739,6 +1281,105 @@ const TasksBoard = () => {
         </CModalFooter>
       </CModal>
 
+      {/* Project edit modal */}
+      <CModal
+        visible={editProjectModalVisible}
+        onClose={() => {
+          setEditProjectModalVisible(false);
+          setEditingProject(null);
+        }}
+        alignment="center"
+        className="shadow"
+      >
+        <CModalHeader>
+          <CModalTitle>Төсөл засах</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <div className="mb-3">
+            <label className="form-label">Төслийн нэр</label>
+            <CFormInput
+              placeholder="Төслийн нэр"
+              value={editingProject?.projectName || ""}
+              onChange={(e) =>
+                setEditingProject({
+                  ...editingProject,
+                  projectName: e.target.value,
+                })
+              }
+              className="shadow-sm"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Төлөв</label>
+            <CFormSelect
+              value={editingProject?.projectStatus || ProjectStatus.PENDING}
+              onChange={(e) =>
+                setEditingProject({
+                  ...editingProject,
+                  projectStatus: e.target.value,
+                })
+              }
+              className="shadow-sm"
+            >
+              <option value={ProjectStatus.DOING}>Хийгдэж байгаа</option>
+              <option value={ProjectStatus.PENDING}>Хүлээгдэж байгаа</option>
+              <option value={ProjectStatus.DONE}>Дууссан</option>
+              <option value={ProjectStatus.CANCELLED}>Цуцлагдсан</option>
+            </CFormSelect>
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Эхлэх огноо</label>
+            <CFormInput
+              type="datetime-local"
+              value={
+                editingProject?.begDate
+                  ? new Date(editingProject.begDate).toISOString().slice(0, 16)
+                  : ""
+              }
+              onChange={(e) =>
+                setEditingProject({
+                  ...editingProject,
+                  begDate: e.target.value,
+                })
+              }
+              className="shadow-sm"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Дуусах огноо</label>
+            <CFormInput
+              type="datetime-local"
+              value={
+                editingProject?.endDate
+                  ? new Date(editingProject.endDate).toISOString().slice(0, 16)
+                  : ""
+              }
+              onChange={(e) =>
+                setEditingProject({
+                  ...editingProject,
+                  endDate: e.target.value,
+                })
+              }
+              className="shadow-sm"
+            />
+          </div>
+        </CModalBody>
+        <CModalFooter>
+          <CButton
+            color="secondary"
+            onClick={() => {
+              setEditProjectModalVisible(false);
+              setEditingProject(null);
+            }}
+          >
+            Болих
+          </CButton>
+          <CButton color="primary" onClick={handleUpdateProject}>
+            Хадгалах
+          </CButton>
+        </CModalFooter>
+      </CModal>
+
       {/* Project create modal */}
       <CModal
         visible={projectModalVisible}
@@ -767,6 +1408,24 @@ const TasksBoard = () => {
               placeholder="Төслийн тайлбар"
               value={newProjectDescription}
               onChange={(e) => setNewProjectDescription(e.target.value)}
+              className="shadow-sm"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Эхлэх огноо</label>
+            <CFormInput
+              type="datetime-local"
+              value={newProjectStartDate}
+              onChange={(e) => setNewProjectStartDate(e.target.value)}
+              className="shadow-sm"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Дуусах огноо</label>
+            <CFormInput
+              type="datetime-local"
+              value={newProjectEndDate}
+              onChange={(e) => setNewProjectEndDate(e.target.value)}
               className="shadow-sm"
             />
           </div>
