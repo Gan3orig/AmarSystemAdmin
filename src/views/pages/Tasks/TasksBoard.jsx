@@ -38,6 +38,7 @@ import {
 import { MdEdit, MdDelete, MdAccessTime } from "react-icons/md";
 import { FaPlus, FaCalendarAlt, FaFilter, FaSearch } from "react-icons/fa";
 import axios from "axios";
+import dayjs from "dayjs";
 
 const columnTitles = [
   {
@@ -102,8 +103,12 @@ const TasksBoard = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPriority, setFilterPriority] = useState("all");
-  const [filterStartDate, setFilterStartDate] = useState("");
-  const [filterEndDate, setFilterEndDate] = useState("");
+  const [filterStartDate, setFilterStartDate] = useState(
+    dayjs().subtract(3, "month").format("YYYY-MM-DD"),
+  );
+  const [filterEndDate, setFilterEndDate] = useState(
+    dayjs().format("YYYY-MM-DD"),
+  );
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
@@ -118,11 +123,11 @@ const TasksBoard = () => {
   });
 
   const [dueDates, setDueDates] = useState({
-    pending: "",
-    inProgress: "",
-    completed: "",
-    dueClose: "",
-    overdue: "",
+    pending: dayjs().format("YYYY-MM-DD"),
+    inProgress: dayjs().format("YYYY-MM-DD"),
+    completed: dayjs().format("YYYY-MM-DD"),
+    dueClose: dayjs().format("YYYY-MM-DD"),
+    overdue: dayjs().format("YYYY-MM-DD"),
   });
 
   const [projectModalVisible, setProjectModalVisible] = useState(false);
@@ -168,25 +173,25 @@ const TasksBoard = () => {
       const token = localStorage.getItem("token");
 
       // Төлөвийг тодорхойлох (string статус)
-      let taskStatus = "pending";
+      let taskStatus = 0;
       switch (columnKey) {
         case "pending":
-          taskStatus = "pending";
+          taskStatus = 0;
           break;
         case "inProgress":
-          taskStatus = "inProgress";
+          taskStatus = 1;
           break;
         case "completed":
-          taskStatus = "completed";
+          taskStatus = 2;
           break;
         case "dueClose":
-          taskStatus = "dueClose";
+          taskStatus = 3;
           break;
         case "overdue":
-          taskStatus = "overdue";
+          taskStatus = 4;
           break;
         default:
-          taskStatus = "pending";
+          taskStatus = 0;
       }
 
       const payload = {
@@ -194,8 +199,8 @@ const TasksBoard = () => {
         projectId: selectedProject,
         orderId: 0,
         taskName: value,
-        // taskStatus: "pending",
-        endDate: "2025-07-29T07:55:16.350Z",
+        taskStatus: taskStatus,
+        endDate: dueDates[columnKey],
         // endDate: (() => {
         //   let dt = dueDates[columnKey];
         //   if (dt.length === 16) {
@@ -240,7 +245,10 @@ const TasksBoard = () => {
       });
 
       setInputs((prev) => ({ ...prev, [columnKey]: "" }));
-      setDueDates((prev) => ({ ...prev, [columnKey]: "" }));
+      setDueDates((prev) => ({
+        ...prev,
+        [columnKey]: dayjs().format("YYYY-MM-DD"),
+      }));
       showNotificationMessage("Даалгавар амжилттай нэмэгдлээ!");
     } catch (error) {
       console.error("Failed to add task:", error);
@@ -255,6 +263,19 @@ const TasksBoard = () => {
 
     setLoading(true);
     try {
+      const token = localStorage.getItem("token");
+      await axios
+        .delete(`https://api.majorsoft.mn/api/task?taskId=${taskId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .catch((error) => {
+          console.error("Failed to delete task:", error);
+          showNotificationMessage("Алдаа гарлаа!");
+        });
+
       setTasks((prev) => {
         const projectTasks = prev[selectedProject] ?? { ...defaultColumns };
         return {
@@ -507,38 +528,56 @@ const TasksBoard = () => {
     }
   }, [selectedProject]);
 
+  // Төслийн статусууд (0: Шинэ, 1: Хийх, 2: Тест хийгдсэн, 3: Дууссан)
   const ProjectStatus = {
-    DOING: "Doing",
-    PENDING: "pending",
-    DONE: "Done",
-    CANCELLED: "Cancelled",
+    NEW: 0, // newProject
+    TODO: 1, // toDo
+    NEW: {
+      text: "Шинэ",
+      textValue: "newProject",
+      numberValue: 0,
+      color: "primary",
+    }, // newProfect
+    TODO: { text: "Хийх", textValue: "toDo", numberValue: 1, color: "warning" }, // toDo
+    TESTED: {
+      text: "Тест хийгдсэн",
+      textValue: "Tested",
+      numberValue: 2,
+      color: "info",
+    }, // Tested
+    COMPLETED: {
+      text: "Дууссан",
+      textValue: "completed",
+      numberValue: 3,
+      color: "success",
+    }, // completed
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case ProjectStatus.DOING:
-        return "primary";
-      case ProjectStatus.PENDING:
-        return "warning";
-      case ProjectStatus.DONE:
-        return "success";
-      case ProjectStatus.CANCELLED:
-        return "danger";
+      case ProjectStatus.NEW.textValue:
+        return ProjectStatus.NEW.color;
+      case ProjectStatus.TODO.textValue:
+        return ProjectStatus.TODO.color;
+      case ProjectStatus.TESTED.textValue:
+        return ProjectStatus.TESTED.color;
+      case ProjectStatus.COMPLETED.textValue:
+        return ProjectStatus.COMPLETED.color;
       default:
-        return "secondary";
+        return ProjectStatus.NEW.color;
     }
   };
 
   const getStatusText = (status) => {
     switch (status) {
-      case ProjectStatus.DOING:
-        return "Хийгдэж байгаа";
-      case ProjectStatus.PENDING:
-        return "Хүлээгдэж байгаа";
-      case ProjectStatus.DONE:
-        return "Дууссан";
-      case ProjectStatus.CANCELLED:
-        return "Цуцлагдсан";
+      case ProjectStatus.NEW.textValue:
+        return ProjectStatus.NEW.text;
+      case ProjectStatus.TODO.textValue:
+        return ProjectStatus.TODO.text;
+      case ProjectStatus.TESTED.textValue:
+        return ProjectStatus.TESTED.text;
+      case ProjectStatus.COMPLETED.textValue:
+        return ProjectStatus.COMPLETED.text;
       default:
         return "Тодорхойгүй";
     }
@@ -567,7 +606,7 @@ const TasksBoard = () => {
     try {
       const payload = {
         projectName: name,
-        projectStatus: ProjectStatus.PENDING,
+        projectStatus: ProjectStatus.NEW.numberValue,
         begDate: new Date(newProjectStartDate).toISOString(),
         endDate: new Date(newProjectEndDate).toISOString(),
         userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -628,9 +667,20 @@ const TasksBoard = () => {
       const payload = {
         projectId: editingProject.projectId,
         projectName: editingProject.projectName.trim(),
-        projectStatus: 1,
-        begDate: new Date(editingProject.begDate).toISOString(),
-        endDate: new Date(editingProject.endDate).toISOString(),
+        projectStatus: Number(
+          ProjectStatus.NEW.textValue === editingProject?.projectStatus
+            ? ProjectStatus.NEW.numberValue
+            : ProjectStatus.TODO.textValue === editingProject?.projectStatus
+              ? ProjectStatus.TODO.numberValue
+              : ProjectStatus.TESTED.textValue === editingProject?.projectStatus
+                ? ProjectStatus.TESTED.numberValue
+                : ProjectStatus.COMPLETED.textValue ===
+                    editingProject?.projectStatus
+                  ? ProjectStatus.COMPLETED.numberValue
+                  : Number(editingProject.projectStatus),
+        ),
+        begDate: new Date(editingProject.begDate),
+        endDate: new Date(editingProject.endDate),
         userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       };
 
@@ -719,24 +769,16 @@ const TasksBoard = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        "https://api.majorsoft.mn/api/task/removeProject",
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            projectId: projectId,
-            userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          }),
+      await axios.delete("https://api.majorsoft.mn/api/task/removeProject", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to delete project");
-      }
+        data: {
+          projectId: projectId,
+          userId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        },
+      });
 
       await fetchProjects();
       showNotificationMessage("Төсөл амжилттай устгагдлаа!");
@@ -930,7 +972,7 @@ const TasksBoard = () => {
                   <span className="fw-bold d-flex align-items-center">
                     {icon} <span className="ms-2">{title}</span>
                   </span>
-                  <CBadge color="light" className="px-2 shadow-sm">
+                  <CBadge color="light" className="px-2 text-black shadow-sm">
                     {filteredTasks(key).length}
                   </CBadge>
                 </CCardHeader>
@@ -1045,14 +1087,20 @@ const TasksBoard = () => {
                     </div>
                     <div className="position-relative mb-2">
                       <CFormInput
-                        type="datetime-local"
-                        value={dueDates[key]}
+                        type="date"
                         onChange={(e) =>
                           handleDueDateChange(key, e.target.value)
                         }
-                        className="shadow-sm"
+                        value={dueDates[key]}
+                        className="shadow-sm form-control border-0 ps-4"
+                        style={{
+                          backgroundColor: "#f8f9fa",
+                          borderRadius: "0.375rem",
+                          transition: "all 0.2s ease-in-out",
+                        }}
+                        placeholder="Дуусах хугацаа сонгох"
                       />
-                      <FaCalendarAlt className="position-absolute top-50 end-0 translate-middle-y me-2 text-muted" />
+                      {/* <FaCalendarAlt className="position-absolute top-50 end-0 translate-middle-y me-2 text-muted" /> */}
                     </div>
                     <CButton
                       color="primary"
@@ -1311,8 +1359,19 @@ const TasksBoard = () => {
           </div>
           <div className="mb-3">
             <label className="form-label">Төлөв</label>
+
             <CFormSelect
-              value={editingProject?.projectStatus || ProjectStatus.PENDING}
+              value={
+                ProjectStatus.NEW.textValue === editingProject?.projectStatus
+                  ? ProjectStatus.NEW.numberValue
+                  : ProjectStatus.TODO.textValue ===
+                      editingProject?.projectStatus
+                    ? ProjectStatus.TODO.numberValue
+                    : ProjectStatus.TESTED.textValue ===
+                        editingProject?.projectStatus
+                      ? ProjectStatus.TESTED.numberValue
+                      : ProjectStatus.COMPLETED.numberValue
+              }
               onChange={(e) =>
                 setEditingProject({
                   ...editingProject,
@@ -1321,10 +1380,18 @@ const TasksBoard = () => {
               }
               className="shadow-sm"
             >
-              <option value={ProjectStatus.DOING}>Хийгдэж байгаа</option>
-              <option value={ProjectStatus.PENDING}>Хүлээгдэж байгаа</option>
-              <option value={ProjectStatus.DONE}>Дууссан</option>
-              <option value={ProjectStatus.CANCELLED}>Цуцлагдсан</option>
+              <option value={ProjectStatus.NEW.numberValue}>
+                {ProjectStatus.NEW.text}
+              </option>
+              <option value={ProjectStatus.TODO.numberValue}>
+                {ProjectStatus.TODO.text}
+              </option>
+              <option value={ProjectStatus.TESTED.numberValue}>
+                {ProjectStatus.TESTED.text}
+              </option>
+              <option value={ProjectStatus.COMPLETED.numberValue}>
+                {ProjectStatus.COMPLETED.text}
+              </option>
             </CFormSelect>
           </div>
           <div className="mb-3">

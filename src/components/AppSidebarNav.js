@@ -94,13 +94,13 @@ export const AppSidebarNav = ({ items }) => {
     },
     {
       component: "CNavItem",
-      name: `Хэрэглэгчид`,
+      name: `Системийн хэрэглэгчид`,
       to: "/user-accounts",
       icon: <FaUser style={{ opacity: "0.3", marginRight: "15px" }} />,
     },
     {
       component: "CNavItem",
-      name: `Байгууллагууд`,
+      name: `Мерчантс`,
       to: "/get-merchants",
       icon: <FaUserGroup style={{ opacity: "0.3", marginRight: "15px" }} />,
     },
@@ -112,7 +112,7 @@ export const AppSidebarNav = ({ items }) => {
     },
     {
       component: "CNavItem",
-      name: `Терминал`,
+      name: `Төхөөрөмжүүд`,
       to: "/get-terminals",
       icon: <FaComputer style={{ opacity: "0.3", marginRight: "15px" }} />,
     },
