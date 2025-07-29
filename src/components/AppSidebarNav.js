@@ -118,7 +118,7 @@ export const AppSidebarNav = ({ items }) => {
     },
     {
       component: "CNavItem",
-      name: `Хөгжүүлэлт`,
+      name: `Task`,
       to: "/tasks",
       icon: <MdTask style={{ opacity: "0.3", marginRight: "15px" }} />,
     },

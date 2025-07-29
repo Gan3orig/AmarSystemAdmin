@@ -357,7 +357,7 @@ const TasksBoard = () => {
     }
   };
 
-  const handleOpenModal = async (task) => {
+  const handleOpenModal = async (task, isEdit = false) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
@@ -387,6 +387,7 @@ const TasksBoard = () => {
         priority: full?.priority ?? task.priority ?? "medium",
       };
       setSelectedTask(merged);
+      setEditMode(isEdit);
       setVisible(true);
     } catch (err) {
       console.error("Error fetching task detail:", err);
@@ -999,36 +1000,37 @@ const TasksBoard = () => {
                               >
                                 <CListGroupItem className="shadow-sm hover:shadow-md transition-all border-0 p-3">
                                   <div className="d-flex flex-column">
+                                    <div className="d-flex gap-2 align-items-center">
+                                      <CTooltip content="Дэлгэрэнгүй">
+                                        <IoEye
+                                          size={18}
+                                          onClick={() => handleOpenModal(task)}
+                                          className="cursor-pointer text-primary hover:opacity-80"
+                                        />
+                                      </CTooltip>
+                                      <CTooltip content="Засах">
+                                        <MdEdit
+                                          size={18}
+                                          onClick={() =>
+                                            handleOpenModal(task, true)
+                                          }
+                                          className="cursor-pointer text-warning hover:opacity-80"
+                                        />
+                                      </CTooltip>
+                                      <CTooltip content="Устгах">
+                                        <MdDelete
+                                          size={18}
+                                          onClick={() =>
+                                            handleDeleteTask(key, task.id)
+                                          }
+                                          className="cursor-pointer text-danger hover:opacity-80"
+                                        />
+                                      </CTooltip>
+                                    </div>
                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                       <p className="m-0 flex-grow-1 fw-semibold">
                                         {task.content}
                                       </p>
-                                      <div className="d-flex gap-2 align-items-center">
-                                        <CTooltip content="Дэлгэрэнгүй">
-                                          <IoEye
-                                            size={18}
-                                            onClick={() =>
-                                              handleOpenModal(task)
-                                            }
-                                            className="cursor-pointer text-primary hover:opacity-80"
-                                          />
-                                        </CTooltip>
-                                        <CTooltip content="Засах">
-                                          <MdEdit
-                                            size={18}
-                                            className="cursor-pointer text-warning hover:opacity-80"
-                                          />
-                                        </CTooltip>
-                                        <CTooltip content="Устгах">
-                                          <MdDelete
-                                            size={18}
-                                            onClick={() =>
-                                              handleDeleteTask(key, task.id)
-                                            }
-                                            className="cursor-pointer text-danger hover:opacity-80"
-                                          />
-                                        </CTooltip>
-                                      </div>
                                     </div>
                                     <CProgress
                                       value={task.progress}
@@ -1232,10 +1234,12 @@ const TasksBoard = () => {
                 onChange={(e) =>
                   setSelectedTask({ ...selectedTask, content: e.target.value })
                 }
-                className="mb-3"
+                className="mb-3 text-black"
               />
             ) : (
-              <p className="bg-light p-3 rounded">{selectedTask?.content}</p>
+              <p className="bg-light p-3 rounded text-black">
+                {selectedTask?.content}
+              </p>
             )}
           </div>
           <div className="mb-4">
@@ -1251,10 +1255,10 @@ const TasksBoard = () => {
                     description: e.target.value,
                   })
                 }
-                className="mb-3"
+                className="mb-3 text-black"
               />
             ) : (
-              <p className="bg-light p-3 rounded">
+              <p className="bg-light p-3 rounded text-black">
                 {selectedTask?.description || "Тайлбар байхгүй"}
               </p>
             )}
@@ -1280,7 +1284,7 @@ const TasksBoard = () => {
           <div className="row g-3">
             <div className="col-md-6">
               <strong className="d-block mb-2">Үүсгэсэн огноо:</strong>
-              <p className="bg-light p-3 rounded">
+              <p className="bg-light p-3 rounded text-black">
                 {selectedTask?.createdAt
                   ? new Date(selectedTask.createdAt).toLocaleString("mn-MN")
                   : ""}
@@ -1300,7 +1304,7 @@ const TasksBoard = () => {
                   }
                 />
               ) : (
-                <p className="bg-light p-3 rounded">
+                <p className="bg-light p-3 rounded text-black">
                   {selectedTask?.dueDate
                     ? new Date(selectedTask.dueDate).toLocaleDateString("mn-MN")
                     : "Тодорхойгүй"}
