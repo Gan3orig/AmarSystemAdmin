@@ -88,6 +88,12 @@ export const AppSidebarNav = ({ items }) => {
     },
     {
       component: "CNavItem",
+      name: `Дансны мэдээлэл`,
+      to: "/banks",
+      icon: <FaUser style={{ opacity: "0.3", marginRight: "15px" }} />,
+    },
+    {
+      component: "CNavItem",
       name: `Терминал`,
       to: "/terminal-page",
       icon: <FaTerminal style={{ opacity: "0.3", marginRight: "15px" }} />,

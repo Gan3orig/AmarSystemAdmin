@@ -8,6 +8,7 @@ import GetBranches from "./views/pages/GetBranches/GetBranches";
 import GetTerminals from "./views/pages/GetTerminals/GetTerminals";
 import QpayMerchantsPage from "./views/pages/QpayMerchants/QpayMerchantsPage";
 import TasksBoard from "./views/pages/Tasks/TasksBoard";
+import BanksPage from "./views/pages/Banks/BanksPage";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 const DeveloperHistory = React.lazy(
@@ -326,6 +327,7 @@ const routes = [
         { path: "/notifications/badges", name: "Badges", element: Badges },
         { path: "/notifications/modals", name: "Modals", element: Modals },
         { path: "/notifications/toasts", name: "Toasts", element: Toasts },
+        { path: "/banks", name: "Банк", element: BanksPage },
         { path: "/widgets", name: "Widgets", element: Widgets },
 
         //settings
