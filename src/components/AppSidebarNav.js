@@ -94,7 +94,7 @@ export const AppSidebarNav = ({ items }) => {
     },
     {
       component: "CNavItem",
-      name: `Терминал`,
+      name: `Терминал 2.0`,
       to: "/terminal-page",
       icon: <FaTerminal style={{ opacity: "0.3", marginRight: "15px" }} />,
     },
@@ -118,7 +118,7 @@ export const AppSidebarNav = ({ items }) => {
     },
     {
       component: "CNavItem",
-      name: `Төхөөрөмжүүд`,
+      name: `Төхөөрөмжүүд 3.0`,
       to: "/get-terminals",
       icon: <FaComputer style={{ opacity: "0.3", marginRight: "15px" }} />,
     },

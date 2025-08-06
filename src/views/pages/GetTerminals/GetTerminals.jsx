@@ -21,6 +21,7 @@ import {
   CDropdownToggle,
   CDropdownMenu,
   CDropdownItem,
+  CCollapse,
 } from "@coreui/react";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -49,6 +50,7 @@ const GetTerminals = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterStatus, setFilterStatus] = useState("all"); // new filter state
+  const [expandedRow, setExpandedRow] = useState(null);
 
   // Responsive check
   const [isMobile, setIsMobile] = useState(
@@ -250,6 +252,14 @@ const GetTerminals = () => {
     currentPage * PAGE_SIZE,
   );
 
+  const handleMoreClick = (index) => {
+    if (expandedRow === index) {
+      setExpandedRow(null);
+    } else {
+      setExpandedRow(index);
+    }
+  };
+
   return (
     <CContainer fluid>
       <motion.div
@@ -404,7 +414,7 @@ const GetTerminals = () => {
                     <CTableHeaderCell
                       style={{
                         width: "48px",
-                        background: "#f4f6fb",
+                        background: "#333333",
                         borderTopRightRadius: "12px",
                       }}
                     ></CTableHeaderCell>
@@ -426,65 +436,96 @@ const GetTerminals = () => {
                         const globalIndex =
                           (currentPage - 1) * PAGE_SIZE + rowIndex;
                         return (
-                          <motion.tr
-                            key={globalIndex}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{
-                              duration: 0.3,
-                              delay: rowIndex * 0.05,
-                            }}
-                            className={`align-middle hover:bg-light transition-colors ${
-                              selectedIndex === globalIndex
-                                ? "table-active"
-                                : ""
-                            }`}
-                            style={{
-                              borderLeft:
-                                selectedIndex === globalIndex
-                                  ? "4px solid #4e54c8"
-                                  : undefined,
-                              background:
-                                selectedIndex === globalIndex
-                                  ? "#f0f4ff"
-                                  : undefined,
-                            }}
-                          >
-                            {visibleHeaders.map((header) => (
-                              <CTableDataCell
-                                key={header}
-                                className="text-truncate"
-                                style={{ maxWidth: "180px", fontSize: "1rem" }}
-                              >
-                                {renderCellValue(header, terminal[header])}
+                          <React.Fragment key={globalIndex}>
+                            <motion.tr
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -20 }}
+                              transition={{
+                                duration: 0.3,
+                                delay: rowIndex * 0.05,
+                              }}
+                              className={`align-middle hover:bg-light transition-colors ${
+                                expandedRow === globalIndex
+                                  ? "table-active"
+                                  : ""
+                              }`}
+                              style={{
+                                borderLeft:
+                                  expandedRow === globalIndex
+                                    ? "4px solid #4e54c8"
+                                    : undefined,
+                                background:
+                                  expandedRow === globalIndex
+                                    ? "#f0f4ff"
+                                    : undefined,
+                              }}
+                            >
+                              {visibleHeaders.map((header) => (
+                                <CTableDataCell
+                                  key={header}
+                                  className="text-truncate"
+                                  style={{
+                                    maxWidth: "180px",
+                                    fontSize: "1rem",
+                                  }}
+                                >
+                                  {renderCellValue(header, terminal[header])}
+                                </CTableDataCell>
+                              ))}
+                              <CTableDataCell className="text-center">
+                                <motion.div
+                                  whileHover={{ scale: 1.2 }}
+                                  whileTap={{ scale: 0.9 }}
+                                >
+                                  {expandedRow === globalIndex ? (
+                                    <IoClose
+                                      size={22}
+                                      className="cursor-pointer text-danger"
+                                      onClick={() =>
+                                        handleMoreClick(globalIndex)
+                                      }
+                                      title="Дэлгэрэнгүй хаах"
+                                    />
+                                  ) : (
+                                    <MdMore
+                                      size={22}
+                                      className="cursor-pointer text-primary"
+                                      onClick={() =>
+                                        handleMoreClick(globalIndex)
+                                      }
+                                      title="Дэлгэрэнгүй харах"
+                                    />
+                                  )}
+                                </motion.div>
                               </CTableDataCell>
-                            ))}
-                            <CTableDataCell className="text-center">
-                              <motion.div
-                                whileHover={{ scale: 1.2 }}
-                                whileTap={{ scale: 0.9 }}
+                            </motion.tr>
+                            <CTableRow>
+                              <CTableDataCell
+                                colSpan={visibleHeaders.length + 1}
+                                className="p-0"
                               >
-                                {selectedIndex === globalIndex ? (
-                                  <IoClose
-                                    size={22}
-                                    className="cursor-pointer text-danger"
-                                    onClick={() => setSelectedIndex(null)}
-                                    title="Дэлгэрэнгүй хаах"
-                                  />
-                                ) : (
-                                  <MdMore
-                                    size={22}
-                                    className="cursor-pointer text-primary"
-                                    onClick={() =>
-                                      setSelectedIndex(globalIndex)
-                                    }
-                                    title="Дэлгэрэнгүй харах"
-                                  />
-                                )}
-                              </motion.div>
-                            </CTableDataCell>
-                          </motion.tr>
+                                <CCollapse
+                                  visible={expandedRow === globalIndex}
+                                >
+                                  <div className="p-3 bg-[#333333]">
+                                    <h6>Дэлгэрэнгүй мэдээлэл:</h6>
+                                    {Object.entries(terminal).map(
+                                      ([key, value]) =>
+                                        !visibleHeaders.includes(key) && (
+                                          <div key={key} className="mb-2">
+                                            <strong>
+                                              {headerTranslations[key] || key}:
+                                            </strong>{" "}
+                                            {renderCellValue(key, value)}
+                                          </div>
+                                        ),
+                                    )}
+                                  </div>
+                                </CCollapse>
+                              </CTableDataCell>
+                            </CTableRow>
+                          </React.Fragment>
                         );
                       })
                     )}
