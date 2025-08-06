@@ -426,28 +426,28 @@ const TerminalMap = () => {
                                   </h6>
                                   <div className="row g-4">
                                     <div className="col-md-4">
-                                      <div className="p-3 bg-white rounded-3 shadow-sm">
+                                      <div className="p-3 bg-[#333] rounded-3 shadow-sm">
                                         <strong>Entity Name:</strong>
                                         <br />
                                         {location.entityName}
                                       </div>
                                     </div>
                                     <div className="col-md-4">
-                                      <div className="p-3 bg-white rounded-3 shadow-sm">
+                                      <div className="p-3 bg-[#333] rounded-3 shadow-sm">
                                         <strong>Phone2:</strong>
                                         <br />
                                         {location.phone2 || "-"}
                                       </div>
                                     </div>
                                     <div className="col-md-4">
-                                      <div className="p-3 bg-white rounded-3 shadow-sm">
+                                      <div className="p-3 bg-[#333] rounded-3 shadow-sm">
                                         <strong>Лицензийн хугацаа:</strong>
                                         <br />
                                         {location.licenseExpireDate}
                                       </div>
                                     </div>
                                     <div className="col-md-4">
-                                      <div className="p-3 bg-white rounded-3 shadow-sm">
+                                      <div className="p-3 bg-[#333] rounded-3 shadow-sm">
                                         <strong>Координат:</strong>
                                         <br />
                                         {location.locationLat},{" "}
@@ -455,7 +455,7 @@ const TerminalMap = () => {
                                       </div>
                                     </div>
                                     <div className="col-md-4">
-                                      <div className="p-3 bg-white rounded-3 shadow-sm">
+                                      <div className="p-3 bg-[#333] rounded-3 shadow-sm">
                                         <strong>Terminal ID:</strong>
                                         <br />
                                         {location.terminalId}
