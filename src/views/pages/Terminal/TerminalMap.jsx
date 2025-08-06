@@ -58,6 +58,7 @@ const TerminalMap = () => {
   const [filteredLocations, setFilteredLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [terminalIdSearch, setTerminalIdSearch] = useState(""); // Added terminal ID search
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -127,17 +128,21 @@ const TerminalMap = () => {
   // Enhanced search filter with debounce
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      const filtered = locations.filter((loc) =>
-        Object.values(loc).some((val) =>
+      const filtered = locations.filter((loc) => {
+        const matchesSearch = Object.values(loc).some((val) =>
           val?.toString().toLowerCase().includes(searchTerm.toLowerCase()),
-        ),
-      );
+        );
+        const matchesTerminalId = terminalIdSearch
+          ? loc.terminalId.toString().includes(terminalIdSearch)
+          : true;
+        return matchesSearch && matchesTerminalId;
+      });
       setFilteredLocations(filtered);
       setCurrentPage(1);
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, locations]);
+  }, [searchTerm, terminalIdSearch, locations]);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -314,6 +319,42 @@ const TerminalMap = () => {
                   />
                 </div>
 
+                {/* Terminal ID Search Field */}
+                <div
+                  className="position-relative"
+                  style={{ width: isMobile ? "100%" : "200px" }}
+                >
+                  <CFormInput
+                    placeholder="Terminal ID хайх..."
+                    value={terminalIdSearch}
+                    onChange={(e) => setTerminalIdSearch(e.target.value)}
+                    className="pe-5 shadow-sm"
+                    style={{
+                      minWidth: 150,
+                      borderRadius: 24,
+                      transition: "all 0.3s ease",
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.boxShadow =
+                        "0 0 0 0.25rem rgba(78, 84, 200, 0.25)";
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.boxShadow = "";
+                    }}
+                  />
+                  <FaSearch
+                    className="position-absolute"
+                    style={{
+                      right: "16px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      opacity: 0.5,
+                      pointerEvents: "none",
+                    }}
+                    size={18}
+                  />
+                </div>
+
                 <CButtonGroup>
                   <CTooltip content="Жагсаалт/Газрын зураг">
                     <CButton
@@ -354,6 +395,10 @@ const TerminalMap = () => {
                     <CTableHead>
                       <CTableRow>
                         <CTableHeaderCell>
+                          <FaCalendarAlt className="me-2" />
+                          ID
+                        </CTableHeaderCell>
+                        <CTableHeaderCell>
                           <FaRegBuilding className="me-2" />
                           Бизнесийн нэр
                         </CTableHeaderCell>
@@ -364,10 +409,6 @@ const TerminalMap = () => {
                         <CTableHeaderCell>
                           <FaPhone className="me-2" />
                           Утас
-                        </CTableHeaderCell>
-                        <CTableHeaderCell>
-                          <FaCalendarAlt className="me-2" />
-                          Огноо
                         </CTableHeaderCell>
                         <CTableHeaderCell></CTableHeaderCell>
                       </CTableRow>
@@ -384,15 +425,15 @@ const TerminalMap = () => {
                             }
                           >
                             <CTableDataCell>
+                              {location.terminalId}
+                            </CTableDataCell>
+                            <CTableDataCell>
                               {location.businessName}
                             </CTableDataCell>
                             <CTableDataCell>
                               {location.registerNo}
                             </CTableDataCell>
                             <CTableDataCell>{location.phone1}</CTableDataCell>
-                            <CTableDataCell>
-                              {location.createDate}
-                            </CTableDataCell>
                             <CTableDataCell
                               className="text-center"
                               style={{ width: 48 }}
@@ -419,7 +460,7 @@ const TerminalMap = () => {
                                 <motion.div
                                   initial={{ opacity: 0 }}
                                   animate={{ opacity: 1 }}
-                                  className="p-4 bg-light rounded-3 m-2"
+                                  className="p-4 rounded-3 m-2"
                                 >
                                   <h6 className="mb-3 text-primary">
                                     Дэлгэрэнгүй мэдээлэл:
@@ -440,7 +481,7 @@ const TerminalMap = () => {
                                       </div>
                                     </div>
                                     <div className="col-md-4">
-                                      <div className="p-3 bg-[#333] rounded-3 shadow-sm">
+                                      <div className="p-3 bg-black/80 rounded-3 shadow-sm">
                                         <strong>Лицензийн хугацаа:</strong>
                                         <br />
                                         {location.licenseExpireDate}
@@ -456,9 +497,9 @@ const TerminalMap = () => {
                                     </div>
                                     <div className="col-md-4">
                                       <div className="p-3 bg-[#333] rounded-3 shadow-sm">
-                                        <strong>Terminal ID:</strong>
+                                        <strong>Бүртгүүлсэн огноо:</strong>
                                         <br />
-                                        {location.terminalId}
+                                        {location.createDate}
                                       </div>
                                     </div>
                                   </div>
